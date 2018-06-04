@@ -23,7 +23,6 @@
 <preference name="phonegap-version" value="cli-6.5.0" />
 <preference name="xwalkMultipleApk" value="false" />
 
-<plugin name="cordova-plugin-crosswalk-webview"/>
 <plugin name="cordova-plugin-crosswalk-webview" spec="1.8.0"/>
 <plugin name="cordova-plugin-legacy-whitelist" spec="1.1.1"/>
 <plugin name="cordova-plugin-camera" spec="2.4.1">
