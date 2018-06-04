@@ -1019,11 +1019,6 @@ $$('#submit-login').click(function() {
 
             if (returnedData != '0' && returnedData != '1') {
                 //myApp.alert(returnedData[0].nome);
-                mainView.router.load({
-                    url: 'index.html',
-                    ignoreCache: true
-                });
-
                 // armazena dados do usuário em local storage
                 var usuarioHagnos = {
                 //usuarioEmail: fuid,
@@ -1038,6 +1033,12 @@ $$('#submit-login').click(function() {
                 hagnosUsuarioNomeTipo: returnedData[0].nometipo,
                 hagnosUsuarioStatus: returnedData[0].status
                 };
+                mainView.router.load({
+                    url: 'index.html',
+                    ignoreCache: true
+                });
+
+                
         
                 window.localStorage.setItem('usuarioHagnos', JSON.stringify(usuarioHagnos));
                 var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
