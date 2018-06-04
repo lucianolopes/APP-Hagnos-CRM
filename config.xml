@@ -36,8 +36,6 @@
     <preference name="AndroidLaunchMode" value="singleTop"/>
 </platform>
 <platform name="windows" >
-<preference name="windows-publisher-display-name" value=""/>
-<preference name="windows-publisher-id" value=""/>
 </platform>
 <icon platform="android" src="package-assets/36x36.png" density="ldpi" width="36" height="36"/>
 <icon platform="android" src="package-assets/48x48.png" density="mdpi" width="48" height="48"/>
