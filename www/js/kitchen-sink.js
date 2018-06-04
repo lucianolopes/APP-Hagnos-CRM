@@ -995,7 +995,6 @@ $$('#submit-login').click(function() {
     $$('#submit-login').html('Fazendo login...');
     var fuid = $$('#usuario').val();
     var fpass = $$('#senha').val();
-myApp.alert(fuid);
     $$.ajax({
 
         url: baseurl+'login.php',
@@ -1015,7 +1014,7 @@ myApp.alert(fuid);
                var msgerro = "Senha inválida!"; 
             }
 
-
+            //myApp.alert(fuid);
             $$('#submit-login').html(msgerro);
 
             if (returnedData != '0' && returnedData != '1') {
@@ -1034,6 +1033,7 @@ myApp.alert(fuid);
                 hagnosUsuarioNomeTipo: returnedData[0].nometipo,
                 hagnosUsuarioStatus: returnedData[0].status
                 };
+                myApp.alert(returnedData[0].email);
                 mainView.router.load({
                     url: 'index.html',
                     ignoreCache: true
