@@ -1,0 +1,153 @@
+<div data-page="form-cotacao-adm" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left">
+	<a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a>
+	<a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
+</div>
+<div class="center" class="nomeperfil">Nova cotação</div>
+<div class="right">
+	<a href="#" id="salvar-cotacao" class="button link salva-cotacao disabled">salvar</a>
+	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+ 
+
+<div class="page-content">
+
+
+<div class="content-block">
+<h3 class="e-cliente"></h3>
+</div>
+
+
+
+<form id="form-cotacao-adm" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+	
+	<ul>
+
+		<li class="respondida">
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Situação</div>
+		<div class="item-input">
+		<select name="situacao-cot">
+			<option value="PENDENTE">PENDENTE</option>
+			<option value="ENVIADA">ENVIADA</option>
+			<option value="APROVADA">APROVADA</option>
+			<option value="REPROVADA">REPROVADA</option>
+		</select>
+		</div>
+		</div>
+		</div>
+		</li>
+
+		<li style="display:none">
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Data da solicitação</div>
+		<div class="item-input">
+		</div>
+		</div>
+		</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Data entrega</div>
+		<div class="item-input">
+		<input type="date" name="data-entrega-cot" required>
+		</div>
+		</div>
+		</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Condição</div>
+		<div class="item-input">
+		<input type="text" name="condicao-cot" required>
+		</div>
+		</div>
+		</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Frete</div>
+		<div class="item-input">
+		<select name="frete-cot">
+			<option value="CIF" selected=selected>CIF</option>
+			<option value="FOB">FOB</option>
+		</select>
+		</div>
+		</div>
+		</div>
+		</li>
+
+		
+
+	</ul>
+
+	<div class="content-block">
+	<h3>Produtos Informados</h3>
+	</div>
+
+	<ul class="cotacoes-rows-visualizar"></ul>	
+
+	<ul class="list-products">
+    	
+	</ul>
+
+	<ul>
+		<li>
+    		<div class="item-inner">
+				<div class="item-input">
+				<button type='button' class='button button-fill color-teal minusprodutocotacao' style="margin-top:16px;float:right;margin-left:8px"><i class='material-icons' style='margin-top:5px'>delete</i></button>
+				<button type='button' class='button button-fill color-teal addprodutocotacao' style="margin-top:16px;float:right"><i class='icon icon-plus'></i></button>
+				</div>
+			</div>
+    	</li>	
+	</ul>
+
+	<ul>
+	   <li style="text-align:right"> 
+       <div class="content-block">
+        <div class="item-inner right">
+            <div class="item-title label">VALOR TOTAL DA COTAÇÃO</div>
+            <div class="item-input">
+                <input type="text" name="total-cot-v" value="0.00" style="text-align:right" readonly=readonly/>
+            </div>
+        </div>
+	    </div>
+	    </li>
+	</ul>
+
+	<div class="content-block">
+	<h3>Informações complementares</h3>
+	</div>
+
+	<ul>
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-input">
+					<textarea name="info-cot" id="info-cot" rows=20 style=></textarea>
+				</div>
+			</div>
+		</div>
+		</li>
+	</ul>
+
+
+
+</form>
+
+
+
+</div>

@@ -1,0 +1,99 @@
+<div data-page="form-teste" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
+<div class="center" class="nomeperfil">Novo teste</div>
+<div class="right">
+	<a href="#" id="salva-teste" class="button link salva-teste disabled">salvar</a>
+	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+ 
+
+<div class="page-content">
+
+
+<div class="content-block">
+<h3 class="e-cliente"></h3>
+</div>
+
+
+
+
+<form id="form-teste" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+	
+	<ul>
+		<li>
+		<div class="item-content">
+			
+			<div class="item-inner">
+				<div class="item-title label">Produto a ser testado</div>
+				<div class="item-input">
+					<select name='produto-teste' id='produto-teste' class='prod'>
+						<option value="">Selecione um produto</option>
+					</select>
+					<input type="hidden" name="codcliente" value="">
+				</div>
+			</div>
+			<div class="item-inner">
+				
+				<div class="row">
+					<div class="item-title floating-label">LOTE</div>
+					<div class="item-input">
+						<input type="text" name="lote-obs" id="lote-obs">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="item-title floating-label">QTDE</div>
+					<div class="item-input">
+						<input type="text" name="qtd-obs" id="qtd-obs">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="item-title floating-label">EQUIPAMENTO</div>
+					<div class="item-input">
+						<input type="text" name="equip-obs" id="equip-obs">
+					</div>
+				</div>
+			</div>
+		</div>
+		</li>
+
+		
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-input">
+				<button type='button' class='button button-fill color-teal addprodutoteste disabled' style="float:right">adicionar à lista</button>
+				</div>
+			</div>
+		</div>
+		</li>
+	</ul>
+
+	<ul class="testes-rows"></ul>
+
+	<ul style="margin-top:60px">
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Desempenho do teste</div>
+				<div class="item-input">
+					<textarea class="resizable" name="info-teste" id="info-teste" rows=8 style="min-height:180px"></textarea>
+				</div>				
+			</div>
+		</div>
+		</li>
+	</ul>
+
+
+
+</form>
+
+
+
+</div>

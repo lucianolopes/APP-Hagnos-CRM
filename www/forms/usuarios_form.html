@@ -1,0 +1,124 @@
+<div data-page="form-usuario" class="page">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
+			<div class="center" class="nomeperfil">Cadastro</div>
+			<div class="right">
+				<a href="#" class="link salva-usuario">salvar</a>
+				<a href="#" class="link deleta-usuario"><i class="material-icons">delete</i></a>	
+				<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+			</div>
+		</div>
+	</div>
+
+	
+	<div class="page-content">
+		
+		<div class="content-block-title">Criar um usuário</div>
+
+			<form id="form-usuario" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+	
+					<ul>
+
+						<li>
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label">Apelido</div>
+						<div class="item-input">
+						<input type="text" name="usuario_apelido" id="usuario_apelido" required>						
+						</div>
+						</div>
+						</div>
+						</li>
+
+						<li style="display:none">
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label">Nome Completo</div>
+						<div class="item-input">
+						<input type="text" name="usuario_nome" id="usuario_nome">						
+						</div>
+						</div>
+						</div>
+						</li>
+						
+						<li>
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label">Tipo de usuário</div>
+						<div class="item-input">
+						<select name="usuario_tipo" id="usuario_tipo">
+						<option value="1;admin">Admin</option>
+						<option value="3;cliente">Cliente</option>
+						<option value="2;representante">Representante</option>
+						</select>
+						<input type="hidden" name="usuario_id" id="usuario_id">
+						</div>
+						</div>
+						</div>
+						</li>
+
+						<li class="li-cliente" style="display:none">
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label">Nome do cliente</div>
+						<div class="item-input">
+						<select name="usuario_nomecliente" id="usuario_nomecliente"></select>
+						</div>
+						</div>
+						</div>
+						</li>	
+
+						<li class="li-email-usuario">
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label">Email</div>
+						<div class="item-input">
+						<input type="email" name="usuario_email" id="usuario_email">	
+						</div>
+						</div>
+						</div>
+						</li>	
+
+						
+
+						<li class="li-representante" style="display:none">
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label">Nome do representante</div>
+						<div class="item-input">
+						<select name="usuario_nomerep" id="usuario_nomerep"></select>
+						</div>
+						</div>
+						</div>
+						</li>						
+
+						<li>
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label" required>Senha</div>
+						<div class="item-input">
+						<input type="password" name="senha" id="senha" placeholder="senha" required/>
+						</div>
+						</div>
+						</div>
+						</li>
+
+						<li>
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label" required>Confirme a senha</div>
+						<div class="item-input">
+						<input type="password" name="senha2" id="senha2" placeholder="" required data-parsley-equalto="#senha"/>
+						</div>
+						</div>
+						</div>
+						</li>					
+
+					</ul>
+			</form>
+		</div>
+
+	</div>
+
+</div>

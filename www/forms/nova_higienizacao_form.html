@@ -1,0 +1,120 @@
+<div data-page="form-higienizacao" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
+<div class="center hg" class="nomeperfil">Nova higienizacao</div>
+<div class="right">
+	<a href="#" id="salva-higienizacao" class="button link salva-higienizacao disabled">salvar</a>
+	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+ 
+
+<div class="page-content">
+
+
+<div class="content-block">
+<h3 class="e-cliente"></h3>
+</div>
+
+
+
+
+<form id="form-higienizacao" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+	
+	<ul>
+
+		<li class="select-hig">
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Situação</div>
+		<div class="item-input">
+		<select name="situacao-hig">
+			<option value="PENDENTE">PENDENTE</option>
+			<option value="PRE-AGENDADA">PRE-AGENDADA</option>
+			<option value="AGENDADA">AGENDADA</option>
+			<option value="FINALIZADA">FINALIZADA</option>
+		</select>
+		<input type="hidden" name="id-hig" value="">
+		<input type="hidden" name="codcliente" value="">
+		</div>
+		</div>
+		</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Data/hora agendamento</div>
+		<div class="item-input">
+		<input type="datetime-local" name="data_agendamento" id="data_agendamento" value=""/>
+		</div>
+		</div>
+		</div>
+		</li>		
+
+	</ul>
+
+	<ul>
+		<li>
+		<div class="item-content">
+			
+			<div class="item-inner">
+				<div class="item-title label">Equipamento</div>
+				<div class="item-input">
+					<select name='equipamento-higienizacao' id='equipamento-higienizacao' class='prod'>
+						<option value="">Selecione um equipamento</option>
+					</select>
+				</div>
+			</div>
+			<div class="item-inner">
+				<div class="item-title label">Observações</div>
+				<div class="item-input">
+					<textarea class="resizable" name="equip-obs" id="equip-obs" placeholder="observações aqui"></textarea>
+				</div>
+			</div>
+		</div>
+		</li>
+
+		
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-input">
+				<button type='button' class='button button-fill color-teal addequiphig disabled' style="float:right">adicionar à lista</button>
+				</div>
+			</div>
+		</div>
+		</li>
+	</ul>
+
+	<ul class="hig-rows"></ul>
+
+
+
+
+
+
+
+	<ul style="margin-top:40px">
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Instruções de trabalho</div>
+				<div class="item-input">
+					<textarea class="resizable" name="info-hig" id="info-hig" rows=4 style="min-height:120px"></textarea>
+				</div>
+			</div>
+		</div>
+		</li>
+	</ul>
+
+
+
+</form>
+
+
+
+</div>

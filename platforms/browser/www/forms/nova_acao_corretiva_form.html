@@ -1,0 +1,98 @@
+<div data-page="form-acaocorretiva" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
+<div class="center ac" class="nomeperfil">Nova ação corretiva</div>
+<div class="right">
+	<a href="#" id="salva-acaocorretiva" class="button link salva-acaocorretiva">salvar</a>
+	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+ 
+
+<div class="page-content">
+
+
+<div class="content-block">
+<h3 class="e-cliente"></h3>
+</div>
+
+
+
+
+<form id="form-acaocorretiva" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+	
+	<ul>
+
+		<li class="select-acao">
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Situação</div>
+		<div class="item-input">
+		<select name="situacao-acao">
+			<option value="PENDENTE">PENDENTE</option>
+			<option value="FINALIZADA">FINALIZADA</option>
+		</select>
+		<input type="hidden" name="id-acao" value="">
+		<input type="hidden" name="codcliente" value="">
+		</div>
+		</div>
+		</div>
+		</li>
+
+		<li>
+			<div class="item-content">
+			<div class="item-inner">
+			<div class="item-title label">Data/hora</div>
+			<div class="item-input">
+			<input type="datetime-local" name="data_acao" id="data_acao" value=""/>
+			</div>
+			</div>
+			</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Descrição do problema</div>
+				<div class="item-input">
+					<textarea class="resizable" name="descricao-acao" id="descricao-acao" rows=8 style="min-height:140px"></textarea>
+				</div>
+			</div>
+		</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Parecer técnico</div>
+				<div class="item-input">
+					<textarea class="resizable" name="parecer-acao" id="parecer-acao" rows=8 style="min-height:140px"></textarea>
+				</div>
+			</div>
+		</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Ação corretiva</div>
+				<div class="item-input">
+					<textarea class="resizable" name="descricao2-acao" id="descricao2-acao" rows=8 style="min-height:140px"></textarea>
+				</div>
+			</div>
+		</div>
+		</li>
+
+	</ul>
+
+	
+
+
+</form>
+
+
+
+</div>

@@ -1,0 +1,95 @@
+<div data-page="form-comercial" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
+<div class="center" class="nomeperfil">Comercial produto</div>
+<div class="right">
+	<a href="#" class="link salva-comercial">salvar</a>
+	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+ 
+
+<div class="page-content">
+
+<div class="content-block">
+<h3 class="e-cliente"></h3>
+</div>
+
+<form id="form-comercial" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+	
+	<ul>
+					<li>
+					<div class='item-content'>
+					<div class='item-inner'>
+					<div class='item-title label'>Média de consumo mensal</div>
+					<div class='item-input'>
+					<input type='hidden' name='com_id'>
+					<input type='text' name='media_consumo_mensal' required>
+					</div>
+					</div>
+					</div>
+					</li>
+
+					<li>
+					<div class='item-content'>
+					<div class='item-inner'>
+					<div class='item-title label'>Preço aplicado</div>
+					<div class='item-input'>
+					<input type='text' name='preco_aplicado' class='preco_aplicado' value='0.00' required>
+					</div>
+					</div>
+					</div>
+					</li>
+
+					<li>
+					<div class='item-content'>
+					<div class='item-inner'>
+					<div class='item-title label'>Prazo de pagamento</div>
+					<div class='item-input'>
+					<input type='text' name='prazo_pagamento' required>
+					</div>
+					</div>
+					</div>
+					</li>
+
+					<li class="concorrente">
+					<div class='item-content'>
+					<div class='item-inner'>
+					<div class='item-title label'>Concorrente</div>
+					<div class='item-input'>
+					<input type='text' name='concorrente'>
+					</div>
+					</div>
+					</div>
+					</li>
+
+					<li class="ultimacompra">
+					<div class='item-content'>
+					<div class='item-inner'>
+					<div class='item-title label'>Data da última compra</div>
+					<div class='item-input'>
+					<input type="date" name="data_ultima_compra" id="data_ultima_compra" value=""/>
+					</div>
+					</div>
+					</div>
+					</li>
+
+					<li>
+					<div class='item-content'>
+					<div class='item-inner'>
+					<div class='item-title label'>Observação</div>
+					<div class='item-input'>
+					<textarea name='obs_prod' rows='5'></textarea>
+					</div>
+					</div>
+					</div>
+					</li>
+
+				</ul>
+
+</form>
+
+</div>

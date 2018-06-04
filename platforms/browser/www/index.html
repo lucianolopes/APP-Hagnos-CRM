@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#ff0000">
+    <title>Hagnos</title>
+    <link rel="stylesheet" href="css/framework7.material.min.css">
+    <link rel="stylesheet" href="css/framework7.material.colors.css">
+    <link href="//fonts.googleapis.com/css?family=Roboto:400,300,500,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/material-icons.css">
+    <link rel="stylesheet" href="css/kitchen-sink.css">
+    <link rel="stylesheet" href="js/plugins/parsley/src/parsley.css">
+    <link rel="stylesheet" href="js/plugins/fileinput/fileinput.css">
+
+    <link rel="icon" href="img/icon.png">
+
+  </head>
+  <body>
+
+    <div class="statusbar-overlay"></div>
+    <div class="panel-overlay"></div>
+
+    <div class="panel panel-left panel-cover">
+      <div class="view navbar-fixed">
+        
+        <div class="pages">
+          <div data-page="panel-left" class="page">
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="center">Menu </div>
+              </div>
+            </div>
+            <div class="page-content">   
+                
+                              
+              <div class="list-block">
+                <ul>
+                  <li><a href="index.html" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/home.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Início</div>
+                        </div>
+                      </div>
+                      </a>
+                  </li>
+
+                  <li class="esconde-cliente"><a href="lancamentos.html" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/settings.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Acompanhamento técnico</div>
+                        </div>
+                      </div>
+                      </a>
+                  </li>
+
+                  <li class="esconde-rep esconde-cliente">
+                    <a href="cotacoes.html" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/budget.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Cotações <span class="notificacao-span"></span></div> 
+                        </div>
+                      </div>
+                      </a>
+                  </li>
+
+                   <li class="esconde-cliente">
+                    <a href="acoescorretivas.html" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/repair.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Ações Corretivas <span class="notificacao-span"></span></div> 
+                        </div>
+                      </div>
+                      </a>
+                  </li>
+
+                  
+
+                  <li class="esconde-rep esconde-admin">
+                    <a href="" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/budget.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Solicitar Cotação</span></div> 
+                        </div>
+                      </div>
+                      </a>
+                  </li>
+
+                 
+                  <li class="esconde-cliente">
+                    <a href="higienizacoes.html" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/cleaner.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Higienizações <span class="notificacao-span-h"></span></div> 
+                        </div>
+                      </div>
+                      </a>
+                  </li>
+
+                 
+
+                  <li class="esconde-cliente">
+                    <a href="testes.html" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/tests.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Testes <span class="notificacao-span"></span></div> 
+                        </div>
+                      </div>
+                      </a>
+                  </li>
+
+                  <li class="esconde-cliente"><a href="clientes.html" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/user.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Clientes</div>
+                        </div>
+                      </div>
+                      </a>
+                  </li>
+
+                  <li class="esconde-cliente esconde-rep"><a href="representantes.html" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/team.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Representantes</div>
+                        </div>
+                      </div>
+                      </a>
+                  </li>
+
+                  <li class="esconde-representante esconde-admin esconde-rep" style="display:none"><a href="equipamentos.html" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/cogwheel.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Equipamentos</div>
+                        </div>
+                      </div>
+                      </a>
+                  </li>
+
+                  <li class="esconde-cliente esconde-rep"><a href="produtos.html" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/detergent.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Produtos</div>
+                        </div>
+                      </div>
+                      </a>
+                  </li>                 
+
+                  <li class="esconde-cliente"><a href="banners.html" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/square.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Banners informativos</div>
+                        </div>
+                      </div>
+                      </a>
+                  </li>
+
+                  <li class="esconde-rep esconde-cliente"><a href="usuarios.html" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/users.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Usuários</div>
+                        </div>
+                      </div>
+                      </a>
+                  </li>
+
+
+                 
+                  <li><a href="login-screen-embedded.html" class="item-link close-panel" style="color:#000">
+                      <div class="item-content">
+                        <div class="item-media"><img src="img/icons/exit.png" style="width:60%"></div>
+                        <div class="item-inner">
+                          <div class="item-title">Sair</div>
+                        </div>
+                      </div>
+                      </a>
+                  </li>
+
+                 
+                                     
+                </ul>
+              </div>
+
+             
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      
+      
+
+
+   
+
+
+    <div class="views">
+      <div class="view view-main">
+        <div class="pages navbar-fixed">
+          <div data-page="index" class="page">
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="center">HAGNOS</div>
+                <div class="right">
+
+                <a href="minhaconta.html" class="item-link login-icon"><i class="icon icon-user-white"></i></a>
+                <a href="#" class="open-panel link icon-only"><i class="icon icon-bars"></i></a>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="page-content" style="background:url(img/fundo_inicio.jpg) no-repeat center center; background-size:cover">
+
+
+              <div class="center secao-usuario">
+              <H3 class="nomeusuario"></H3>
+              <p class="tipousuario"></p>
+              </div>
+
+
+              <div style="text-align:center">
+                  <img src="img/logo2.png" style="width:160px">
+                  </div>
+
+
+                <!-- swiper properties in data- attributes -->
+                   <div class="banner">
+                   <div  class="swiper-container swiper-init"  data-loop="true" data-autoplay="3000"  data-initialSlide="1">
+                    <div class="swiper-wrapper banners-info" id="slide">
+                    </div>
+                   </div>
+                  </div>
+             
+              <div class="content-block">  
+
+                  
+
+                   <div class="row">
+
+                     <!-- Each "cell" has col-[widht in percents] class -->
+                    <div class="col-100 esconde-cliente menugeral">
+                      <a href="#" class="menu-bloco item-link ks-pb-standalone">
+                          <div><img src="img/icons/presentation.png"></div>
+                          <span>APRESENTAÇÃO</span>
+                      </a>                      
+                    </div>
+
+                    <!-- Each "cell" has col-[widht in percents] class -->
+                    <div class="col-100 esconde-cliente menugeral">
+                      <a href="menu2.html" class="menu-bloco item-link" data-clear-previous-history="true">
+                          <div><img src="img/icons/settings.png"></div>
+                          <span>ACOMPANHAMENTO TÉCNICO</span>
+                          <div class="notif" style="width:72%">
+                            <div>
+                              <span class="notificacao-acomp"><span></span></span>
+                              <span class="notificacao-acomp2"><span></span></span>
+                            </div>
+                          </div> 
+                      </a>                      
+                    </div>
+
+                    <div class="col-50 esconde-cliente menugeral">
+                      <a href="clientes.html" class="menu-bloco item-link">
+                          <div><img src="img/icons/user.png"></div>
+                          <span>CLIENTES</span>
+                      </a>
+                    </div>
+
+                    
+                    <div class="col-50 esconde-cliente menugeral" style="display:none">
+                      
+                      <a href="higienizacoes.html" class="menu-bloco item-link">
+                          <div>
+                            <img src="img/icons/cleaner.png">
+                          </div>
+                          <span>HIGIENIZAÇÕES</span>
+
+                          <div class="notif">
+                            <div>
+                              <span class="notificacao-h"><span></span></span>
+                              <span class="notificacao-h2"><span></span></span>
+                            </div>
+                          </div>                                                                  
+                      </a> 
+                                        
+                    </div>
+
+
+                    <div class="col-50 esconde-cliente menugeral" style="display:none">
+                      <a href="cotacoes.html" class="menu-bloco item-link">
+                          <div><img src="img/icons/budget.png"> </div>
+                          <span>COTAÇOES</span>
+                          <div class="notif">
+                            <div>
+                              <span class="notificacao-c"><span></span></span>
+                              <span class="notificacao-c2"><span></span></span>
+                            </div>
+                          </div>
+                      </a>
+                    </div>
+
+                   
+
+                    <div class="col-50 esconde-cliente menugeral" style="display:none">
+                      <a href="testes.html" class="menu-bloco item-link">
+                          <div><img src="img/icons/tests.png"></div>
+                          <span>TESTES</span>
+                          <div class="notif">
+                            <div>
+                              <span class="notificacao-t"><span></span></span>
+                            </div>
+                          </div>
+                      </a>
+                    </div>
+
+                    <div class="col-50 esconde-cliente menugeral" style="display:none">
+                      <a href="acoescorretivas.html" class="menu-bloco item-link">
+                          <div><img src="img/icons/repair.png"> </div>
+                          <span>AÇÕES CORRETIVAS</span>
+                          <div class="notif">
+                            <div>
+                              <span class="notificacao-a"><span></span></span>
+                            </div>
+                          </div>
+                      </a>
+                    </div>
+
+                   
+                    <div class="col-50 esconde-rep esconde-cliente menugeral">
+                      <a href="representantes.html" class="menu-bloco item-link">
+                          <div><img src="img/icons/team.png"></div>
+                          <span>REPRESENTANTES</span>
+                      </a>
+                    </div>
+
+                    <div class="col-50  esconde-admin esconde-rep menugeral">
+                      <a href="equipamentos.html" class="menu-bloco item-link">
+                          <div><img src="img/icons/cogwheel.png"></div>
+                          <span>EQUIPAMENTOS</span>
+                      </a>
+                    </div>
+
+                    <div class="col-50 esconde-cliente menugeral">
+                      <a href="produtos.html" class="menu-bloco item-link">
+                          <div><img src="img/icons/detergent.png"></div>
+                          <span>PRODUTOS</span>
+                      </a>
+                    </div>
+
+                    <div class="col-50 esconde-rep esconde-cliente menugeral">
+                      <a href="banners.html" class="menu-bloco item-link">
+                          <div><img src="img/icons/square.png"></div>
+                          <span>BANNERS</span>
+                      </a>
+                    </div>
+
+                    <div class="col-50 esconde-rep esconde-admin menugeral">
+                      <a href="forms/nova_cotacao_form.html" class="menu-bloco item-link">
+                          <div><img src="img/icons/calculator.png"></div>
+                          <span>SOLICITAR COTAÇÃO</span>
+                      </a>
+                    </div>
+
+                    <div class="col-50 esconde-cliente esconde-rep menugeral">
+                      <a href="usuarios.html" class="menu-bloco item-link">
+                          <div><img src="img/icons/users.png"></div>
+                          <span>USUÁRIOS</span>
+                      </a>
+                    </div>
+                   
+                    <div class="col-50 menugeral">
+                      <a href="login-screen-embedded.html" class="menu-bloco item-link">
+                          <div><img src="img/icons/exit.png"></div>
+                          <span>SAIR</span>
+                      </a>
+                    </div>
+                  
+                  </div>   
+                 
+              </div>
+                
+            </div>
+
+            
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script type="text/javascript" src="js/framework7.min.js"></script>
+    <script type="text/javascript" src="js/kitchen-sink.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/plugins/parsley/dist/parsley.js"></script>
+    <script type="text/javascript" src="js/plugins/maskmoney/jquery.maskMoney.min.js"></script>
+    <script type="text/javascript" src="js/plugins/maskedinput/jquery.maskedinput-1.3.min.js"></script>
+    <script type="text/javascript" src="js/plugins/fileinput/fileinput.js"></script>
+
+
+    
+
+  </body>
+</html>

@@ -1,0 +1,142 @@
+<div data-page="form-produto" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
+<div class="center" class="nomeperfil">Produtos Cadastro</div>
+<div class="right">
+	<a href="#" class="link salva-produto">salvar</a>	
+	<a href="#" class="link deleta-prod"><i class="material-icons">delete</i></a>
+	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+ 
+
+<div class="page-content">
+
+<form id="form-produto" class="list-block inputs-list ajax-submit" data-parsley-validate="true" enctype="multipart/form-data">
+	
+	<ul>	
+	
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">Nome do produto</div>
+	<div class="item-input">
+	<input type="hidden" name="prod_id" id="prod_id"/>
+	<input type="text" name="prod_descricao" id="prod_descricao" required/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+		<div class="item-title label">Descrição</div>
+		<div class="item-input">
+			<textarea name="prod_obs" id="prod_obs" rows=10/></textarea>
+		</div>
+	</div>
+	</div>
+	</li>		
+
+
+    <li>
+    <div class="item-content">    	
+		<div class="item-inner">
+		  	<div class="item-title label">Boletim Técnico</div>		
+				   
+		    <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="padding-top:15px">
+			    <div data-trigger="fileinput">
+			    	<i class="fileinput-exists"></i> 
+			    	<span class="fileinput-filename"></span>
+			   	</div>
+			    <span class="input-group-addon btn btn-default btn-file">
+				    <span class="fileinput-new button button-fill color-teal" style="padding-top:6px"><i class="material-icons">attach_file</i></span>
+				    <input type="file" name="boletim">				    
+				</span>
+			    <a href="#" class="button button-fill color-red fileinput-exists" data-dismiss="fileinput">Remover</a>
+		    </div>		    
+		</div>			
+	</div>
+
+
+	<div class="item-content">
+		<div class="item-inner">
+			<div class="row">
+				
+					<div class="row">
+
+						<div class="col-20" style="">
+						<span class="input-group-addon ler-boletim" style="display:none; width:auto!important;margin-right:6px!important">
+						<a href="#" class="link-boletim button button-fill color-teal external" download ><i class="icon material-icons" style="color:#fff!important">remove_red_eye</i></a>
+						</span>
+						</div>
+
+						<div class="col-20">
+						<span class="input-group-addon email-boletim" style="display:none; width:auto!important">
+						<a href="" class="link email-boletim button button-fill color-teal"><i class="icon material-icons" style="color:#fff!important">email</i></a>
+						</span>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+    </li>
+
+    <li>
+    <div class="item-content">
+    	
+		<div class="item-inner">
+		  	<div class="item-title label">FISPQ</div>		
+				   
+		    <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="padding-top:15px">
+			    <div data-trigger="fileinput">
+			    	<i class="fileinput-exists"></i> 
+			    	<span class="fileinput-filename"></span>
+			   	</div>
+			    <span class="input-group-addon btn btn-default btn-file">
+				    <span class="fileinput-new button button-fill color-teal" style="padding-top:6px"><i class="material-icons">attach_file</i></span>
+				    <input type="file" name="fispq">				    
+				</span>
+			    <a href="#" class="button button-fill color-red fileinput-exists" data-dismiss="fileinput">Remover</a>
+		    </div>		    
+		</div>			
+	</div>
+	<div class="item-content">
+		<div class="item-inner">
+			<div class="row">
+					<div class="row">
+
+						<div class="col-20" style="">
+						<span class="input-group-addon ler-fispq" style="display:none; width:auto!important;margin-right:6px!important">
+						<a href="#" class="link-fispq button button-fill color-teal external" download ><i class="icon material-icons" style="color:#fff!important">remove_red_eye</i></a>
+						</span>
+						</div>
+
+						<div class="col-20">
+						<span class="input-group-addon email-fispq" style="display:none; width:auto!important">
+						<a href="" class="email-fispq button button-fill color-teal"><i class="icon material-icons" style="color:#fff!important">email</i></a>
+						</span>
+						</div>
+					</div>
+			</div>
+		</div>
+	</div>
+    </li>
+
+
+
+
+
+
+	
+
+
+	</ul>
+
+</form>
+
+</div>

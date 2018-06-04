@@ -1,0 +1,84 @@
+<div data-page="filtro-acoescorretivas" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
+<div class="center">Filtro ações corretivas</div>
+<div class="right">
+<a href="#" class="button link filtra-acoescorretivas">Filtrar</a>
+<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+
+<div class="page-content">	
+
+	<form action="acoescorretivas.html" method="GET" id="form-filtro-acoescorretivas" class="store-data list-block inputs-list ajax-submit">
+
+	<div class="content-block-title">Situação</div>
+    
+    <ul class="ul-filtro">
+		<li>
+		    <label class="label-checkbox item-content">
+		    <input type="checkbox" name="situacao_search" class="situacao_search" value="PENDENTE" />
+		    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+		    <div class="item-inner">
+		        <div class="item-title">PENDENTE</div>
+		    </div>
+		    </label>
+		</li>
+		<li>
+		    <label class="label-checkbox item-content">
+		    <input type="checkbox" name="situacao_search" class="situacao_search" value="FINALIZADA"/>
+		    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+		    <div class="item-inner">
+		        <div class="item-title">FINALIZADA</div>
+		    </div>
+		    </label>
+		</li>   
+	</ul>
+
+	<ul>
+
+			<li>
+				<div class="item-content">
+				<div class="item-inner">
+				<div class="item-title label">Cliente</div>
+				<div class="item-input">
+				<input type="text" name="cliente_search" id="cliente_search"/>
+				</div>
+				</div>
+				</div>
+			</li>
+
+			<li>
+				<div class="item-content">
+				<div class="item-inner">
+				<div class="item-title label">Representante</div>
+				<div class="item-input">
+				<input type="text" name="representante_search" id="representante_search"/>
+				</div>
+				</div>
+				</div>
+			</li>
+
+			<li>
+				<div class="item-content">
+				<div class="item-inner">
+				<div class="item-title label">Período lançamento</div>
+				<div class="item-input">
+				<input type="text" name="data_search" id="data_search" readonly="readonly" placeholder="Selecione período"/>
+				</div>
+				</div>
+				</div>
+			</li>
+
+			   
+    </ul>
+	</form>
+</div>
+
+
+
+</div>
+</div>

@@ -1,0 +1,92 @@
+<div data-page="form-cotacao" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
+<div class="center" class="nomeperfil">Solicitação de cotação</div>
+<div class="right">
+	<a href="#" id="salva-cotacao" class="button link salva-cotacao disabled">salvar</a>
+	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+ 
+
+<div class="page-content">
+
+
+<div class="content-block">
+<h3 class="e-cliente"></h3>
+</div>
+
+
+
+<form id="form-cotacao" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+	
+	<ul>
+		<li>
+		<div class="item-content">
+			<div class="item-inner" style="width:60%">
+				<div class="item-title label">Produto a ser cotado</div>
+				<div class="item-input">
+					<select name='produto-cot' id='produto-cot' class='prod'>
+						<option value="">Selecione um produto</option>
+					</select>
+					<input type="hidden" name="codcliente" value="">
+					<input type="hidden" name="nomecliente" value="">
+					<input type="hidden" name="data-entrega-cot">
+					<input type="hidden" name="condicao-cot">
+				</div>
+			</div>
+			<div class="item-inner" style="width:20%">
+				<div class="item-title label">Qtde</div>
+				<div class="item-input">
+					<input type="text" name="qtd-cot" id="qtd-cot" required style="float:right"/>
+				</div>
+			</div>
+			<div class="item-inner" style="width:20%">
+				<div class="item-input">
+				<button type='button' class='button button-fill color-teal addprodutocotacao disabled' style="margin-top:16px;float:right"><i class='material-icons' style='margin-top:5px'>arrow_downward</i></button>
+				</div>
+			</div>
+		</div>
+		</li>
+	</ul>
+
+	<ul class="cotacoes-rows"></ul>
+
+	<ul style="margin-top:60px">
+
+		<li>
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Frete</div>
+		<div class="item-input">
+		<select name="frete-cot">
+			<option value="CIF" selected=selected>CIF</option>
+			<option value="FOB">FOB</option>
+		</select>
+		</div>
+		</div>
+		</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Observações</div>
+				<div class="item-input">
+					<textarea class="resizable" name="info-cot" id="info-cot" rows=8></textarea>
+				</div>
+			</div>
+		</div>
+		</li>
+	</ul>
+
+
+
+</form>
+
+
+
+</div>

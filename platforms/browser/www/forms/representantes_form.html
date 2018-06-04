@@ -1,0 +1,188 @@
+
+<div data-page="form-representante" class="page">
+	<div class="navbar">
+	<div class="navbar-inner">
+	<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
+	<div class="center" class="nomeperfil">Cadastro</div>
+	<div class="right">
+		<a href="#" class="link salva-representante">salvar</a>	
+		<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+	</div>
+	</div>
+</div>
+
+ 
+
+<div class="page-content">
+
+
+<div class="content-block-title">Cadastro de Representantes</div>
+
+
+
+<form id="form-representante" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+	
+	<ul>
+
+	
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">Nome</div>
+	<div class="item-input">
+	<input type="hidden" name="rep_id" id="rep_id"/>
+	<input type="text" name="rep_nome" id="rep_nome" required/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">Nome Fantasia</div>
+	<div class="item-input">
+	<input type="text" name="rep_fantasia" id="rep_fantasia" required/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">CNPJ</div>
+	<div class="item-input">
+	<input type="text" name="rep_cnpj" id="rep_cnpj"/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">CPF</div>
+	<div class="item-input">
+	<input type="text" name="rep_cpf" id="rep_cpf"/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">Inscrição estadual</div>
+	<div class="item-input">
+	<input type="text" name="rep_inscricao" id="rep_inscricao" autocomplete="off"/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	
+
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">Área de atuação</div>
+	<div class="item-input">
+	<input type="text" name="rep_segmento" id="rep_segmento" required/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">CEP</div>
+	<div class="item-input">
+	<input type="text" name="rep_cep" id="rep_cep"/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">Estado</div>
+	<div class="item-input">
+	<select name="rep_estado" id="rep_estado">
+	<option value=""></option>
+	</select>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">Cidade</div>
+	<div class="item-input">
+	<select name="rep_cidade" id="rep_cidade">		
+	</select>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label" required>Bairro</div>
+	<div class="item-input">
+	<input type="text" name="rep_bairro"/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">Endereço/Nro</div>
+	<div class="item-input">
+	<input type="text" name="rep_endereco" required/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+		<div class="item-inner">
+			<div class="item-title label" required>Telefone</div>
+			<div class="item-input">
+				<input type="text" name="rep_telefone" required autocomplete="off"/>
+			</div>
+		</div>
+	</div>
+	</li>	
+
+	
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label" required>E-mail</div>
+	<div class="item-input">
+	<input type="email" name="rep_email" id="rep_email"/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	
+
+
+	</ul>
+
+</form>
+
+</div>

@@ -1,0 +1,258 @@
+<div data-page="form-cliente-lancamento" class="page toolbar-fixed">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="left">
+				<a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a>
+				<a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
+			</div>
+			<div class="center lnc" style="font-size:18px">Novo acompanhamento técnico</div>
+			<div class="right">
+				<a href="#" class="button link salva-lancamento disabled">salvar</a>
+				<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+			</div>
+		</div>
+	</div>
+
+	<div class="toolbar toolbar-bottom" style="display:none">
+		<div class="toolbar-inner">
+			<a href="#" class="link salva-cliente">Atualizar Cliente</a>
+		</div>
+	</div>
+
+	<div class="toolbar tabbar tabbar-scrollable">
+		<div class="toolbar-inner">
+			<a href="#tab1l" class="active tab-link">CLIENTE</a>
+			<a href="#tab3l" class="tab-link tb1 disabled">EQUIPAMENTOS</a>
+			<a href="#tab4l" class="tab-link tb2 disabled">DESCRIÇÃO DA VISITA</a>
+			<a href="#tab2l" class="tab-link tb3 disabled">SITUAÇÃO</a>
+			<a href="#tab5l" class="tab-link tb4 disabled">PREVISÃO DE VENDA</a>
+		</div>
+	</div>
+
+	
+		<div class="tabs-animated-wrap ">
+			<div class="tabs">
+				
+				<div id="tab1l" class="page-content tab active ">
+						
+						<form id="form-lancamento-1" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+		
+						<ul>
+
+							<li>
+							<div class="item-content">
+							<div class="item-inner">
+							<div class="item-title label">#ID Cliente</div>
+							<div class="item-input">
+							<input type="text" name="cliente-lanc-id" id="cliente-lanc-id" readonly>
+							</div>
+							</div>
+							</div>
+							</li>
+
+							<li>
+							<div class="item-content">
+							<div class="item-inner">
+							<div class="item-title label">Nome do cliente</div>
+							<div class="item-input">
+							<input type="text" name="cliente-lanc-nome" id="cliente-lanc-nome" readonly>
+							</div>
+							</div>
+							</div>
+							</li>
+
+							<li>
+							<div class="item-content">
+							<div class="item-inner">
+							<div class="item-title label">Contato</div>
+							<div class="item-input">
+							<input type="text" name="cliente-contato" id="cliente-contato" readonly>
+							</div>
+							</div>
+							</div>
+							</li>
+
+							<li>
+							<div class="item-content">
+							<div class="item-inner">
+							<div class="item-title label">Telefone</div>
+							<div class="item-input">
+							<input type="text" name="cliente-telefone" id="cliente-telefone" readonly>
+							</div>
+							</div>
+							</div>
+							</li>
+
+							<li>
+							<div class="item-content">
+							<div class="item-inner">
+							<div class="item-title label">Representante</div>
+							<div class="item-input">
+							<input type="text" name="l-nomerep" id="l-nomerep" readonly>
+							<input type="hidden" name="l-codrep" id="l-codrep" value="">							
+							</div>
+							</div>
+							</div>
+							</li>
+
+
+						</ul>
+
+						<a href="#" class="bt-tb1 button button-fill color-teal">Avançar</a>
+
+						</form>
+
+						
+				</div>
+
+				<div id="tab2l" class="page-content tab tab-status">
+					<div class="content-block" style="padding:0px">
+						
+						<H3 class="nCliente"></H3>
+
+						<form id="form-lancamento-2" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+
+							<ul>
+								<li>
+									<div class="item-content">
+									<div class="item-inner">
+									<div class="item-title label">Situação</div>
+									<div class="item-input">
+									<select name="status_padrao" id="status_padrao">
+									<option value="ativo">ATIVO</option>
+									<option value="inativo">INATIVO</option>
+									<option value="prospectado">PROSPECTADO</option>									
+									</select>
+									</div>
+									</div>
+									</div>
+								</li>
+
+								<li>
+									<div class="item-content">
+									<div class="item-inner">
+									<div class="item-title label">Interação</div>
+									<div class="item-input">
+									<select name="status_interativo" id="status_interativo" required>
+									<option value="AÇÃO CORRETIVA" selected=selected>AÇÃO CORRETIVA</option>
+									<option value="COTAÇÃO">COTAÇÃO</option>
+									<option value="HIGIENIZAÇÃO">HIGIENIZAÇÃO</option>
+									<option value="TESTE">TESTE</option>
+									<option value="SEM INTERAÇÃO">SEM INTERAÇÃO</option>
+									</select>
+									</div>
+									</div>
+									</div>
+								</li>
+							</ul>
+
+							<a href="#" class="bt-tb2 button button-fill color-teal">Avançar</a>
+
+						</form>
+
+					</div>
+				</div>
+
+				<div id="tab3l" class="page-content tab tab-equips">
+					<div class="content-block" style="padding:0px">	
+
+						<H3 class="nCliente">CONCENTRAÇÕES ATUAIS</H3>
+						
+						<form id="form-lancamento-3" class="list-block inputs-list ajax-submit" data-parsley-validate="true" enctype="multipart/form-data">							
+
+							<div id="resultado"></div>														
+
+							<div class="list-block" id="lista-equip2">
+							</div>										
+
+							<a href="#" class="bt-tb3 button button-fill color-teal">Avançar</a>
+
+						</form>
+
+					</div>
+				</div>
+
+				<div id="tab4l" class="page-content tab tab-descricao-visita">				
+					<div class="content-block" style="padding:0px">
+						
+						<form id="form-lancamento-4" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+
+						<ul>
+							<li class="align-top">
+							
+							<div class="item-content">
+							<div class="item-media" style="display:none"><i class="icon material-icons">info</i></div>
+							<div class="item-inner">
+							<div class="item-title label"></div>
+							<div class="item-input">
+							<textarea class="resizable" name="lancamento-descricao" id="lancamento-descricao" placeholder="Descreva aqui informações relativas à esta visita" rows=20 style="height:250px;overflow-y: scroll;"></textarea>
+							</div>
+							</div>
+							</div>
+
+							</li>
+
+							<li>
+								<div class="item-content">
+									<div class="item-inner">
+									<div class="item-title label">Adicionar um produto</div>
+									<div class="item-input">
+									<select name="prod-lanc" id="prod-lanc"></select>
+									</div>
+									</div>
+								</div>
+							</li>
+
+							<li>
+								<div class="item-content">
+									<div class="item-inner">
+									<div class="item-title label">Finalidade</div>
+									<div class="item-input">
+									<select name="finalidade-lanc" id="finalidade-lanc">
+										<option value="">Selecione a finalidade</option>
+										<option value="NEGOCIO">NEGÓCIO</option>
+										<option value="OPORTUNIDADE">OPORTUNIDADE</option>
+									</select>
+									</div>
+									</div>
+								</div>
+							</li>
+
+						</ul>	
+
+						<a href="#" class="bt-tb4 button button-fill color-teal">Avançar</a>					
+
+					</form>
+
+					</div>
+				</div>
+
+				<div id="tab5l" class="page-content tab tab-previsao-venda">
+					<div class="content-block previsaovenda" style="padding:0px">
+						<div class="card data-table">
+						<div class="card-content">
+						<table style="white-space:nowrap;">
+							<thead>
+							<tr>
+							<th class="label-cell">PRODUTO</th>
+							<th class="label-cell" style="text-align:center">MÉDIA CONSUMO MENSAL</th>
+							<th class="label-cell" style="text-align:center">DATA ÚLTIMA COMPRA</th>	
+							<th class="label-cell" style="text-align:center">PREVISÃO DE VENDA (DIAS)</th>
+							<th class="label-cell" style="text-align:center">QTDE PRODUTO</th>															
+							<th class="label-cell" style="text-align:center">CONFIRMAÇÃO DE VENDA</th>
+							</tr>
+							</thead>
+							<tbody id="previsaovenda">										
+							</tbody>
+						</table>
+						</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+
+			
+
+		</div>
+</div>
