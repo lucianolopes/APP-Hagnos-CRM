@@ -16,6 +16,7 @@
     <allow-intent href="geo:*"/>
     <allow-intent href="market:*"/>
     <access origin="*"/>
+    <allow-navigation href="*" />
 	</platform>
     <preference name="phonegap-version" value="cli-6.5.0" />
 <preference name="xwalkMultipleApk" value="false" />
