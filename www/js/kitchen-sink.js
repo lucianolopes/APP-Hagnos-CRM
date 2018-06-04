@@ -995,8 +995,9 @@ $$('#submit-login').click(function() {
     $$('#submit-login').html('Fazendo login...');
     var fuid = $$('#usuario').val();
     var fpass = $$('#senha').val();
-
+myApp.alert(fuid);
     $$.ajax({
+
         url: baseurl+'login.php',
         data: {
             "uid": fuid,
