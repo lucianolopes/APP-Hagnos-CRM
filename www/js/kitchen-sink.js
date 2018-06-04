@@ -19,7 +19,7 @@ var mainView = myApp.addView('.view-main', {
 //var rightView = myApp.addView('.view-right', {
 //});
 
-var baseurl = "https://hagnossq.com.br/app/";
+var baseurl = "https://www.hagnossq.com.br/app/";
 
 
 
@@ -1033,7 +1033,7 @@ $$('#submit-login').click(function() {
                 hagnosUsuarioNomeTipo: returnedData[0].nometipo,
                 hagnosUsuarioStatus: returnedData[0].status
                 };
-                myApp.alert(returnedData[0].email);
+
                 mainView.router.load({
                     url: 'index.html',
                     ignoreCache: true
