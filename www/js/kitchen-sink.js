@@ -120,6 +120,10 @@ var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
 if(!usuarioHagnos){
   mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true })          
 } else {
+
+    rep = usuarioHagnos.hagnosUsuarioIdRep;
+    tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+
     var rp = "";
     if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
         
@@ -4723,11 +4727,10 @@ $$('.popover a').on('click', function () {
 myApp.onPageInit('clientes', function (page) {
     
     // pega o ID do representante para filtrar somente os clientes dele
-    if(usuarioHagnos){
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    var rep = usuarioHagnos.hagnosUsuarioIdRep;
-    var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
-    }
+
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+    //var rep = usuarioHagnos.hagnosUsuarioIdRep;
+    //var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
 
     //TOTALIZA CLIENTES
     //$$.ajax({
