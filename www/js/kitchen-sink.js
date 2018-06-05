@@ -589,7 +589,74 @@ $$(document).on('ajaxComplete', function (e) {
 myApp.onPageInit('index', function (page) {
 
    
-   
+    // verifica se existem dados do usuario logado. Se "sim", carrega os dados (nome, usuario, senha, tipo)
+
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+
+    if(!usuarioHagnos){
+    mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true });
+    
+  } else {
+    $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
+        $$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
+
+        $$('.swiperTab').on('show', function(){
+            $$(this).find('.swiper-container')[0].swiper.update();
+        });
+        
+        if (usuarioHagnos.hagnosUsuarioTipo == 2){
+            $$(".esconde-rep").hide();
+        }
+        if (usuarioHagnos.hagnosUsuarioTipo == 3){
+            $$(".esconde-cliente").hide();   
+        }
+
+        $$('.ks-pb-standalone').on('click', function () {
+            photoBrowserStandalone.open();
+        });
+
+        var rp = "";
+        if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
+            
+
+            if (usuarioHagnos.hagnosUsuarioTipo == 1){
+            $$(".esconde-admin").hide(); 
+            }
+
+            if (usuarioHagnos.hagnosUsuarioTipo == 2){
+            $$(".esconde-rep").hide(); 
+            var rp = usuarioHagnos.hagnosUsuarioIdRep;
+            }        
+
+              //VEFIFICA TOTAIS DE ACOMPANHAMENTO
+            $$.ajax({
+                url: baseurl+'loads/verificaTotaisAcompanhamento.php?rep='+rp, 
+                dataType: 'json',
+                success: function(returnedData) {
+                    var aTotalAc = returnedData[0].aTotalAc;
+                    var aTotalAc2 = returnedData[0].aTotalAc2;
+                    if (aTotalAc > 0){
+                       $$(".notificacao-acomp").show();
+                       $$(".notificacao-acomp span,  .notificacao-span-acomp").html(returnedData[0].aTotalAc); 
+                    }
+                    if (aTotalAc2 > 0){
+                       $$(".notificacao-acomp2").show();
+                       $$(".notificacao-acomp2 span,  .notificacao-span-acomp2").html(returnedData[0].aTotalAc2); 
+                    }
+                    
+                }
+            });
+        } 
+        
+        // CARREGA OS BANNERS DA TELA INICIAL
+        $$.ajax({
+            url: baseurl+'loads/loadBanners.php?tipoUsuario='+usuarioHagnos.hagnosUsuarioTipo,
+            type: "GET",
+            success: function (data) {           
+                $$(".banners-info").html(data);
+            }
+        });
+  }
     
 });
 
