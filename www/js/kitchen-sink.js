@@ -728,8 +728,8 @@ myApp.onPageInit('menu2', function (page) {
    // $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
     //$$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
 
-    $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
-    $$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
+    $$(".nomeusuario").html(usuarioNome); 
+    $$(".tipousuario").html(usuarioNomeTipo); 
 
     $$('.swiperTab').on('show', function(){
         $$(this).find('.swiper-container')[0].swiper.update();
@@ -2151,14 +2151,12 @@ myApp.onPageInit('previsaovendas', function (page){
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
 
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    var cliente = "";
-    if (usuarioHagnos.hagnosUsuarioTipo == 3){
-        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioHagnos.hagnosusuarioNome;
+    if (tipousuario == 3){
+        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioNome;
     }
-    if (usuarioHagnos.hagnosUsuarioTipo == 2){
-        var repres = usuarioHagnos.hagnosUsuarioIdRep;
+    if (tipousuario == 2){
+        var repres = rep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
     
