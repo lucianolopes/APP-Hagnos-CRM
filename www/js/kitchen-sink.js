@@ -614,8 +614,13 @@ myApp.onPageInit('index', function (page) {
             repres = usuarioHagnos.hagnosUsuarioIdRep;
         }
 
-        $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
-        $$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
+        usuarioNome = usuarioHagnos.hagnosUsuarioNome;
+        usuarioNomeTipo = usuarioHagnos.hagnosUsuarioNomeTipo;
+       
+        $$(".nomeusuario").html(usuarioNome); 
+        $$(".tipousuario").html(usuarioNomeTipo); 
+
+
 
         $$('.swiperTab').on('show', function(){
             $$(this).find('.swiper-container')[0].swiper.update();
@@ -719,9 +724,12 @@ myApp.onPageInit('menu2', function (page) {
     //mainView.router.load({url: 'menu2.html', ignoreCache: true, reload: true});
   
 
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
-    $$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+   // $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
+    //$$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
+
+    $$(".nomeusuario").html(usuarioNome); 
+    $$(".tipousuario").html(usuarioNomeTipo); 
 
     $$('.swiperTab').on('show', function(){
         $$(this).find('.swiper-container')[0].swiper.update();
