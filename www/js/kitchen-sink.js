@@ -3,7 +3,7 @@ var myApp = new Framework7({
     // Enable Material theme
     material: true,
     uniqueHistory:true,
-    uniqueHistoryIgnoreGetParameters: true,
+    //uniqueHistoryIgnoreGetParameters: true,
 });
 
 //myApp.params.cacheIgnore = ['form-cliente'];
@@ -593,6 +593,10 @@ myApp.onPageInit('index', function (page) {
 
     var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
 
+    if(!usuarioHagnos){
+    mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true });
+    
+  } else {
     $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
         $$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
 
@@ -652,7 +656,7 @@ myApp.onPageInit('index', function (page) {
                 $$(".banners-info").html(data);
             }
         });
- 
+  }
     
 });
 
