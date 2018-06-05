@@ -594,7 +594,7 @@ myApp.onPageInit('index', function (page) {
     var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
 
     if(!usuarioHagnos){
-    mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true })
+    mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true });
     
   } else {
     $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
@@ -703,135 +703,142 @@ myApp.onPageInit('menu2', function (page) {
   
 
     var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
-    $$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
 
-    $$('.swiperTab').on('show', function(){
-        $$(this).find('.swiper-container')[0].swiper.update();
-    });
-    
-    if (usuarioHagnos.hagnosUsuarioTipo == 2){
-        $$(".esconde-rep").hide();
-    }
-    if (usuarioHagnos.hagnosUsuarioTipo == 3){
-        $$(".esconde-cliente").hide();   
-    }
-
-    var rp = "";
-    if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
+    if(!usuarioHagnos){
+        mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true });
         
+    } else {
 
-        if (usuarioHagnos.hagnosUsuarioTipo == 1){
-        $$(".esconde-admin").hide(); 
-        }
+        $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
+        $$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
 
+        $$('.swiperTab').on('show', function(){
+            $$(this).find('.swiper-container')[0].swiper.update();
+        });
+        
         if (usuarioHagnos.hagnosUsuarioTipo == 2){
-        $$(".esconde-rep").hide(); 
-        var rp = usuarioHagnos.hagnosUsuarioIdRep;
+            $$(".esconde-rep").hide();
         }
-        
+        if (usuarioHagnos.hagnosUsuarioTipo == 3){
+            $$(".esconde-cliente").hide();   
+        }
 
-        
-        //VEFIFICA SE EXISTEM COTAÇÕES NÃAO LIDAS
-        $$.ajax({
-            url: baseurl+'loads/verificaNovasCotacoes.php?rep='+rp, 
-            dataType: 'json',
-            success: function(returnedData) {
-                var cotLidas = returnedData[0].cotacoesLidas;
-                if (cotLidas > 0){
-                   $$(".notificacao-c, .notificacao-span").show();
-                   $$(".notificacao-c span,  .notificacao-span").html(returnedData[0].cotacoesLidas); 
-                }
-                
+        var rp = "";
+        if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
+            
+
+            if (usuarioHagnos.hagnosUsuarioTipo == 1){
+            $$(".esconde-admin").hide(); 
             }
-        });
 
-        //VEFIFICA SE EXISTEM HIGIENIZAÇÕES AGENDADAS
-        $$.ajax({
-            url: baseurl+'loads/verificaNovasCotacoes.php?f=enviadas&rep='+rp, 
-            dataType: 'json',
-            success: function(returnedData) {
-                var hLidas2 = returnedData[0].cotacoesEnviadas;
-                if (hLidas2 > 0){
-                   $$(".notificacao-c2").show();
-                   $$(".notificacao-c2 span,  .notificacao-span-c").html(returnedData[0].cotacoesEnviadas); 
-                }
-                
+            if (usuarioHagnos.hagnosUsuarioTipo == 2){
+            $$(".esconde-rep").hide(); 
+            var rp = usuarioHagnos.hagnosUsuarioIdRep;
             }
-        });
+            
 
-      
-
-        //VEFIFICA SE EXISTEM HIGIENIZAÇÕES PENDENTES
-        $$.ajax({
-            url: baseurl+'loads/verificaNovasHigienizacoes.php?f=pendentes&rep='+rp, 
-            dataType: 'json',
-            success: function(returnedData) {
-                var hLidas = returnedData[0].hLidas;
-                if (hLidas > 0){
-                   $$(".notificacao-h").show();
-                   $$(".notificacao-h span,  .notificacao-span-h").html(returnedData[0].hLidas); 
+            
+            //VEFIFICA SE EXISTEM COTAÇÕES NÃAO LIDAS
+            $$.ajax({
+                url: baseurl+'loads/verificaNovasCotacoes.php?rep='+rp, 
+                dataType: 'json',
+                success: function(returnedData) {
+                    var cotLidas = returnedData[0].cotacoesLidas;
+                    if (cotLidas > 0){
+                       $$(".notificacao-c, .notificacao-span").show();
+                       $$(".notificacao-c span,  .notificacao-span").html(returnedData[0].cotacoesLidas); 
+                    }
+                    
                 }
-                
-            }
-        });
+            });
 
-        //VEFIFICA SE EXISTEM HIGIENIZAÇÕES AGENDADAS
-        $$.ajax({
-            url: baseurl+'loads/verificaNovasHigienizacoes.php?f=agendadas&rep='+rp, 
-            dataType: 'json',
-            success: function(returnedData) {
-                var hLidas2 = returnedData[0].hLidas2;
-                if (hLidas2 > 0){
-                   $$(".notificacao-h2").show();
-                   $$(".notificacao-h2 span,  .notificacao-span-h").html(returnedData[0].hLidas2); 
+            //VEFIFICA SE EXISTEM HIGIENIZAÇÕES AGENDADAS
+            $$.ajax({
+                url: baseurl+'loads/verificaNovasCotacoes.php?f=enviadas&rep='+rp, 
+                dataType: 'json',
+                success: function(returnedData) {
+                    var hLidas2 = returnedData[0].cotacoesEnviadas;
+                    if (hLidas2 > 0){
+                       $$(".notificacao-c2").show();
+                       $$(".notificacao-c2 span,  .notificacao-span-c").html(returnedData[0].cotacoesEnviadas); 
+                    }
+                    
                 }
-                
-            }
-        });
+            });
 
-        //VEFIFICA SE EXISTEM ACOES CORRETIVAS PENDENTES
-        $$.ajax({
-            url: baseurl+'loads/verificaNovasAcoes.php?f=pendente&rep='+rp, 
-            dataType: 'json',
-            success: function(returnedData) {
-                var aPend = returnedData[0].aPend;
-                if (aPend > 0){
-                   $$(".notificacao-a").show();
-                   $$(".notificacao-a span,  .notificacao-span-a").html(returnedData[0].aPend); 
-                }
-                
-            }
-        });
+          
 
-        //VEFIFICA SE EXISTEM TESTES PENDENTES
-        $$.ajax({
-            url: baseurl+'loads/verificaNovosTestes.php?f=pendente&rep='+rp, 
-            dataType: 'json',
-            success: function(returnedData) {
-                var tPend = returnedData[0].tPend;
-                if (tPend > 0){
-                   $$(".notificacao-t").show();
-                   $$(".notificacao-t span,  .notificacao-span-t").html(returnedData[0].tPend); 
+            //VEFIFICA SE EXISTEM HIGIENIZAÇÕES PENDENTES
+            $$.ajax({
+                url: baseurl+'loads/verificaNovasHigienizacoes.php?f=pendentes&rep='+rp, 
+                dataType: 'json',
+                success: function(returnedData) {
+                    var hLidas = returnedData[0].hLidas;
+                    if (hLidas > 0){
+                       $$(".notificacao-h").show();
+                       $$(".notificacao-h span,  .notificacao-span-h").html(returnedData[0].hLidas); 
+                    }
+                    
                 }
-                
-            }
-        });
+            });
 
-        //VEFIFICA NOTIFICAÇÕES NÃO LIDAS
-        $$.ajax({
-            url: baseurl+'loads/verificaNotificacoes.php?rep='+rp+'&tipousuario='+usuarioHagnos.hagnosUsuarioTipo, 
-            dataType: 'json',
-            success: function(returnedData) {
-                var notNaoLidas = returnedData[0].notificacoesNaoLidas;
-                if (notNaoLidas > 0){
-                   $$(".notificacao-comm").show();
-                   $$(".notificacao-comm span").html(returnedData[0].notificacoesNaoLidas); 
+            //VEFIFICA SE EXISTEM HIGIENIZAÇÕES AGENDADAS
+            $$.ajax({
+                url: baseurl+'loads/verificaNovasHigienizacoes.php?f=agendadas&rep='+rp, 
+                dataType: 'json',
+                success: function(returnedData) {
+                    var hLidas2 = returnedData[0].hLidas2;
+                    if (hLidas2 > 0){
+                       $$(".notificacao-h2").show();
+                       $$(".notificacao-h2 span,  .notificacao-span-h").html(returnedData[0].hLidas2); 
+                    }
+                    
                 }
-                
-            }
-        });
-    } 
+            });
+
+            //VEFIFICA SE EXISTEM ACOES CORRETIVAS PENDENTES
+            $$.ajax({
+                url: baseurl+'loads/verificaNovasAcoes.php?f=pendente&rep='+rp, 
+                dataType: 'json',
+                success: function(returnedData) {
+                    var aPend = returnedData[0].aPend;
+                    if (aPend > 0){
+                       $$(".notificacao-a").show();
+                       $$(".notificacao-a span,  .notificacao-span-a").html(returnedData[0].aPend); 
+                    }
+                    
+                }
+            });
+
+            //VEFIFICA SE EXISTEM TESTES PENDENTES
+            $$.ajax({
+                url: baseurl+'loads/verificaNovosTestes.php?f=pendente&rep='+rp, 
+                dataType: 'json',
+                success: function(returnedData) {
+                    var tPend = returnedData[0].tPend;
+                    if (tPend > 0){
+                       $$(".notificacao-t").show();
+                       $$(".notificacao-t span,  .notificacao-span-t").html(returnedData[0].tPend); 
+                    }
+                    
+                }
+            });
+
+            //VEFIFICA NOTIFICAÇÕES NÃO LIDAS
+            $$.ajax({
+                url: baseurl+'loads/verificaNotificacoes.php?rep='+rp+'&tipousuario='+usuarioHagnos.hagnosUsuarioTipo, 
+                dataType: 'json',
+                success: function(returnedData) {
+                    var notNaoLidas = returnedData[0].notificacoesNaoLidas;
+                    if (notNaoLidas > 0){
+                       $$(".notificacao-comm").show();
+                       $$(".notificacao-comm span").html(returnedData[0].notificacoesNaoLidas); 
+                    }
+                    
+                }
+            });
+        } 
+    }
     
     
     
@@ -1033,7 +1040,7 @@ $$('#submit-login').click(function() {
                 hagnosUsuarioNomeTipo: returnedData[0].nometipo,
                 hagnosUsuarioStatus: returnedData[0].status
                 };
-                
+
                 mainView.router.load({
                     url: 'index.html',
                     ignoreCache: true
