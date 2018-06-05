@@ -727,7 +727,7 @@ myApp.onPageInit('menu2', function (page) {
     //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
    // $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
     //$$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
-
+    myApp.alert(usuarioNome);
     $$(".nomeusuario").html(usuarioNome); 
     $$(".tipousuario").html(usuarioNomeTipo); 
 
@@ -735,24 +735,25 @@ myApp.onPageInit('menu2', function (page) {
         $$(this).find('.swiper-container')[0].swiper.update();
     });
     
-    if (usuarioHagnos.hagnosUsuarioTipo == 2){
+    if (tipousuario == 2){
         $$(".esconde-rep").hide();
     }
-    if (usuarioHagnos.hagnosUsuarioTipo == 3){
+    if (tipousuario == 3){
         $$(".esconde-cliente").hide();   
     }
 
     var rp = "";
-    if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
+    if (tipousuario == 1 || tipousuario == 2){
         
 
-        if (usuarioHagnos.hagnosUsuarioTipo == 1){
+        if (tipousuario == 1){
         $$(".esconde-admin").hide(); 
         }
 
-        if (usuarioHagnos.hagnosUsuarioTipo == 2){
+        if (tipousuario == 2){
         $$(".esconde-rep").hide(); 
-        var rp = usuarioHagnos.hagnosUsuarioIdRep;
+        //var rp = usuarioHagnos.hagnosUsuarioIdRep;
+        var rp = rep;
         }
         
 
