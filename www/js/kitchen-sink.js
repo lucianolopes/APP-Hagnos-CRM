@@ -2104,14 +2104,12 @@ myApp.onPageInit('cotacoes', function (page){
     var periodo_lancamento = page.query.periodo_lancamento;
     var periodo_entrega = page.query.periodo_entrega; 
 
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    var cliente = "";
-    if (usuarioHagnos.hagnosUsuarioTipo == 3){
-        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioHagnos.hagnosusuarioNome;
+    if (tipousuario == 3){
+        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioNome;
     }
-    if (usuarioHagnos.hagnosUsuarioTipo == 2){
-        var repres = usuarioHagnos.hagnosUsuarioIdRep;
+    if (tipousuario == 2){
+        var repres = rep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
     
@@ -2214,14 +2212,12 @@ myApp.onPageInit('higienizacoes', function (page){
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
 
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    var cliente = "";
-    if (usuarioHagnos.hagnosUsuarioTipo == 3){
-        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioHagnos.hagnosusuarioNome;
+    if (tipousuario == 3){
+        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioNome;
     }
-    if (usuarioHagnos.hagnosUsuarioTipo == 2){
-        var repres = usuarioHagnos.hagnosUsuarioIdRep;
+    if (tipousuario == 2){
+        var repres = rep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
     
@@ -2269,14 +2265,13 @@ myApp.onPageInit('acoescorretivas', function (page){
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
 
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    var cliente = "";
-    if (usuarioHagnos.hagnosUsuarioTipo == 3){
-        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioHagnos.hagnosusuarioNome;
+    
+    if (tipousuario == 3){
+        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioNome;
     }
-    if (usuarioHagnos.hagnosUsuarioTipo == 2){
-        var repres = usuarioHagnos.hagnosUsuarioIdRep;
+    if (tipousuario == 2){
+        var repres = rep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
     
@@ -2323,14 +2318,12 @@ myApp.onPageInit('testes', function (page){
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
 
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    var cliente = "";
-    if (usuarioHagnos.hagnosUsuarioTipo == 3){
-        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioHagnos.hagnosusuarioNome;
+    if (tipousuario == 3){
+        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioNome;
     }
-    if (usuarioHagnos.hagnosUsuarioTipo == 2){
-        var repres = usuarioHagnos.hagnosUsuarioIdRep;
+    if (tipousuario == 2){
+        var repres = rep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
     
