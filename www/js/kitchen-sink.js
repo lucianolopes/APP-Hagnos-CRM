@@ -3674,7 +3674,7 @@ myApp.onPageInit('email-cotacao', function (page){
 
     
     //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    $$("input[name=email_resposta]").val(.usuarioEmail); 
+    $$("input[name=email_resposta]").val(usuarioEmail); 
 
     $$.ajax({
         url: baseurl+'loads/loadProdutosCotacao.php',
