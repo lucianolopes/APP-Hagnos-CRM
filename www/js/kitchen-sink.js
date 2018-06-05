@@ -4050,8 +4050,8 @@ myApp.onPageInit('form-cotacao-visualizar', function (page){
 
 
 
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+    //var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
     if (tipousuario == 3){
         $$("input[name=condicao-cot], input[name=data-entrega-cot], textarea[name=info-cot]").addClass("disabled");
         $$(".respondida").hide();
@@ -4216,8 +4216,8 @@ myApp.onPageInit('form-teste-visualizar', function (page){
     
 
 
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+    //var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
     if (tipousuario == 3){
         $$("textarea[name=info-teste]").addClass("disabled");
         $$("#atualizar-teste").hide();
@@ -4487,17 +4487,17 @@ myApp.onPageInit('notificacoes', function (page) {
     var cliente = page.query.cliente;
     var nomecliente = page.query.nomecliente;
 
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos')); 
-    var usuarioTipo = usuarioHagnos.hagnosUsuarioTipo;
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos')); 
+    //var usuarioTipo = usuarioHagnos.hagnosUsuarioTipo;
 
-    if (usuarioTipo == 1){
+    if (tipousuario == 1){
         var quem = "admin";
     } else {
         var quem = "rep";
     }
 
     $$.ajax({
-        url: baseurl+'loads/loadNotificacoes.php?tipointeracao='+tipointeracao+'&idlanc='+idlanc+'&rep='+rep+'&nomerep='+nomerep+'&tipousuario='+usuarioTipo+'&quem='+quem,
+        url: baseurl+'loads/loadNotificacoes.php?tipointeracao='+tipointeracao+'&idlanc='+idlanc+'&rep='+rep+'&nomerep='+nomerep+'&tipousuario='+tipousuario+'&quem='+quem,
         type: "GET",
         success: function (data) {           
             $$(".notificacoes-list").html(data);            
@@ -4856,9 +4856,9 @@ myApp.onPageInit('usuarios', function (page) {
 myApp.onPageInit('equipamentos', function (page) {
     
     // pega o ID do representante para filtrar somente os clientes dele
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    var rep = usuarioHagnos.hagnosUsuarioIdRep;
-    var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+    //var rep = usuarioHagnos.hagnosUsuarioIdRep;
+    //var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
 
     $$.ajax({
         url: baseurl+'loads/loadClientesEquip.php',
@@ -4877,12 +4877,12 @@ myApp.onPageInit('equipamentos', function (page) {
 myApp.onPageInit('equipamentos2', function (page) {
     
     // pega o ID do representante para filtrar somente os clientes dele
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    var rep = usuarioHagnos.hagnosUsuarioIdRep;
-    var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+    //var rep = usuarioHagnos.hagnosUsuarioIdRep;
+    //var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
 
     //var cliente = page.query.cliente;
-    var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+    //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
     //var nomecliente = page.query.nomecliente;
 
     $$.ajax({
