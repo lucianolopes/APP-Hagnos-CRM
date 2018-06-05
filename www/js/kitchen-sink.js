@@ -2,8 +2,8 @@ var myApp = new Framework7({
     modalTitle: 'Framework7',
     // Enable Material theme
     material: true,
-    uniqueHistory:true,
-    uniqueHistoryIgnoreGetParameters: true,
+    //uniqueHistory:true,
+    //uniqueHistoryIgnoreGetParameters: true,
 });
 
 //myApp.params.cacheIgnore = ['form-cliente'];
