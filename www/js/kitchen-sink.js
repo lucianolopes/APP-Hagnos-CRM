@@ -727,7 +727,6 @@ myApp.onPageInit('menu2', function (page) {
     //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
    // $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
     //$$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
-    myApp.alert(usuarioNome);
     $$(".nomeusuario").html(usuarioNome); 
     $$(".tipousuario").html(usuarioNomeTipo); 
 
@@ -2152,14 +2151,17 @@ myApp.onPageInit('previsaovendas', function (page){
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
 
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    var cliente = "";
-    if (usuarioHagnos.hagnosUsuarioTipo == 3){
-        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioHagnos.hagnosusuarioNome;
+
+   // var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+   
+
+    //var cliente = "";
+    if (tipousuario == 3){
+        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioNome;
     }
-    if (usuarioHagnos.hagnosUsuarioTipo == 2){
-        var repres = usuarioHagnos.hagnosUsuarioIdRep;
+    if (tipousuario == 2){
+        var repres = rep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
     
