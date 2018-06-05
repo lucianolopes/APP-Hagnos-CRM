@@ -115,7 +115,9 @@ function nl2br (str, is_xhtml) {
 }
 
 var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-
+if(!usuarioHagnos){
+  mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true })          
+} else {
     var rp = "";
     if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
         
@@ -244,6 +246,8 @@ var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
             $$(".banners-info").html(data);
         }
     });
+
+}
 
 /* ===== Photo Browser Examples ===== */
 // Create photoprobsers first:
@@ -648,6 +652,7 @@ myApp.onPageInit('index', function (page) {
                 $$(".banners-info").html(data);
             }
         });
+ 
     
 });
 
