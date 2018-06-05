@@ -1239,6 +1239,7 @@ myApp.onPageInit('form-cliente', function (page){
       //mainView.router.back();
       //mainView.router.reloadPreviousPage("lancamentos.html");
       //mainView.router.back();
+
       //mainView.router.back({ url: myApp.mainView.history[2], force: true })
    })
   
@@ -4722,9 +4723,11 @@ $$('.popover a').on('click', function () {
 myApp.onPageInit('clientes', function (page) {
     
     // pega o ID do representante para filtrar somente os clientes dele
+    if(usuarioHagnos){
     var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
     var rep = usuarioHagnos.hagnosUsuarioIdRep;
     var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+    }
 
     //TOTALIZA CLIENTES
     //$$.ajax({
