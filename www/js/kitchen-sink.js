@@ -126,6 +126,14 @@ if(!usuarioHagnos){
 
     var rp = "";
     if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
+
+
+        rep = usuarioHagnos.hagnosUsuarioIdRep;
+        tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+        usuarioNomeTipo = usuarioHagnos.hagnosUsuarioNomeTipo;
+        usuarioNome = usuarioHagnos.hagnosUsuarioNome;
+        usuarioEmail = usuarioHagnos.usuarioEmail;
+
         
         if (usuarioHagnos.hagnosUsuarioTipo == 1){
         $$(".esconde-admin").hide();
@@ -604,6 +612,7 @@ myApp.onPageInit('index', function (page) {
 
         rep = usuarioHagnos.hagnosUsuarioIdRep;
         tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+        usuarioEmail = usuarioHagnos.usuarioEmail;
 
         cliente = "";
         if (usuarioHagnos.hagnosUsuarioTipo == 3){
@@ -2381,7 +2390,7 @@ myApp.onPageInit('notificacoes-grid', function (page){
     if (tipousuario == 2){
         var repres = rep;
     }
-    
+
 
     var usuarioTipo = tipousuario;
     var usuarioNome = usuarioNome;
@@ -3145,12 +3154,12 @@ myApp.onPageInit('form-cotacao', function (page){
     // SALVANDO NOVA COTACAO
     $$("#salva-cotacao").click(function(){        
         var form = $$('#form-cotacao'); 
-        var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+        //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
         //var cliente = "";
         //if (usuarioHagnos.hagnosUsuarioTipo == 3){
-        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioHagnos.hagnosUsuarioNome;
-        var usuarioTipo = usuarioHagnos.hagnosUsuarioTipo;
+        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioNome;
+        var usuarioTipo = tipousuario;
         //}
 
        // myApp.alert(cliente);
@@ -3300,7 +3309,7 @@ myApp.onPageInit('form-teste', function (page){
     // SALVANDO CADASTRO DE USUARIO
     $$("#salva-teste").click(function(){        
         var form = $$('#form-teste'); 
-        var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+        //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
         //var cliente = "";
         //if (usuarioHagnos.hagnosUsuarioTipo == 3){
             //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
@@ -3593,8 +3602,8 @@ myApp.onPageInit('email-boletim', function (page){
     
     var prod = page.query.prod;
     $$("input[name=idprod]").val(prod);
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    $$("input[name=email_resposta_boletim]").val(usuarioHagnos.usuarioEmail); 
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+    $$("input[name=email_resposta_boletim]").val(usuarioEmail); 
 
 
     $$(".enviar-boletim").click(function(){
@@ -3626,8 +3635,8 @@ myApp.onPageInit('email-fispq', function (page){
 
     var prod = page.query.prod;
     $$("input[name=idprod]").val(prod);
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    $$("input[name=email_resposta_fispq]").val(usuarioHagnos.usuarioEmail); 
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+    $$("input[name=email_resposta_fispq]").val(usuarioEmail); 
 
 
     $$(".enviar-fispq").click(function(){
@@ -3664,8 +3673,8 @@ myApp.onPageInit('email-cotacao', function (page){
     $$("input[name=email_cliente]").val(emailcli);
 
     
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    $$("input[name=email_resposta]").val(usuarioHagnos.usuarioEmail); 
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+    $$("input[name=email_resposta]").val(.usuarioEmail); 
 
     $$.ajax({
         url: baseurl+'loads/loadProdutosCotacao.php',
