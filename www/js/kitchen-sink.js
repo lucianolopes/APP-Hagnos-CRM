@@ -121,8 +121,8 @@ if(!usuarioHagnos){
   mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true })          
 } else {
 
-    rep = usuarioHagnos.hagnosUsuarioIdRep;
-    tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+    //rep = usuarioHagnos.hagnosUsuarioIdRep;
+    //tipousuario = usuarioHagnos.hagnosUsuarioTipo;
 
     var rp = "";
     if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
@@ -601,7 +601,11 @@ myApp.onPageInit('index', function (page) {
     mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true });
     
   } else {
-    $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
+
+        rep = usuarioHagnos.hagnosUsuarioIdRep;
+        tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+
+        $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
         $$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
 
         $$('.swiperTab').on('show', function(){
