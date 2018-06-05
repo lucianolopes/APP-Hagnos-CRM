@@ -605,6 +605,15 @@ myApp.onPageInit('index', function (page) {
         rep = usuarioHagnos.hagnosUsuarioIdRep;
         tipousuario = usuarioHagnos.hagnosUsuarioTipo;
 
+        cliente = "";
+        if (usuarioHagnos.hagnosUsuarioTipo == 3){
+            cliente = usuarioHagnos.hagnosUsuarioIdCli;
+            nomecliente = usuarioHagnos.hagnosusuarioNome;
+        }
+        if (usuarioHagnos.hagnosUsuarioTipo == 2){
+            repres = usuarioHagnos.hagnosUsuarioIdRep;
+        }
+
         $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
         $$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
 
@@ -2023,14 +2032,14 @@ myApp.onPageInit('lancamentos', function (page){
 
     // verifica se for cliente logado, só mostra os lancamentos deste cliente
     var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    var cliente = "";
-    if (usuarioHagnos.hagnosUsuarioTipo == 3){
-        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioHagnos.hagnosusuarioNome;
-    }
-    if (usuarioHagnos.hagnosUsuarioTipo == 2){
-        var repres = usuarioHagnos.hagnosUsuarioIdRep;
-    }
+    //var cliente = "";
+    //if (usuarioHagnos.hagnosUsuarioTipo == 3){
+    //    var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+    //    var nomecliente = usuarioHagnos.hagnosusuarioNome;
+   // }
+    //if (usuarioHagnos.hagnosUsuarioTipo == 2){
+    //    var repres = usuarioHagnos.hagnosUsuarioIdRep;
+    //}
 
     $$.ajax({
         url: baseurl+'loads/loadLancamentosAgrupado.php',
