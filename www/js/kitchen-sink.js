@@ -2374,15 +2374,17 @@ myApp.onPageInit('notificacoes-grid', function (page){
     var periodo_lancamento = page.query.periodo_lancamento;
 
     var repres = "";
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    if (usuarioHagnos.hagnosUsuarioTipo == 1){
-        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+    if (tipousuario == 1){
+        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
     }
-    if (usuarioHagnos.hagnosUsuarioTipo == 2){
-        var repres = usuarioHagnos.hagnosUsuarioIdRep;
+    if (tipousuario == 2){
+        var repres = rep;
     }
-    var usuarioTipo = usuarioHagnos.hagnosUsuarioTipo;
-    var usuarioNome = usuarioHagnos.hagnosUsuarioNome;
+    
+
+    var usuarioTipo = tipousuario;
+    var usuarioNome = usuarioNome;
         
 
     $$.ajax({
