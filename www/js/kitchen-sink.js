@@ -97,7 +97,11 @@ function totaisHome(){
             url: baseurl+'loads/verificaTotais.php?rep='+rp, 
             dataType: 'json',
             success: function(returnedData) {
-                $$(".totalAc").html("<strong style='font-size:16px'>Registros encontrados: "+returnedData[0].aTotalAc+"</strong>");  
+                $$(".totalAc").html("<strong style='font-size:16px'>Registros encontrados: "+returnedData[0].aTotalAc+"</strong>");   
+                //$$(".totalHig").html("<strong style='font-size:16px'>("+returnedData[0].aTotalHig+")</strong>"); 
+                //$$(".totalTestes").html("<strong style='font-size:16px'>("+returnedData[0].aTotalTestes+")</strong>");   
+                //$$(".totalAcoes").html("<strong style='font-size:16px'>("+returnedData[0].aTotalAcoes+")</strong>");
+                //$$(".totalCotacoes").html("<strong style='font-size:16px'>("+returnedData[0].aTotalCotacoes+")</strong>");          
             }
         });
 }
@@ -600,7 +604,6 @@ myApp.onPageInit('index', function (page) {
 
         rep = usuarioHagnos.hagnosUsuarioIdRep;
         tipousuario = usuarioHagnos.hagnosUsuarioTipo;
-        usuarioEmail = usuarioHagnos.usuarioEmail;
 
         cliente = "";
         if (usuarioHagnos.hagnosUsuarioTipo == 3){
@@ -623,10 +626,10 @@ myApp.onPageInit('index', function (page) {
             $$(this).find('.swiper-container')[0].swiper.update();
         });
         
-        if (usuarioTipo == 2){
+        if (usuarioHagnos.hagnosUsuarioTipo == 2){
             $$(".esconde-rep").hide();
         }
-        if (usuarioTipo == 3){
+        if (usuarioHagnos.hagnosUsuarioTipo == 3){
             $$(".esconde-cliente").hide();   
         }
 
@@ -635,16 +638,16 @@ myApp.onPageInit('index', function (page) {
         });
 
         var rp = "";
-        if (usuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
+        if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
             
 
-            if (usuarioTipo == 1){
+            if (usuarioHagnos.hagnosUsuarioTipo == 1){
             $$(".esconde-admin").hide(); 
             }
 
-            if (usuarioTipo == 2){
+            if (usuarioHagnos.hagnosUsuarioTipo == 2){
             $$(".esconde-rep").hide(); 
-            var rp = rep;
+            var rp = usuarioHagnos.hagnosUsuarioIdRep;
             }        
 
               //VEFIFICA TOTAIS DE ACOMPANHAMENTO
@@ -669,7 +672,7 @@ myApp.onPageInit('index', function (page) {
         
         // CARREGA OS BANNERS DA TELA INICIAL
         $$.ajax({
-            url: baseurl+'loads/loadBanners.php?tipoUsuario='+usuarioTipo,
+            url: baseurl+'loads/loadBanners.php?tipoUsuario='+usuarioHagnos.hagnosUsuarioTipo,
             type: "GET",
             success: function (data) {           
                 $$(".banners-info").html(data);
@@ -724,32 +727,32 @@ myApp.onPageInit('menu2', function (page) {
     //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
    // $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
     //$$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
-    $$(".nomeusuario").html(usuarioNome); 
-    $$(".tipousuario").html(usuarioNomeTipo); 
+
+    $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
+    $$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo); 
 
     $$('.swiperTab').on('show', function(){
         $$(this).find('.swiper-container')[0].swiper.update();
     });
     
-    if (tipousuario == 2){
+    if (usuarioHagnos.hagnosUsuarioTipo == 2){
         $$(".esconde-rep").hide();
     }
-    if (tipousuario == 3){
+    if (usuarioHagnos.hagnosUsuarioTipo == 3){
         $$(".esconde-cliente").hide();   
     }
 
     var rp = "";
-    if (tipousuario == 1 || tipousuario == 2){
+    if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
         
 
-        if (tipousuario == 1){
+        if (usuarioHagnos.hagnosUsuarioTipo == 1){
         $$(".esconde-admin").hide(); 
         }
 
-        if (tipousuario == 2){
+        if (usuarioHagnos.hagnosUsuarioTipo == 2){
         $$(".esconde-rep").hide(); 
-        //var rp = usuarioHagnos.hagnosUsuarioIdRep;
-        var rp = rep;
+        var rp = usuarioHagnos.hagnosUsuarioIdRep;
         }
         
 
@@ -842,7 +845,7 @@ myApp.onPageInit('menu2', function (page) {
 
         //VEFIFICA NOTIFICAÇÕES NÃO LIDAS
         $$.ajax({
-            url: baseurl+'loads/verificaNotificacoes.php?rep='+rp+'&tipousuario='+usuarioTipo, 
+            url: baseurl+'loads/verificaNotificacoes.php?rep='+rp+'&tipousuario='+usuarioHagnos.hagnosUsuarioTipo, 
             dataType: 'json',
             success: function(returnedData) {
                 var notNaoLidas = returnedData[0].notificacoesNaoLidas;
@@ -2038,13 +2041,13 @@ myApp.onPageInit('lancamentos', function (page){
     // verifica se for cliente logado, só mostra os lancamentos deste cliente
     //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
     //var cliente = "";
-    if (tipousuario == 3){
-        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioNome;
-    }
-    if (tipousuario == 2){
-        var repres = rep;
-    }
+    //if (usuarioHagnos.hagnosUsuarioTipo == 3){
+    //    var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+    //    var nomecliente = usuarioHagnos.hagnosusuarioNome;
+   // }
+    //if (usuarioHagnos.hagnosUsuarioTipo == 2){
+    //    var repres = usuarioHagnos.hagnosUsuarioIdRep;
+    //}
 
     $$.ajax({
         url: baseurl+'loads/loadLancamentosAgrupado.php',
@@ -2093,15 +2096,14 @@ myApp.onPageInit('cotacoes', function (page){
     var periodo_lancamento = page.query.periodo_lancamento;
     var periodo_entrega = page.query.periodo_entrega; 
 
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    //var cliente = "";
-    
-    if (tipousuario == 3){
-        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioNome;
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+    var cliente = "";
+    if (usuarioHagnos.hagnosUsuarioTipo == 3){
+        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioHagnos.hagnosusuarioNome;
     }
-    if (tipousuario == 2){
-        var repres = rep;
+    if (usuarioHagnos.hagnosUsuarioTipo == 2){
+        var repres = usuarioHagnos.hagnosUsuarioIdRep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
     
@@ -2149,17 +2151,14 @@ myApp.onPageInit('previsaovendas', function (page){
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
 
-
-   // var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-   
-
-    //var cliente = "";
-    if (tipousuario == 3){
-        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioNome;
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+    var cliente = "";
+    if (usuarioHagnos.hagnosUsuarioTipo == 3){
+        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioHagnos.hagnosusuarioNome;
     }
-    if (tipousuario == 2){
-        var repres = rep;
+    if (usuarioHagnos.hagnosUsuarioTipo == 2){
+        var repres = usuarioHagnos.hagnosUsuarioIdRep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
     
@@ -2209,14 +2208,14 @@ myApp.onPageInit('higienizacoes', function (page){
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
 
-    ///var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    //var cliente = "";
-    if (tipousuario == 3){
-        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioNome;
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+    var cliente = "";
+    if (usuarioHagnos.hagnosUsuarioTipo == 3){
+        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioHagnos.hagnosusuarioNome;
     }
-    if (tipousuario == 2){
-        var repres = rep;
+    if (usuarioHagnos.hagnosUsuarioTipo == 2){
+        var repres = usuarioHagnos.hagnosUsuarioIdRep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
     
@@ -2264,14 +2263,14 @@ myApp.onPageInit('acoescorretivas', function (page){
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
 
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    //var cliente = "";
-    if (tipousuario == 3){
-        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioNome;
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+    var cliente = "";
+    if (usuarioHagnos.hagnosUsuarioTipo == 3){
+        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioHagnos.hagnosusuarioNome;
     }
-    if (tipousuario == 2){
-        var repres = rep;
+    if (usuarioHagnos.hagnosUsuarioTipo == 2){
+        var repres = usuarioHagnos.hagnosUsuarioIdRep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
     
@@ -2318,14 +2317,14 @@ myApp.onPageInit('testes', function (page){
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
 
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    //var cliente = "";
-    if (tipousuario == 3){
-        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioNome;
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+    var cliente = "";
+    if (usuarioHagnos.hagnosUsuarioTipo == 3){
+        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioHagnos.hagnosusuarioNome;
     }
-    if (tipousuario == 2){
-        var repres = rep;
+    if (usuarioHagnos.hagnosUsuarioTipo == 2){
+        var repres = usuarioHagnos.hagnosUsuarioIdRep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
     
@@ -2376,17 +2375,15 @@ myApp.onPageInit('notificacoes-grid', function (page){
     var periodo_lancamento = page.query.periodo_lancamento;
 
     var repres = "";
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    if (tipousuario == 1){
-        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+    if (usuarioHagnos.hagnosUsuarioTipo == 1){
+        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
     }
-    if (tipousuario == 2){
-        var repres = rep;
+    if (usuarioHagnos.hagnosUsuarioTipo == 2){
+        var repres = usuarioHagnos.hagnosUsuarioIdRep;
     }
-    //var usuarioTipo = usuarioHagnos.hagnosUsuarioTipo;
-    //var usuarioNome = usuarioHagnos.hagnosUsuarioNome;
-    var usuarioTipo = tipousuario;
-    var usuarioNome = usuarioNome;
+    var usuarioTipo = usuarioHagnos.hagnosUsuarioTipo;
+    var usuarioNome = usuarioHagnos.hagnosUsuarioNome;
         
 
     $$.ajax({
@@ -3147,11 +3144,12 @@ myApp.onPageInit('form-cotacao', function (page){
     // SALVANDO NOVA COTACAO
     $$("#salva-cotacao").click(function(){        
         var form = $$('#form-cotacao'); 
-
-        //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));            
-        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-        var nomecliente = usuarioNome;
-        var usuarioTipo = tipousuario;
+        var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+        //var cliente = "";
+        //if (usuarioHagnos.hagnosUsuarioTipo == 3){
+        var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioHagnos.hagnosUsuarioNome;
+        var usuarioTipo = usuarioHagnos.hagnosUsuarioTipo;
         //}
 
        // myApp.alert(cliente);
@@ -3301,7 +3299,7 @@ myApp.onPageInit('form-teste', function (page){
     // SALVANDO CADASTRO DE USUARIO
     $$("#salva-teste").click(function(){        
         var form = $$('#form-teste'); 
-        //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+        var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
         //var cliente = "";
         //if (usuarioHagnos.hagnosUsuarioTipo == 3){
             //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
@@ -3594,8 +3592,8 @@ myApp.onPageInit('email-boletim', function (page){
     
     var prod = page.query.prod;
     $$("input[name=idprod]").val(prod);
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    $$("input[name=email_resposta_boletim]").val(usuarioEmail); 
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+    $$("input[name=email_resposta_boletim]").val(usuarioHagnos.usuarioEmail); 
 
 
     $$(".enviar-boletim").click(function(){
@@ -3627,8 +3625,8 @@ myApp.onPageInit('email-fispq', function (page){
 
     var prod = page.query.prod;
     $$("input[name=idprod]").val(prod);
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    $$("input[name=email_resposta_fispq]").val(usuarioEmail); 
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+    $$("input[name=email_resposta_fispq]").val(usuarioHagnos.usuarioEmail); 
 
 
     $$(".enviar-fispq").click(function(){
@@ -3665,8 +3663,8 @@ myApp.onPageInit('email-cotacao', function (page){
     $$("input[name=email_cliente]").val(emailcli);
 
     
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    $$("input[name=email_resposta]").val(usuarioEmail); 
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+    $$("input[name=email_resposta]").val(usuarioHagnos.usuarioEmail); 
 
     $$.ajax({
         url: baseurl+'loads/loadProdutosCotacao.php',
@@ -4042,8 +4040,8 @@ myApp.onPageInit('form-cotacao-visualizar', function (page){
 
 
 
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    //var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+    var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
     if (tipousuario == 3){
         $$("input[name=condicao-cot], input[name=data-entrega-cot], textarea[name=info-cot]").addClass("disabled");
         $$(".respondida").hide();
@@ -4208,8 +4206,8 @@ myApp.onPageInit('form-teste-visualizar', function (page){
     
 
 
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    //var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+    var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
     if (tipousuario == 3){
         $$("textarea[name=info-teste]").addClass("disabled");
         $$("#atualizar-teste").hide();
@@ -4479,8 +4477,8 @@ myApp.onPageInit('notificacoes', function (page) {
     var cliente = page.query.cliente;
     var nomecliente = page.query.nomecliente;
 
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos')); 
-    var usuarioTipo = tipousuario;
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos')); 
+    var usuarioTipo = usuarioHagnos.hagnosUsuarioTipo;
 
     if (usuarioTipo == 1){
         var quem = "admin";
@@ -4848,9 +4846,9 @@ myApp.onPageInit('usuarios', function (page) {
 myApp.onPageInit('equipamentos', function (page) {
     
     // pega o ID do representante para filtrar somente os clientes dele
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    //var rep = usuarioHagnos.hagnosUsuarioIdRep;
-    //var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+    var rep = usuarioHagnos.hagnosUsuarioIdRep;
+    var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
 
     $$.ajax({
         url: baseurl+'loads/loadClientesEquip.php',
@@ -4869,12 +4867,12 @@ myApp.onPageInit('equipamentos', function (page) {
 myApp.onPageInit('equipamentos2', function (page) {
     
     // pega o ID do representante para filtrar somente os clientes dele
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    //var rep = usuarioHagnos.hagnosUsuarioIdRep;
-    //var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+    var rep = usuarioHagnos.hagnosUsuarioIdRep;
+    var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
 
     //var cliente = page.query.cliente;
-    //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+    var cliente = usuarioHagnos.hagnosUsuarioIdCli;
     //var nomecliente = page.query.nomecliente;
 
     $$.ajax({
