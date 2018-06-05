@@ -2049,6 +2049,14 @@ myApp.onPageInit('lancamentos', function (page){
     //    var repres = usuarioHagnos.hagnosUsuarioIdRep;
     //}
 
+    if (tipousuario == 3){
+        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioNome;
+    }
+    if (tipousuario == 2){
+        var repres = rep;
+    }
+
     $$.ajax({
         url: baseurl+'loads/loadLancamentosAgrupado.php',
         data: { "repres":repres, "cliente":cliente, "sp": sp, "si": si, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_prox_lancamento": periodo_prox_lancamento  },
