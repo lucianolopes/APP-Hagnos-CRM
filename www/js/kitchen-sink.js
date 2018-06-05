@@ -2,8 +2,8 @@ var myApp = new Framework7({
     modalTitle: 'Framework7',
     // Enable Material theme
     material: true,
-    //uniqueHistory:true,
-    //uniqueHistoryIgnoreGetParameters: true,
+    uniqueHistory:true,
+    uniqueHistoryIgnoreGetParameters: true,
 });
 
 //myApp.params.cacheIgnore = ['form-cliente'];
@@ -1229,10 +1229,7 @@ myApp.onPageInit('form-usuario', function (page){
 // FORMULARIO DE CADASTRO DE CLIENTES
 myApp.onPageInit('form-cliente', function (page){
 
-    
-    //$$(".link-voltar").click(function(){
-    //   mainView.router.back();
-    //})
+ 
     $$(".link-voltar").click(function(){
       //console.log(mainView.history);
       //myApp.alert(this.href);
@@ -1242,7 +1239,7 @@ myApp.onPageInit('form-cliente', function (page){
       //mainView.router.back();
       //mainView.router.reloadPreviousPage("lancamentos.html");
       //mainView.router.back();
-      mainView.router.back({ url: myApp.mainView.history[2], force: true })
+      //mainView.router.back({ url: myApp.mainView.history[2], force: true })
    })
   
     // SALVANDO CADASTRO DE CLIENTE
