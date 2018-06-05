@@ -415,24 +415,24 @@
     <script type="text/javascript" src="js/plugins/fileinput/fileinput.js"></script>
 
     <script>
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));   
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));   
     
-    if(!usuarioHagnos){
-      mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true });
-    } else {
+    //if(!usuarioHagnos){
+    //  mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true });
+    //} else {
       
-      $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
-      $$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo);   
-      if (usuarioHagnos.hagnosUsuarioTipo == 2){
-          $$(".esconde-rep").hide();
-      }
-      if (usuarioHagnos.hagnosUsuarioTipo == 3){
-          $$(".esconde-cliente").hide();   
-      }
-      if (usuarioHagnos.hagnosUsuarioTipo == 1){
-          $$(".esconde-admin").hide();   
-      }
-    }
+    //  $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
+    //  $$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo);   
+    //  if (usuarioHagnos.hagnosUsuarioTipo == 2){
+    //      $$(".esconde-rep").hide();
+    //  }
+    //  if (usuarioHagnos.hagnosUsuarioTipo == 3){
+    //      $$(".esconde-cliente").hide();   
+    //  }
+    //  if (usuarioHagnos.hagnosUsuarioTipo == 1){
+    //      $$(".esconde-admin").hide();   
+    //  }
+   // }
       
     
     </script>
