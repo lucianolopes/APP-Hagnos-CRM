@@ -2031,7 +2031,7 @@ myApp.onPageInit('lancamentos', function (page){
     var periodo_prox_lancamento = page.query.periodo_prox_lancamento;  
 
     // verifica se for cliente logado, só mostra os lancamentos deste cliente
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
     //var cliente = "";
     //if (usuarioHagnos.hagnosUsuarioTipo == 3){
     //    var cliente = usuarioHagnos.hagnosUsuarioIdCli;
