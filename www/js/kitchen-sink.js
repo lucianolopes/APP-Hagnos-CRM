@@ -1068,6 +1068,10 @@ $$('#submit-login').click(function() {
                 hagnosUsuarioStatus: returnedData[0].status
                 };
 
+                window.localStorage.setItem('usuarioHagnos', JSON.stringify(usuarioHagnos));
+                var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
+                // fim armazenamento local storage
+
                 mainView.router.load({
                     url: 'index.html',
                     ignoreCache: true
@@ -1075,9 +1079,7 @@ $$('#submit-login').click(function() {
 
                 
         
-                window.localStorage.setItem('usuarioHagnos', JSON.stringify(usuarioHagnos));
-                var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-                // fim armazenamento local storage
+               
                 $$(".login-icon").show();
 
             } else {
@@ -1274,7 +1276,7 @@ myApp.onPageInit('form-cliente', function (page){
       //mainView.router.reloadPreviousPage("lancamentos.html");
       //mainView.router.back();
 
-      mainView.router.back({ url: myApp.mainView.history[1], force: true })
+      mainView.router.back({ url: myApp.mainView.history[3], force: true })
    })
   
     // SALVANDO CADASTRO DE CLIENTE
