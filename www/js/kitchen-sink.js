@@ -1274,7 +1274,7 @@ myApp.onPageInit('form-cliente', function (page){
       //mainView.router.reloadPreviousPage("lancamentos.html");
       //mainView.router.back();
 
-      //mainView.router.back({ url: myApp.mainView.history[2], force: true })
+      mainView.router.back({ url: myApp.mainView.history[2], force: true })
    })
   
     // SALVANDO CADASTRO DE CLIENTE
