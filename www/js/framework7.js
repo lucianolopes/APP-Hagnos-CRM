@@ -97,8 +97,8 @@
             swipePanelThreshold: 0,
             panelsCloseByOutside: true,
             // Modals
-            modalButtonOk: 'OK',
-            modalButtonCancel: 'Cancel',
+            modalButtonOk: 'SIM',
+            modalButtonCancel: 'NÃO',
             modalUsernamePlaceholder: 'Username',
             modalPasswordPlaceholder: 'Password',
             modalTitle: 'Framework7',
@@ -117,7 +117,7 @@
             // Notifications defaults
             notificationCloseOnClick: false,
             notificationCloseIcon: true,
-            notificationCloseButtonText: 'Close',
+            notificationCloseButtonText: 'FECHAR',
             // Animate Pages
             animatePages: true,
             // Template7
@@ -8166,7 +8166,7 @@
                 theme: 'light',
                 swipeToClose: true,
                 backLinkText: 'Close',
-                ofText: 'of',
+                ofText: 'de',
                 loop: false,
                 lazyLoading: false,
                 lazyLoadingInPrevNext: false,

@@ -23,6 +23,7 @@ var baseurl = "https://hagnossq.com.br/app/";
 
 
 
+
 function gotPic(event) {
     if (event.target.files.length === 1 && event.target.files[0].type.indexOf('image/') === 0) {
         $$('#avatar').attr('src', URL.createObjectURL(event.target.files[0]));
@@ -128,6 +129,7 @@ if(!usuarioHagnos){
     if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
 
 
+        cliente = "";
         rep = usuarioHagnos.hagnosUsuarioIdRep;
         tipousuario = usuarioHagnos.hagnosUsuarioTipo;
         usuarioNomeTipo = usuarioHagnos.hagnosUsuarioNomeTipo;
@@ -135,6 +137,7 @@ if(!usuarioHagnos){
         usuarioEmail = usuarioHagnos.usuarioEmail;
 
         
+
         if (usuarioHagnos.hagnosUsuarioTipo == 1){
         $$(".esconde-admin").hide();
         }
@@ -143,6 +146,27 @@ if(!usuarioHagnos){
         $$(".esconde-rep").hide(); 
         var rp = usuarioHagnos.hagnosUsuarioIdRep;
         }
+
+        if (usuarioHagnos.hagnosUsuarioTipo == 3){
+            cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        }
+
+         //VEFIFICA TOTAIS PEDIDOS
+        $$.ajax({
+            url: baseurl+'loads/verificaTotaisPedidos.php?rep='+rp, 
+            dataType: 'json',
+            success: function(returnedData) {
+                $$(".notificacao-pendente").show();
+                $$(".notificacao-pendente span").html(returnedData[0].pendente); 
+                $$(".notificacao-producao").show();
+                $$(".notificacao-producao span").html(returnedData[0].producao); 
+                $$(".notificacao-expedicao").show();
+                $$(".notificacao-expedicao span").html(returnedData[0].expedicao); 
+                $$(".notificacao-enviado").show();
+                $$(".notificacao-enviado span").html(returnedData[0].enviado); 
+                
+            }
+        });
 
 
          //VEFIFICA TOTAIS DE ACOMPANHAMENTO
@@ -332,7 +356,14 @@ $$('.ks-pb-standalone').on('click', function () {
 });
 
 
-
+function attrConfirmacaoVenda(v,v2,chk){
+    
+    if($(chk).is(':checked')){
+       $$("input[name=cv"+v+"]").val("S");     
+    } else {
+       $$("input[name=cv"+v+"]").val("N");     
+    }    
+}
 
 
 
@@ -415,8 +446,9 @@ function deletaHistorico(id, idcliente){
                     url: baseurl+'loads/loadLancamentos.php?cliente='+idcliente,                        
                     success: function(returnedData) {
                         $$("#historico-lancamentos").html(returnedData);
-                        mainView.router.reloadPage('forms/clientes_form.html?cliente='+idcliente);
-                        myApp.showTab('#tab4');
+                        //mainView.router.reloadPage('forms/clientes_form.html?cliente='+idcliente);
+                        //myApp.showTab('#tab4');
+                        mainView.router.reloadPage("forms/clientes_form.html?cliente="+idcliente+"&nomecliente=&contato=&telefone=&tab=tab4-a");
                     }
                 });               
             }
@@ -451,8 +483,24 @@ function deletaCotacao(id,idcliente){
             url: baseurl+'saves/deleta.php?tb=cotacoes&id='+id,
             method: 'GET',
             success: function (data){                                                      
-                mainView.router.reloadPage('forms/clientes_form.html?cliente='+idcliente);
-                myApp.showTab('#tab5');
+                //mainView.router.reloadPage('forms/clientes_form.html?cliente='+idcliente);
+                //myApp.showTab('#tab5');
+                mainView.router.reloadPage("forms/clientes_form.html?cliente="+idcliente+"&nomecliente=&contato=&telefone=&tab=tab4-b");
+            }
+        });
+    });
+}
+
+function deletaPedido(id,idcliente){
+    // deleta um produto do equipamento
+    myApp.confirm('Confirma remoção deste pedido?', 'Exclusão', function () {
+        $$.ajax({
+            url: baseurl+'saves/deleta.php?tb=pedidos&id='+id,
+            method: 'GET',
+            success: function (data){                                                      
+                //mainView.router.reloadPage('forms/clientes_form.html?cliente='+idcliente);
+                //myApp.showTab('#tab5');
+                mainView.router.reloadPage("forms/clientes_form.html?cliente="+idcliente+"&nomecliente=&contato=&telefone=&tab=tab3-d");
             }
         });
     });
@@ -491,8 +539,9 @@ function deletaTeste(id,idcliente){
             url: baseurl+'saves/deleta.php?tb=testes&id='+id,
             method: 'GET',
             success: function (data){                                                      
-                mainView.router.reloadPage('forms/clientes_form.html?cliente='+idcliente);
-                myApp.showTab('#tab7');
+                //mainView.router.reloadPage('forms/clientes_form.html?cliente='+idcliente);
+                //myApp.showTab('#tab7');
+                mainView.router.reloadPage("forms/clientes_form.html?cliente="+idcliente+"&nomecliente=&contato=&telefone=&tab=tab4-d");
             }
         });
     });
@@ -504,8 +553,9 @@ function deletaAcaoCorretiva(id,idcliente){
             url: baseurl+'saves/deleta.php?tb=acoescorretivas&id='+id,
             method: 'GET',
             success: function (data){                                                      
-                mainView.router.reloadPage('forms/clientes_form.html?cliente='+idcliente);
-                myApp.showTab('#tab8');
+                //mainView.router.reloadPage('forms/clientes_form.html?cliente='+idcliente);
+                //myApp.showTab('#tab8');
+                mainView.router.reloadPage("forms/clientes_form.html?cliente="+idcliente+"&nomecliente=&contato=&telefone=&tab=tab4-e");
             }
         });
     });
@@ -518,8 +568,9 @@ function deletaHigienizacao(id, idcliente){
             method: 'GET',
             success: function (data){                                                      
                 //mainView.router.reloadPage('forms/clientes_form.html?cliente='+idcliente);
-                mainView.router.reloadPage('forms/clientes_form.html?cliente='+idcliente);
-                myApp.showTab('#tab6');
+                //mainView.router.reloadPage('forms/clientes_form.html?cliente='+idcliente);
+                //myApp.showTab('#tab6');
+                mainView.router.reloadPage("forms/clientes_form.html?cliente="+idcliente+"&nomecliente=&contato=&telefone=&tab=tab4-c");
             }
         });
     });
@@ -527,6 +578,21 @@ function deletaHigienizacao(id, idcliente){
 
 function enviaCotacao(id){
    mainView.router.loadPage('email_cotacao.html');
+}
+
+function liberaEntrega(valor){
+   var inputLotes = [];
+            $$("input[name='lote-produto[]']").each(function() {
+                var valor = $(this).val();
+                if (valor) {
+                    inputLotes.push(valor);
+                }
+            });
+            if (inputLotes.length === 0) {
+                $$("#entrega").addClass("disabled");
+            } else {
+                $$("#entrega").removeClass("disabled");
+            } 
 }
 
 
@@ -543,6 +609,14 @@ function deleta_item_teste(e){
     if($$('.testes-rows').html() == "") {
         $$("#salva-teste").addClass("disabled");
     }
+}
+
+// remoção de um produto na lista de teste solicitado
+function deleta_produto_lanc(e){
+    $$(".li-produto-lanc"+e).remove();
+    //if($$('.testes-rows').html() == "") {
+    //    $$("#salva-teste").addClass("disabled");
+    //}
 }
 
 // remoção de um equipamento na lista de equipamentos a higienizar
@@ -603,28 +677,7 @@ myApp.onPageInit('index', function (page) {
    
     // verifica se existem dados do usuario logado. Se "sim", carrega os dados (nome, usuario, senha, tipo)
 
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-
-    if(!usuarioHagnos){
-    mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true });
-    
-  } else {
-
-        rep = usuarioHagnos.hagnosUsuarioIdRep;
-        tipousuario = usuarioHagnos.hagnosUsuarioTipo;
-        usuarioEmail = usuarioHagnos.usuarioEmail;
-
-        cliente = "";
-        if (usuarioHagnos.hagnosUsuarioTipo == 3){
-            cliente = usuarioHagnos.hagnosUsuarioIdCli;
-            nomecliente = usuarioHagnos.hagnosusuarioNome;
-        }
-        if (usuarioHagnos.hagnosUsuarioTipo == 2){
-            repres = usuarioHagnos.hagnosUsuarioIdRep;
-        }
-
-        usuarioNome = usuarioHagnos.hagnosUsuarioNome;
-        usuarioNomeTipo = usuarioHagnos.hagnosUsuarioNomeTipo;
+    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
        
         $$(".nomeusuario").html(usuarioNome); 
         $$(".tipousuario").html(usuarioNomeTipo); 
@@ -635,10 +688,11 @@ myApp.onPageInit('index', function (page) {
             $$(this).find('.swiper-container')[0].swiper.update();
         });
         
-        if (usuarioHagnos.hagnosUsuarioTipo == 2){
+        if (tipousuario == 2){
             $$(".esconde-rep").hide();
         }
-        if (usuarioHagnos.hagnosUsuarioTipo == 3){
+        if (tipousuario == 3){
+            cliente = usuarioHagnos.hagnosUsuarioIdCli;
             $$(".esconde-cliente").hide();   
         }
 
@@ -647,16 +701,16 @@ myApp.onPageInit('index', function (page) {
         });
 
         var rp = "";
-        if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
+        if (tipousuario == 1 || tipousuario == 2){
             
 
-            if (usuarioHagnos.hagnosUsuarioTipo == 1){
+            if (tipousuario == 1){
             $$(".esconde-admin").hide(); 
             }
 
-            if (usuarioHagnos.hagnosUsuarioTipo == 2){
+            if (tipousuario == 2){
             $$(".esconde-rep").hide(); 
-            var rp = usuarioHagnos.hagnosUsuarioIdRep;
+            var rp = rep;
             }        
 
               //VEFIFICA TOTAIS DE ACOMPANHAMENTO
@@ -677,17 +731,34 @@ myApp.onPageInit('index', function (page) {
                     
                 }
             });
+
+             //VEFIFICA TOTAIS PEDIDOS
+            $$.ajax({
+                url: baseurl+'loads/verificaTotaisPedidos.php?rep='+rp, 
+                dataType: 'json',
+                success: function(returnedData) {
+                    $$(".notificacao-pendente").show();
+                    $$(".notificacao-pendente span").html(returnedData[0].pendente); 
+                    $$(".notificacao-producao").show();
+                    $$(".notificacao-producao span").html(returnedData[0].producao); 
+                    $$(".notificacao-expedicao").show();
+                    $$(".notificacao-expedicao span").html(returnedData[0].expedicao); 
+                    $$(".notificacao-enviado").show();
+                    $$(".notificacao-enviado span").html(returnedData[0].enviado); 
+                    
+                }
+            });
         } 
         
         // CARREGA OS BANNERS DA TELA INICIAL
         $$.ajax({
-            url: baseurl+'loads/loadBanners.php?tipoUsuario='+usuarioHagnos.hagnosUsuarioTipo,
+            url: baseurl+'loads/loadBanners.php?tipoUsuario='+tipousuario,
             type: "GET",
             success: function (data) {           
                 $$(".banners-info").html(data);
             }
         });
-  }
+  
     
 });
 
@@ -854,7 +925,7 @@ myApp.onPageInit('menu2', function (page) {
 
         //VEFIFICA NOTIFICAÇÕES NÃO LIDAS
         $$.ajax({
-            url: baseurl+'loads/verificaNotificacoes.php?rep='+rp+'&tipousuario='+usuarioHagnos.hagnosUsuarioTipo, 
+            url: baseurl+'loads/verificaNotificacoes.php?rep='+rp+'&tipousuario='+tipousuario, 
             dataType: 'json',
             success: function(returnedData) {
                 var notNaoLidas = returnedData[0].notificacoesNaoLidas;
@@ -1072,6 +1143,21 @@ $$('#submit-login').click(function() {
                 var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
                 // fim armazenamento local storage
 
+                rep = usuarioHagnos.hagnosUsuarioIdRep;
+                tipousuario = usuarioHagnos.hagnosUsuarioTipo;
+                usuarioEmail = usuarioHagnos.usuarioEmail;
+                cliente = "";
+                if (usuarioHagnos.hagnosUsuarioTipo == 3){
+                    cliente = usuarioHagnos.hagnosUsuarioIdCli;
+                    nomecliente = usuarioHagnos.hagnosusuarioNome;
+                }
+                if (usuarioHagnos.hagnosUsuarioTipo == 2){
+                    repres = usuarioHagnos.hagnosUsuarioIdRep;
+                }
+
+                usuarioNome = usuarioHagnos.hagnosUsuarioNome;
+                usuarioNomeTipo = usuarioHagnos.hagnosUsuarioNomeTipo;
+
                 mainView.router.load({
                     url: 'index.html',
                     ignoreCache: true
@@ -1267,17 +1353,8 @@ myApp.onPageInit('form-cliente', function (page){
 
  
     $$(".link-voltar").click(function(){
-      //console.log(mainView.history);
-      //myApp.alert(this.href);
-      //var fileName = this.href;
-      //var linkRetorno = fileName.substring(fileName.lastIndexOf('/')+1);
-      //mainView.router.loadPage(linkRetorno);
-      //mainView.router.back();
-      //mainView.router.reloadPreviousPage("lancamentos.html");
-      //mainView.router.back();
-
-      mainView.router.back({ url: myApp.mainView.history[4], force: true })
-   })
+      mainView.router.back({ url: myApp.mainView.history[1], force: true });
+    })
   
     // SALVANDO CADASTRO DE CLIENTE
     $$(".salva-concentracao").click(function(){
@@ -1294,6 +1371,8 @@ myApp.onPageInit('form-cliente', function (page){
 
     // caso a chamada venha da tela de lancamentos
     var tab = page.query.tab;
+
+    //var tab2 = page.query.tab2;
     //var nomecliente = page.query.nomecliente;
 
     // botoes de adicao
@@ -1327,13 +1406,12 @@ myApp.onPageInit('form-cliente', function (page){
     $$( "#tab4-e" ).on("show",function() {
         //$$(".toolbar-cliente").show();
         $$(".addTab").attr("href", "forms/nova_acao_corretiva_form.html?"+paramsLink);
+    }); 
+
+    $$( "#tab3-d" ).on("show",function() {
+        //$$(".toolbar-cliente").show();
+        $$(".addTab").attr("href", "forms/form_pedido.html?"+paramsLink);
     });    
-
-   
-    //$$( "#tab1, #tab3").on("show",function() {
-        //$$(".addTab").hide();
-    //});
-
 
    
    // se existe um parametro "cliente" faz a edição e salvamento do registro
@@ -1619,6 +1697,29 @@ myApp.onPageInit('form-cliente', function (page){
                     }
                 });
 
+                
+
+                $$.ajax({
+                    url: baseurl+'loads/loadPedidosCliente.php?cliente='+cliente,                       
+                    success: function(returnedData) {
+                        $$("#lista-pedidos-cliente").html(returnedData);
+
+                        var i = 0;
+                        $$("#lista-pedidos-cliente").find("tr").each(function(){
+                            i++;
+                        });
+                        $$(".totalregistros-pedido").html("PEDIDOS <span style='font-size:18'> ("+i+")</span>");
+
+                        //var dadosRep = $$("select[name=cliente_representante]").val();
+                        //myApp.alert(dadosRep);
+                        //var arr_rep = dadosRep.split(";");
+                        //var nomer = arr_rep[1];
+                        //$$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
+                    }
+                });
+
+
+
                 $$.ajax({
                     url: baseurl+'loads/loadPrevisaoVendas.php?cliente='+cliente, 
                                       
@@ -1681,8 +1782,18 @@ myApp.onPageInit('form-cliente', function (page){
 
        
         if (tab != undefined){
-           myApp.showTab('#tab4');
-           myApp.showTab('#'+tab);
+            if (tab == "tab3-d"){
+              myApp.showTab('#tab3');
+              myApp.showTab('#'+tab);   
+            } else {
+              myApp.showTab('#tab4');
+              myApp.showTab('#'+tab);   
+            }
+                       
+        }
+
+        if (tab == "tab3-d"){
+            myApp.showTab('#tab3-d');
         }
 
    } else {
@@ -1691,8 +1802,8 @@ myApp.onPageInit('form-cliente', function (page){
         myApp.closeModal($$(".popover-contacts"));
         //$$(".floating-button").hide();
 
-            $$(".deleta-cliente").hide();
-            $$.getJSON('js/cidadesEstados.json', function (data) {
+        $$(".deleta-cliente").hide();
+        $$.getJSON('js/cidadesEstados.json', function (data) {
                 
                 var items = [];
                 var options = '<option value="" selected=selected>-- Estado --</option>';
@@ -1720,26 +1831,25 @@ myApp.onPageInit('form-cliente', function (page){
                                            
                 }).change();        
                                 
-            }); 
+        }); 
 
-            // Carrega select de representantes
-            $$.ajax({
+        // Carrega select de representantes
+        $$.ajax({
                 url: baseurl+'loads/loadRepsSelect.php',
                 method: 'GET',
                 success: function (data) {
                     $$("#cliente_representante").append(data);
                 }
-            });       
+        });       
 
-       } 
-
-       $$(".novo-cliente").click(function(){
-            mainView.router.reloadPage('forms/clientes_form.html');
-       })
+    } 
+    $$(".novo-cliente").click(function(){
+        mainView.router.reloadPage('forms/clientes_form.html');
+    })
 
     // SALVANDO CADASTRO DE CLIENTE
     $$(".salva-cliente").click(function(){
-    //$$('#form-cliente').on('submit', function (e) { 
+        //$$('#form-cliente').on('submit', function (e) { 
         //e.preventDefault();
         var form = $$('#form-cliente');
         $("#form-cliente").parsley().validate();        
@@ -1796,6 +1906,85 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
    var telefone = page.query.telefone;
    var acao = "insert";
    var idlanc = "";
+
+   $$("#status_padrao").change(function(){
+    if ($$("#status_padrao").val() != "" && $$("#status_interativo").val() != ""){
+        $$(".bt-tb2").removeClass('disabled');
+    } else {
+        $$(".bt-tb2").addClass('disabled');
+    }
+   })
+   $$("#status_interativo").change(function(){
+    if ($$("#status_padrao").val() != "" && $$("#status_interativo").val() != ""){
+        $$(".bt-tb2").removeClass('disabled');
+    } else {
+        $$(".bt-tb2").addClass('disabled');
+    }
+   })
+
+   // ABA DESCRIÇÃO (ADICÃO DE PRODUTOS E FINALIDADES (OPORTUNIDADES E NEGÓCIOS))
+   $$.ajax({
+        url: baseurl+'loads/loadProdutosCotacao.php',
+        type: 'get',        
+        success: function(returnedData) {
+            $$("#prod-lanc").append(returnedData);
+        }
+    });
+
+   $$("#prod-lanc, #finalidade-lanc").change(function(){
+        if ($$("#prod-lanc").val() != "" && $$("#finalidade-lanc").val() != ""){
+            $$(".addproduto-l").removeClass("disabled");
+        } else {$$(".addproduto-l").addClass("disabled");}
+    });
+
+    $$.ajax({
+        url: baseurl+'loads/loadProdutosNegociosOportunidades.php?cliente='+cliente,                        
+        success: function(returnedData) {
+            $$(".prod-lanc-rows").html(returnedData);
+        }
+    });
+
+   $$(".addproduto-l").click(function(){
+        var produto = $$("#prod-lanc").val();
+        var pFinalidade = $$("#finalidade-lanc").val();
+        var arr_produto = produto.split(";");
+        var codproduto = arr_produto[0];
+        var nomeproduto = arr_produto[1];
+        $$(".prod-lanc-rows").prepend(
+            '<li class="li-produto-lanc'+codproduto+'">'+ 
+                '<div class="item-content" style="border-bottom:1px dotted #ddd">'+
+
+                    '<div class="item-inner" style="width:50%">'+
+                        '<div class="item-input">'+
+                            '<input type="text" name="produto-lanc-v[]" id="produto-lanc-v[]" value="'+nomeproduto+'" readonly style="color:green"/>'+
+                            '<input type="hidden" name="cod-produto-lanc-v[]" value="'+codproduto+'">'+
+                        '</div>'+
+                    '</div>'+
+
+                    '<div class="item-inner" style="width:50%">'+
+                        '<div class="item-input">'+
+                            '<input type="text" name="finalidade-v[]" id="finalidade-v[]" value="'+pFinalidade+'" readonly style="color:green"/>'+
+                        '</div>'+
+                    '</div>'+                                   
+
+                    '<div class="item-inner" style="width:20%">'+
+                        '<div class="item-input">'+
+                        '<button type="button" class="button color-teal" style="margin-top:16px;float:right;margin-top:5px" onclick="deleta_produto_lanc('+codproduto+')"><i class="material-icons">remove_circle</i></button>'+
+                        '</div>'+
+                    '</div>'+                               
+                
+                '</div>'+
+            '</li>');
+        //$$("input[name=finalidade-lanc]").val("");
+
+        //if($$('.prod-lanc-rows').html() != "") {
+        //    $$("#salva-teste").removeClass("disabled");
+        //}
+        $$("#prod-lanc, #finalidade-lanc").val("");
+        $$(".addproduto-l").addClass("disabled");
+    }) 
+
+    // FIM ABA DESCRIÇÃO (ADICÃO DE PRODUTOS E FINALIDADES (OPORTUNIDADES E NEGÓCIOS))
 
      
    $$(".bt-tb1").click(function(){
@@ -1854,8 +2043,8 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                 dataType: 'json',
                 
                 success: function(returnedData) {
-                    $$("#status_padrao").val(returnedData[0].status);
-                    $$("#status_interativo").val(returnedData[0].status_interativo);
+                    //$$("#status_padrao").val(returnedData[0].status);
+                    //$$("#status_interativo").val(returnedData[0].status_interativo);
                     if (returnedData[0].status_interativo == ""){
                         $$("#status_interativo").val('SEM INTERAÇÃO');
                     }
@@ -1899,6 +2088,22 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
 
         // SALVANDO CADASTRO DE CLIENTE
         $$(".salva-lancamento").click(function(){
+            
+            //form dos produtos (negocios oportunidades)
+            var form2 = $$('#form-lancamento-4');
+            $$.ajax({
+                url: baseurl+'saves/saveLancamentoProdutos.php?codCliente='+cliente,           
+                data: new FormData(form2[0]),
+                type: 'post',
+                processData: false,  // Important!
+                contentType: false,
+                cache: false,                  
+                success: function( response ) {
+                    
+                }
+            })
+            //fim form dos produtos (negocios oportunidades)
+
             var form = $$('#form-lancamento-3');
             var statusPadrao = $$("#status_padrao").val();
             var statusInterativo = $$("#status_interativo").val();
@@ -1911,7 +2116,7 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             
             if ($("#form-lancamento-3").parsley().isValid() && $("#form-lancamento-4").parsley().isValid()) {
               $$.ajax({
-                  url: baseurl+'saves/saveLancamento.php?codCliente='+cliente+'&nomeCliente='+nomecliente+'&codRep='+codrep+'&nomeRep='+nomerep+'&contato='+contato+'&telefone='+telefone+'&statusPadrao='+statusPadrao+'&statusInterativo='+statusInterativo+'&obslanc='+obslanc+'&prodlanc='+prodlanc+'&finalidadelanc='+finalidadelanc,           
+                  url: baseurl+'saves/saveLancamento.php?codCliente='+cliente+'&nomeCliente='+nomecliente+'&codRep='+codrep+'&nomeRep='+nomerep+'&contato='+contato+'&telefone='+telefone+'&statusPadrao='+statusPadrao+'&statusInterativo='+statusInterativo+'&obslanc='+obslanc,           
                   data: new FormData(form[0]),
                   type: 'post',
                   enctype: 'multipart/form-data',
@@ -1965,7 +2170,23 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                   }
                 })           
                
-            }        
+            }   
+
+            //form previsão de vendas
+            var form5 = $$('#form-lancamento-5');
+            $$.ajax({
+                url: baseurl+'saves/savePrevisaoVendasLancamento.php?codCliente='+cliente,           
+                data: new FormData(form5[0]),
+                type: 'post',
+                processData: false,  // Important!
+                contentType: false,
+                cache: false,                  
+                success: function( response ) {
+                    
+                }
+            })
+            //fim form de previsao de vendas
+
         });    
 
    } else {         
@@ -2013,7 +2234,7 @@ myApp.onPageInit('menu-lancamento', function (page){
     $$(".e-cliente").html(nomecliente);
     var paramsLink = 'cliente='+cliente+'&nomecliente='+nomecliente+'&contato='+contato+'&telefone='+telefone;
 
-    $$(".opcoes-lanc").html('<ul>'+
+    $$(".opcoes-lanc").html('<ul>'+                            
                             '<li><a href="forms/clientes_form_lancamento.html?'+paramsLink+'" class="item-link item-content">'+
                             '<div class="item-inner">'+
                             '<div class="item-title">NOVO ACOMPANHAMENTO TÉCNICO</div>'+
@@ -2047,7 +2268,8 @@ myApp.onPageInit('lancamentos', function (page){
     var cliente_search = page.query.cliente_search;
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
-    var periodo_prox_lancamento = page.query.periodo_prox_lancamento;  
+    var periodo_prox_lancamento = page.query.periodo_prox_lancamento; 
+    var id = page.query.id;
 
     // verifica se for cliente logado, só mostra os lancamentos deste cliente
     //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
@@ -2070,7 +2292,7 @@ myApp.onPageInit('lancamentos', function (page){
 
     $$.ajax({
         url: baseurl+'loads/loadLancamentosAgrupado.php',
-        data: { "repres":repres, "cliente":cliente, "sp": sp, "si": si, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_prox_lancamento": periodo_prox_lancamento  },
+        data: { "repres":repres, "cliente":cliente, "sp": sp, "si": si, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_prox_lancamento": periodo_prox_lancamento, "id": id  },
         method: 'get',            
         success: function(returnedData) {
             $$("#results-lancamentos").html(returnedData);
@@ -2105,6 +2327,65 @@ myApp.onPageInit('lancamentos', function (page){
     
 })
 
+
+
+// FORMULARIO DE LANÇAMENTO
+myApp.onPageInit('pedidos', function (page){
+    //var sp = page.query.sp;
+    //var si = page.query.si;
+
+    var situacao = page.query.situacao;
+    var cliente_search = page.query.cliente_search;
+    var rep_search = page.query.rep_search;
+    var periodo_lancamento = page.query.periodo_lancamento;
+    var periodo_entrega = page.query.periodo_entrega; 
+    var id = page.query.id;
+
+    if (tipousuario == 3){
+        var nomecliente = usuarioNome;
+    }
+    if (tipousuario == 2){
+        var repres = rep;
+    }
+
+
+    $$.ajax({
+        url: baseurl+'loads/loadPedidosAgrupado.php',
+        data: { "repres":repres, "cliente":cliente, "cliente_search": cliente_search, "situacao": situacao ,"rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
+        method: 'get',            
+        success: function(returnedData) {
+            $$("#results-pedidos").html(returnedData);
+            var i = 0;
+            $$("#results-pedidos").find("tr").each(function(){
+                i++;
+            });
+            $$(".totalregistros-ped").html("Registros agrupados encontrados: <span style='font-size:18'>"+i+"</span>");
+            //totaisHome();
+
+        }
+    });
+
+    var ptrContent = $$(page.container).find('.pull-to-refresh-content');
+        ptrContent.on('refresh', function (e) {
+        // Emulate 2s loading
+        setTimeout(function () {
+            $$.ajax({
+            url: baseurl+'loads/loadPedidosAgrupado.php',
+            method: 'GET',
+            success: function (data) {                               
+                $$("#results-pedidos").html(data);
+            }
+        });
+        myApp.pullToRefreshDone();
+        }, 2000);
+    }); 
+
+    $$(".remove-filtro-pedidos").click(function(){
+        mainView.router.reloadPage('pedidos.html');
+    })
+    
+})
+
 // COTACOES
 myApp.onPageInit('cotacoes', function (page){ 
 
@@ -2113,7 +2394,8 @@ myApp.onPageInit('cotacoes', function (page){
     var cliente_search = page.query.cliente_search;
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
-    var periodo_entrega = page.query.periodo_entrega; 
+    var periodo_entrega = page.query.periodo_entrega;
+    var id = page.query.id;
 
     if (tipousuario == 3){
         //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
@@ -2128,7 +2410,7 @@ myApp.onPageInit('cotacoes', function (page){
     $$.ajax({
         //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
         url: baseurl+'loads/loadCotacoesAgrupado.php',             
-        data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega  },
+        data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
         success: function(returnedData) {
             $$("#results-cotacoes").html(returnedData);
             var i = 0;
@@ -2167,6 +2449,7 @@ myApp.onPageInit('previsaovendas', function (page){
     var cliente_search = page.query.cliente_search;
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
+    var produto = page.query.produto_search;
 
     if (tipousuario == 3){
         //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
@@ -2180,7 +2463,7 @@ myApp.onPageInit('previsaovendas', function (page){
 
     $$.ajax({
         url: baseurl+'loads/loadPrevisaoVendasAgrupado.php',             
-        data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento  },
+        data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "produto_search": produto  },
         success: function(returnedData) {
             $$("#results-previsao").html(returnedData);
 
@@ -2222,6 +2505,7 @@ myApp.onPageInit('higienizacoes', function (page){
     var cliente_search = page.query.cliente_search;
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
+    var id = page.query.id;
 
     if (tipousuario == 3){
         //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
@@ -2236,7 +2520,7 @@ myApp.onPageInit('higienizacoes', function (page){
     $$.ajax({
         //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
         url: baseurl+'loads/loadHigienizacoesAgrupado.php',             
-        data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento  },
+        data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
         success: function(returnedData) {
             $$("#results-higienizacoes").html(returnedData);
 
@@ -2271,10 +2555,12 @@ myApp.onPageInit('higienizacoes', function (page){
 
 // AÇÕES CORRETIVAS
 myApp.onPageInit('acoescorretivas', function (page){ 
+    var sp = page.query.sp;
     var situacao = page.query.situacao;
     var cliente_search = page.query.cliente_search;
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
+    var id = page.query.id;
 
     
     if (tipousuario == 3){
@@ -2290,7 +2576,7 @@ myApp.onPageInit('acoescorretivas', function (page){
     $$.ajax({
         //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
         url: baseurl+'loads/loadAcoesCorretivasAgrupado.php',             
-        data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento  },
+        data: { "repres":repres, "cliente":cliente, "sp": sp, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
         success: function(returnedData) {
             $$("#results-acoescorretivas").html(returnedData);
             var i = 0;
@@ -2328,6 +2614,7 @@ myApp.onPageInit('testes', function (page){
     var cliente_search = page.query.cliente_search;
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
+    var id = page.query.id;
 
     if (tipousuario == 3){
         //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
@@ -2342,7 +2629,7 @@ myApp.onPageInit('testes', function (page){
     $$.ajax({
         //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
         url: baseurl+'loads/loadTestesAgrupado.php',             
-        data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento  },
+        data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
         success: function(returnedData) {
             $$("#results-testes").html(returnedData);
             var i = 0;
@@ -2449,6 +2736,13 @@ myApp.onPageInit('filtro-lancamentos', function (page){
         rangePicker: true
     });
 
+    $$(".limparDL").click(function(){
+        calendarRange.setValue("");
+    })
+    $$(".limparPL").click(function(){
+        calendarRange2.setValue("");
+    })
+
     var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
         var calendarInline = myApp.calendar({
             container: '#ks-calendar-inline-container',
@@ -2490,8 +2784,9 @@ myApp.onPageInit('filtro-lancamentos', function (page){
         var rep_search = $$("#representante_search").val();
         var periodo_lancamento = $$("#data_search").val();
         var periodo_prox_lancamento = $$("#data_proximo_search").val();
+        var id = $$("#id_search").val();
 
-        mainView.router.loadPage('lancamentos.html?si='+si+'&sp='+sp+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&periodo_prox_lancamento='+periodo_prox_lancamento);
+        mainView.router.loadPage('lancamentos.html?si='+si+'&sp='+sp+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&periodo_prox_lancamento='+periodo_prox_lancamento+'&id='+id);
     });
 })
 
@@ -2508,6 +2803,10 @@ myApp.onPageInit('filtro-notificacoes', function (page){
         dateFormat: 'dd/mm/yyyy',
         rangePicker: true
     });
+
+    $$(".limparPT").click(function(){
+        calendarRange.setValue("");
+    })
 
     var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
         var calendarInline = myApp.calendar({
@@ -2542,8 +2841,9 @@ myApp.onPageInit('filtro-notificacoes', function (page){
         var cliente_search = $$("#cliente_search").val();
         var rep_search = $$("#representante_search").val();
         var periodo_lancamento = $$("#data_search").val();
+        var id = $$("#id_search").val();
 
-        mainView.router.loadPage('notificacoes-list.html?si='+si+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento);
+        mainView.router.loadPage('notificacoes-list.html?si='+si+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&id='+id);
     });
 })
 
@@ -2559,8 +2859,9 @@ myApp.onPageInit('filtro-clientes', function (page){
         var sProd = $$("#produto_search").val();
         var sSituacao = $$("#situacao_search").val();
         var sInteracao = $$("#interacao_search").val();
+        var id = $$("#id_search").val();
 
-        mainView.router.loadPage('clientes.html?sCidade='+sCidade+'&sRep='+sRep+'&sProd='+sProd+'&sSituacao='+sSituacao+'&sInteracao='+sInteracao);
+        mainView.router.loadPage('clientes.html?sCidade='+sCidade+'&sRep='+sRep+'&sProd='+sProd+'&sSituacao='+sSituacao+'&sInteracao='+sInteracao+'&id='+id);
     });
 
     $$.ajax({
@@ -2588,6 +2889,65 @@ myApp.onPageInit('filtro-clientes', function (page){
     });   
 })
 
+// PAINEL DE FILTRO DE PEDIDOS
+myApp.onPageInit('filtro-pedidos', function (page){
+    var calendarRange = myApp.calendar({
+        input: '#data_search',
+        dateFormat: 'dd/mm/yyyy',
+        rangePicker: true
+    });
+    var calendarRange2 = myApp.calendar({
+        input: '#data_entrega_search',
+        dateFormat: 'dd/mm/yyyy',
+        rangePicker: true
+    });
+
+    $$(".limparPC").click(function(){
+        calendarRange.setValue("");
+    })
+    $$(".limparPCE").click(function(){
+        calendarRange2.setValue("");
+    })
+
+
+    var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+        var calendarInline = myApp.calendar({
+            container: '#ks-calendar-inline-container',
+            value: [new Date()],
+            weekHeader: false,
+            header: false,
+            footer: false,
+            toolbarTemplate: '<div class="toolbar calendar-custom-toolbar">' + '<div class="toolbar-inner">' + '<div class="left">' + '<a href="#" class="link icon-only"><i class="icon icon-back"></i></a>' + '</div>' + '<div class="center"></div>' + '<div class="right">' + '<a href="#" class="link icon-only"><i class="icon icon-forward"></i></a>' + '</div>' + '</div>' + '</div>',
+            onOpen: function(p) {
+                $$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] + ', ' + p.currentYear);
+                $$('.calendar-custom-toolbar .left .link').on('click', function() {
+                    calendarInline.prevMonth();
+                });
+                $$('.calendar-custom-toolbar .right .link').on('click', function() {
+                    calendarInline.nextMonth();
+                });
+            },
+            onMonthYearChangeStart: function(p) {
+                $$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] + ', ' + p.currentYear);
+            }
+        });
+
+    // SALVANDO CADASTRO DE CLIENTE
+    $$(".filtra-pedidos").click(function(){
+        //var situacao = $$("#situacao_search").val();
+        var situacao = new Array();
+        $$("input[name='situacao_search']:checked").each(function (){          
+           situacao.push( $(this).val());
+        });
+        var cliente_search = $$("#cliente_search").val();
+        var rep_search = $$("#representante_search").val();
+        var periodo_lancamento = $$("#data_search").val();
+        var periodo_entrega = $$("#data_entrega_search").val();
+        var id = $$("#id_search").val();
+
+        mainView.router.loadPage('pedidos.html?situacao='+situacao+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&periodo_entrega='+periodo_entrega+'&id='+id);
+    });
+})
 
 
 // PAINEL DE FILTRO DE LANCAMENTOS
@@ -2602,6 +2962,14 @@ myApp.onPageInit('filtro-cotacoes', function (page){
         dateFormat: 'dd/mm/yyyy',
         rangePicker: true
     });
+
+    $$(".limparPC").click(function(){
+        calendarRange.setValue("");
+    })
+    $$(".limparPCE").click(function(){
+        calendarRange2.setValue("");
+    })
+
 
     var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
         var calendarInline = myApp.calendar({
@@ -2636,8 +3004,61 @@ myApp.onPageInit('filtro-cotacoes', function (page){
         var rep_search = $$("#representante_search").val();
         var periodo_lancamento = $$("#data_search").val();
         var periodo_entrega = $$("#data_entrega_search").val();
+        var id = $$("#id_search").val();
 
-        mainView.router.loadPage('cotacoes.html?situacao='+situacao+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&periodo_entrega='+periodo_entrega);
+        mainView.router.loadPage('cotacoes.html?situacao='+situacao+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&periodo_entrega='+periodo_entrega+'&id='+id);
+    });
+})
+
+
+
+
+
+// PAINEL DE FILTRO DE LANCAMENTOS
+myApp.onPageInit('filtro-previsao-vendas', function (page){
+    var calendarRange = myApp.calendar({
+        input: '#data_search',
+        dateFormat: 'dd/mm/yyyy',
+        rangePicker: true
+    });
+   
+
+    $$(".limparPV").click(function(){
+        calendarRange.setValue("");
+    })
+    
+
+
+    var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+        var calendarInline = myApp.calendar({
+            container: '#ks-calendar-inline-container',
+            value: [new Date()],
+            weekHeader: false,
+            header: false,
+            footer: false,
+            toolbarTemplate: '<div class="toolbar calendar-custom-toolbar">' + '<div class="toolbar-inner">' + '<div class="left">' + '<a href="#" class="link icon-only"><i class="icon icon-back"></i></a>' + '</div>' + '<div class="center"></div>' + '<div class="right">' + '<a href="#" class="link icon-only"><i class="icon icon-forward"></i></a>' + '</div>' + '</div>' + '</div>',
+            onOpen: function(p) {
+                $$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] + ', ' + p.currentYear);
+                $$('.calendar-custom-toolbar .left .link').on('click', function() {
+                    calendarInline.prevMonth();
+                });
+                $$('.calendar-custom-toolbar .right .link').on('click', function() {
+                    calendarInline.nextMonth();
+                });
+            },
+            onMonthYearChangeStart: function(p) {
+                $$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] + ', ' + p.currentYear);
+            }
+    });
+
+    // SALVANDO CADASTRO DE CLIENTE
+    $$(".filtra-previsao").click(function(){        
+        var cliente_search = $$("#cliente_search").val();
+        var rep_search = $$("#representante_search").val();
+        var periodo_lancamento = $$("#data_search").val();
+        var produto = $$("#produto_search").val();
+        //var id = $$("#id_search").val();
+        mainView.router.loadPage('previsaovendas.html?cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&produto_search='+produto);
     });
 })
 
@@ -2649,6 +3070,10 @@ myApp.onPageInit('filtro-higienizacoes', function (page){
         dateFormat: 'dd/mm/yyyy',
         rangePicker: true
     });
+
+    $$(".limparPH").click(function(){
+        calendarRange.setValue("");
+    })
     var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
         var calendarInline = myApp.calendar({
             container: '#ks-calendar-inline-container',
@@ -2681,8 +3106,9 @@ myApp.onPageInit('filtro-higienizacoes', function (page){
         var cliente_search = $$("#cliente_search").val();
         var rep_search = $$("#representante_search").val();
         var periodo_lancamento = $$("#data_search").val();
+        var id = $$("#id_search").val();
 
-        mainView.router.loadPage('higienizacoes.html?situacao='+situacao+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento);
+        mainView.router.loadPage('higienizacoes.html?situacao='+situacao+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&id='+id);
     });
 })
 
@@ -2692,8 +3118,11 @@ myApp.onPageInit('filtro-acoescorretivas', function (page){
     var calendarRange = myApp.calendar({
         input: '#data_search',
         dateFormat: 'dd/mm/yyyy',
-        rangePicker: true
+        rangePicker: true,
     });
+    $$(".limparPA").click(function(){
+        calendarRange.setValue("");
+    })
     var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
         var calendarInline = myApp.calendar({
             container: '#ks-calendar-inline-container',
@@ -2719,6 +3148,11 @@ myApp.onPageInit('filtro-acoescorretivas', function (page){
     
     $$(".filtra-acoescorretivas").click(function(){
         //var situacao = $$("#situacao_search").val();
+        var sp = new Array();
+        $$("input[name='statuspadrao_search']:checked").each(function (){          
+           sp.push( $(this).val());
+        });
+
         var situacao = new Array();
         $$("input[name='situacao_search']:checked").each(function (){          
            situacao.push( $(this).val());
@@ -2726,8 +3160,9 @@ myApp.onPageInit('filtro-acoescorretivas', function (page){
         var cliente_search = $$("#cliente_search").val();
         var rep_search = $$("#representante_search").val();
         var periodo_lancamento = $$("#data_search").val();
+        var id = $$("#id_search").val();
 
-        mainView.router.loadPage('acoescorretivas.html?situacao='+situacao+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento);
+        mainView.router.loadPage('acoescorretivas.html?situacao='+situacao+'&sp='+sp+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&id='+id);
     });
 })
 
@@ -2739,6 +3174,10 @@ myApp.onPageInit('filtro-testes', function (page){
         dateFormat: 'dd/mm/yyyy',
         rangePicker: true
     });
+
+    $$(".limparPT").click(function(){
+        calendarRange.setValue("");
+    })
 
     var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
         var calendarInline = myApp.calendar({
@@ -2772,8 +3211,9 @@ myApp.onPageInit('filtro-testes', function (page){
         var cliente_search = $$("#cliente_search").val();
         var rep_search = $$("#representante_search").val();
         var periodo_lancamento = $$("#data_search").val();
+        var id = $$("#id_search").val();
 
-        mainView.router.loadPage('testes.html?situacao='+situacao+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento);
+        mainView.router.loadPage('testes.html?situacao='+situacao+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&id='+id);
     });
 })
 
@@ -3156,16 +3596,12 @@ myApp.onPageInit('form-cotacao', function (page){
     // SALVANDO NOVA COTACAO
     $$("#salva-cotacao").click(function(){        
         var form = $$('#form-cotacao'); 
-        //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-        //var cliente = "";
-        //if (usuarioHagnos.hagnosUsuarioTipo == 3){
-        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
         var nomecliente = usuarioNome;
         var usuarioTipo = tipousuario;
-        //}
 
-       // myApp.alert(cliente);
-        //myApp.alert(nomecliente);
+        $('#form-cotacao').parsley().validate();
+        
+        if ($('#form-cotacao').parsley().isValid()) {
         
         $$.ajax({
             url: baseurl+'saves/saveCotacao.php?cliente='+cliente+'&nomecliente='+nomecliente,           
@@ -3179,6 +3615,7 @@ myApp.onPageInit('form-cotacao', function (page){
                       color: 'lightgreen'
                   },
               });
+
               //mainView.router.reloadPage('cotacoes.html');
               //myApp.confirm('Gostaria de fazer novo lançamento?','Cotação',
               //      function () {
@@ -3200,13 +3637,16 @@ myApp.onPageInit('form-cotacao', function (page){
                             $$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
                         }
                   });
-                  mainView.router.reloadPage('forms/clientes_form.html?cliente='+cliente);
-                  myApp.showTab('#tab5');
+                  //mainView.router.reloadPage('forms/clientes_form.html?cliente='+cliente);
+                  //myApp.showTab('#tab5');
+                  mainView.router.loadPage("forms/clientes_form.html?cliente="+cliente+"&nomecliente=&contato=&telefone=&tab=tab4-b");
               } else {
                   mainView.router.back();
               }
+
             }
         }) 
+        }
     });
    
 })
@@ -3317,7 +3757,9 @@ myApp.onPageInit('form-teste', function (page){
             //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
             //var nomecliente = usuarioHagnos.hagnosUsuarioNome;
         //}
+        $('#form-teste').parsley().validate();
         
+        if ($('#form-teste').parsley().isValid()) {
         $$.ajax({
             url: baseurl+'saves/saveTeste.php?cliente='+cliente+'&nomecliente='+nomecliente,           
             data: new FormData(form[0]),
@@ -3339,9 +3781,11 @@ myApp.onPageInit('form-teste', function (page){
               //       mainView.router.back();
               //     }
               // );
-              mainView.router.back();
+              //mainView.router.back();
+              mainView.router.loadPage("forms/clientes_form.html?cliente="+cliente+"&nomecliente="+nomecliente+"&contato=&telefone=&tab=tab4-d");
             }
         }) 
+        }
     });
    
 })
@@ -3354,6 +3798,12 @@ myApp.onPageInit('form-higienizacao', function (page){
     var contato = page.query.contato;
     var telefone = page.query.telefone;
     var idhig = page.query.idhig;
+
+    //$$(".link-voltar").click(function(){
+      //mainView.router.back({ url: myApp.mainView.history[2], force: true })
+      //mainView.router.reloadPage('higienizacoes.html');
+      //mainView.router.back();
+    //})
 
     $$.ajax({
         url: baseurl+'loads/loadEquipamentosCliente.php?cliente='+cliente,
@@ -3457,31 +3907,35 @@ myApp.onPageInit('form-higienizacao', function (page){
     // SALVANDO CADASTRO DE USUARIO
     $$("#salva-higienizacao").click(function(){        
         var form = $$('#form-higienizacao'); 
+        $('#form-higienizacao').parsley().validate();
         
-        $$.ajax({
-            url: baseurl+'saves/saveHigienizacao.php?cliente='+cliente+'&nomecliente='+nomecliente,           
-            data: new FormData(form[0]),
-            type: 'post',
-            success: function( response ) {
-              myApp.addNotification({
-                  message: response,
-                  button: {
-                      text: 'Fechar',
-                      color: 'lightgreen'
-                  },
-              });
-             // myApp.confirm('Gostaria de fazer novo lançamento?','Higienização',
-             //       function () {
-              //         mainView.router.reloadPage('forms/nova_higienizacao_form.html?cliente='+cliente+'&nomecliente='+nomecliente+'&contato='+contato+'&telefone='+telefone);
-              //      },
-              //      function () {
-              //       mainView.router.back();
-              //     }
-              // );
-              //mainView.router.reloadPage('higienizacoes.html');
-              mainView.router.back();
-            }
-        }) 
+        if ($('#form-higienizacao').parsley().isValid()) {
+            $$.ajax({
+                url: baseurl+'saves/saveHigienizacao.php?cliente='+cliente+'&nomecliente='+nomecliente,           
+                data: new FormData(form[0]),
+                type: 'post',
+                success: function( response ) {
+                  myApp.addNotification({
+                      message: response,
+                      button: {
+                          text: 'Fechar',
+                          color: 'lightgreen'
+                      },
+                  });
+                 // myApp.confirm('Gostaria de fazer novo lançamento?','Higienização',
+                 //       function () {
+                  //         mainView.router.reloadPage('forms/nova_higienizacao_form.html?cliente='+cliente+'&nomecliente='+nomecliente+'&contato='+contato+'&telefone='+telefone);
+                  //      },
+                  //      function () {
+                  //       mainView.router.back();
+                  //     }
+                  // );
+                  //mainView.router.reloadPage('higienizacoes.html');
+                  //mainView.router.back();
+                  mainView.router.loadPage("forms/clientes_form.html?cliente="+cliente+"&nomecliente=&contato=&telefone=&tab=tab4-c");
+                }
+            }) 
+        }
     });
    
 })
@@ -3497,12 +3951,21 @@ myApp.onPageInit('form-acaocorretiva', function (page){
     var telefone = page.query.telefone;
     var idacao = page.query.idacao;
 
+    $$.ajax({
+            url: baseurl+'loads/loadProdutosSelectOptions.php',
+            type: "GET",
+            success: function (data) {  
+                $$("#produto-acao").html(data);
+            }
+    });
+
     if (idacao == undefined){
         $$(".select-acao").hide();
     } else {
         $$(".select-acao").show();
         $$("#salva-acao").removeClass("disabled");
         $$(".ac").html("Ação Corretiva: "+idacao);
+
 
         $$.ajax({
             url: baseurl+'loads/loadDadosAcao.php?idacao='+idacao,
@@ -3512,13 +3975,18 @@ myApp.onPageInit('form-acaocorretiva', function (page){
                 //$$(".cotacoes-rows-visualizar").html(returnedData);
                 $$("input[name=id-acao]").val(returnedData[0].id);
                 $$("input[type=datetime-local][name=data_acao]").val(returnedData[0].data);
+                $$("#produto-acao").val(returnedData[0].produto+';'+returnedData[0].nomeproduto);
+                $$("input[name=acao-lote]").val(returnedData[0].lote);
+                $$("input[name=acao-equip]").val(returnedData[0].equipamento);
                 $$("select[name=situacao-acao]").val(returnedData[0].situacao);
                 $$("textarea[name=descricao-acao]").val(returnedData[0].descricao);
                 $$("textarea[name=parecer-acao]").val(returnedData[0].parecer);
-                $$("textarea[name=descricao2-acao]").val(returnedData[0].acaocorretiva); 
+                $$("textarea[name=descricao2-acao]").val(returnedData[0].acaocorretiva);                 
             } 
 
         });
+
+        
     }
 
     $$(".e-cliente").html(nomecliente);
@@ -3542,54 +4010,57 @@ myApp.onPageInit('form-acaocorretiva', function (page){
     
     // SALVANDO CADASTRO DE USUARIO
     $$("#salva-acaocorretiva").click(function(){        
-        var form = $$('#form-acaocorretiva'); 
+        var form = $$('#form-acaocorretiva');        
+        $('#form-acaocorretiva').parsley().validate();
         
-        $$.ajax({
-            url: baseurl+'saves/saveAcao.php?cliente='+cliente+'&nomecliente='+nomecliente,           
-            data: new FormData(form[0]),
-            type: 'post',
-            success: function( response ) {
-              myApp.addNotification({
-                  message: response,
-                  button: {
-                      text: 'Fechar',
-                      color: 'lightgreen'
-                  },
-              });
-              //myApp.confirm('Gostaria de fazer novo lançamento?','Ação corretiva',
-              //      function () {
-              //         mainView.router.reloadPage('forms/nova_acao_corretiva_form.html?cliente='+cliente+'&nomecliente='+nomecliente+'&contato='+contato+'&telefone='+telefone);
-              //      },
-              //      function () {
-              //       mainView.router.back();
-              //     }
-              // );
-              //mainView.router.reloadPage('acoescorretivas.html');
-              //mainView.router.reloadPage('forms/clientes_form.html?cliente='+cliente+'&nomecliente='+nomecliente+'&contato='+contato+'&telefone='+telefone);
-              //myApp.showTab('#tab8');
-              $$.ajax({
-                    url: baseurl+'loads/loadAcoesCorretivas.php?cliente='+cliente,                        
-                    success: function(returnedData) {
-                        $$("#acoes-corretivas-cliente").html(returnedData);
+        if ($('#form-acaocorretiva').parsley().isValid()) {
+            $$.ajax({
+                url: baseurl+'saves/saveAcao.php?cliente='+cliente+'&nomecliente='+nomecliente,           
+                data: new FormData(form[0]),
+                type: 'post',
+                success: function( response ) {
+                  myApp.addNotification({
+                      message: response,
+                      button: {
+                          text: 'Fechar',
+                          color: 'lightgreen'
+                      },
+                  });
+                  //myApp.confirm('Gostaria de fazer novo lançamento?','Ação corretiva',
+                  //      function () {
+                  //         mainView.router.reloadPage('forms/nova_acao_corretiva_form.html?cliente='+cliente+'&nomecliente='+nomecliente+'&contato='+contato+'&telefone='+telefone);
+                  //      },
+                  //      function () {
+                  //       mainView.router.back();
+                  //     }
+                  // );
+                  //mainView.router.reloadPage('acoescorretivas.html');
+                  //mainView.router.reloadPage('forms/clientes_form.html?cliente='+cliente+'&nomecliente='+nomecliente+'&contato='+contato+'&telefone='+telefone);
+                  //myApp.showTab('#tab8');
+                  $$.ajax({
+                        url: baseurl+'loads/loadAcoesCorretivas.php?cliente='+cliente,                        
+                        success: function(returnedData) {
+                            $$("#acoes-corretivas-cliente").html(returnedData);
 
-                        var i = 0;
-                        $$("#acoes-corretivas-cliente").find("tr").each(function(){
-                            i++;
-                        });
-                        $$(".totalregistros-acao").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");
+                            var i = 0;
+                            $$("#acoes-corretivas-cliente").find("tr").each(function(){
+                                i++;
+                            });
+                            $$(".totalregistros-acao").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");
 
 
-                        var dadosRep = $$("select[name=cliente_representante]").val();
-                        //myApp.alert(dadosRep);
-                        var arr_rep = dadosRep.split(";");
-                        var nomer = arr_rep[1];
-                        $$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
-                        mainView.router.back();
-                    }
-                    
-                });
-            }
-        }) 
+                            var dadosRep = $$("select[name=cliente_representante]").val();
+                            //myApp.alert(dadosRep);
+                            var arr_rep = dadosRep.split(";");
+                            var nomer = arr_rep[1];
+                            $$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
+                            mainView.router.back();
+                        }
+                        
+                    });
+                }
+            }) 
+        }
     });
    
 })
@@ -3708,6 +4179,491 @@ myApp.onPageInit('email-cotacao', function (page){
 })
 
 
+// ENVIO DE EMAIL FISPQ
+myApp.onPageInit('email-apresentacao', function (page){
+
+    myApp.closeModal();
+    photoBrowserStandalone.close(); 
+
+
+    $$(".enviar-apresentacao").click(function(){
+        var form = $$('#form-envio-apresentacao');
+        $$.ajax({
+            url: baseurl+'server/enviaApresentacao.php',           
+            data: new FormData(form[0]),
+            type: 'post',
+            success: function( response ) {
+              myApp.addNotification({
+                  message: response,
+                  button: {
+                    text: 'Fechar',
+                    color: 'lightgreen'
+                  },
+              });
+              mainView.router.back();
+            }
+        }) 
+    });
+
+})
+
+function pesquisar_cliente(){
+    var autocompleteDropdownAjax = myApp.autocomplete({
+        input: '#ajax-clientes-list',
+        openIn: 'dropdown',
+        preloader: true, //enable preloader
+        valueProperty: 'id', //object's "value" property name
+        textProperty: 'nome', //object's "text" property name
+        limit: 20, //limit to 20 results
+        //dropdownPlaceholderText: 'Try "JavaScript"',
+        
+        source: function (autocomplete, query, render) {
+            var results = [];
+            if (query.length === 0) {
+                render(results);
+                //$$("#libera").addClass("disabled");
+                return;
+            } else {
+                //$$("#libera").removeClass("disabled");
+            }
+
+            // Show Preloader
+            autocomplete.showPreloader();
+            // Do Ajax request to Autocomplete data
+            $$.ajax({
+                url: baseurl+'loads/ajax-clientes-list.php',
+                method: 'GET',
+                dataType: 'json',
+                //send "query" to server. Useful in case you generate response dynamically
+                data: {
+                    query: query
+                },
+
+                success: function (data) {
+                    
+                    // Find matched items
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].nome.toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(data[i]);
+                    }
+                    // Hide Preoloader
+                    autocomplete.hidePreloader();
+                    // Render items by passing array with result items
+                    render(results);
+                }
+            });
+        },
+        onChange: function (autocomplete, value) {
+            // Add item text value to item-after
+            $$('#ajax-clientes-list').find('.item-after').text(value.nome);
+            // Add item value to input value
+            $$('#ajax-clientes-list').val(value.nome);
+            $$("input[name=codcliente]").val(value.id);
+            $$("input[name=codrep]").val(value.codrep);
+            $$("input[name=nomerep]").val(value.nomerep);
+
+            //ao_empreendimento = $$('#ajax-clientes-list').val();
+            
+            //$$("#libera").attr("href", "https://wdlopes.com.br/obras/resultC.php?c="+$$('#autocomplete-dropdown-ajax').val());
+            //$$("#libera").click(); 
+            
+
+
+        }        
+    });
+}
+
+// VISUALIZAÇÃO DE COTAÇÃO
+myApp.onPageInit('form-pedido', function (page){
+
+    // seleciona o cliente
+    pesquisar_cliente();
+
+    var cliente = page.query.cliente;
+    var nomecliente = page.query.nomecliente;
+    var idrep = page.query.idrep;
+    var nomerep = page.query.nomerep;
+    var contato = page.query.contato;
+    var telefone = page.query.telefone;
+    var idped = page.query.idped;
+
+    //$$('.ks-demo-progressbar-inline .button').on('click', function () {
+    //    var progress = $$(this).attr('data-progress');
+    //    var progressbar = $$('.ks-demo-progressbar-inline .progressbar');
+    //    myApp.setProgressbar(progressbar, progress);
+    //});
+
+    //$$('.modal-pendente').on('click', function () {
+    //    myApp.prompt('Data de entrega', 'Confirma alteração?', function (data) {
+    //        myApp.alert(data);
+    //    });
+    //});
+
+        
+
+    if (cliente != "" && cliente != undefined){
+        $$("#ajax-clientes-list").attr("disabled","disabled"); 
+        $$(".label-cliente").html("Cliente");
+    }
+
+    //$$(".e-cliente").html(nomecliente);
+    $$("input[name=codcliente]").val(cliente);
+    $$("input[name=nomecliente]").val(nomecliente);
+    $$("input[name=codrep]").val(idrep);
+    $$("input[name=nomerep]").val(nomerep);
+
+    
+
+
+
+    $$.ajax({
+        url: baseurl+'loads/loadProdutosCotacao.php',
+        type: 'get',        
+        success: function(returnedData) {
+            $$("#produto-ped").append(returnedData);
+        }
+    });
+
+    
+    if (idped == undefined){
+        //$$(".select-hig").hide();
+        $$(".timeline-pedido").hide();
+        $$(".label-situacao").hide();
+    } else {
+        //$$(".select-hig").show();
+        $$(".dtentrega").remove();
+        $$(".dtlanc").show();
+        $$("#salvar-pedido").removeClass("disabled");
+        $$("input[name=codcliente]").val(cliente); 
+        $$(".hg").html("Pedido: "+idped);
+
+
+        // LIBERA A TAB EXPEDIÇÃO CASO SEJA INFORMADO DADOS NA TAB ANTERIOR
+        $$("#nf, #transportadora").keyup(function(){
+            if ($$("#nf").val() != '' && $$("#transportadora").val() != ''){
+                $$("#finalizado").removeClass("disabled");
+            } else {
+                $$("#finalizado").addClass("disabled");
+            }
+        })        
+
+
+
+        $$.ajax({
+            url: baseurl+'loads/loadDadosPedido.php?idped='+idped,
+            type: 'get', 
+            dataType: 'json',       
+            success: function(returnedData) {
+                $$("input[name=idped]").val(returnedData[0].id);
+                $$("input[name=data-lancamento-ped]").val(returnedData[0].data_lancamento);
+                $$("input[name=data-entrega-ped]").val(returnedData[0].data_entrega);                  
+                //$$("select[name=situacao-ped]").val(returnedData[0].situacao);
+                $$("input[name=situacao-ped]").val(returnedData[0].situacao);
+                $$("textarea[name=info-ped]").val(returnedData[0].informacoes);
+                $$("textarea[name=info-ped-interno], textarea[name=info-ped-interno-tab]").val(returnedData[0].informacoes_interno);
+                
+                $$("textarea[name=obs-producao]").val(returnedData[0].obs_producao);
+                $$("input[name=condicao-ped]").val(returnedData[0].condicao); 
+                $$("select[name=frete-ped]").val(returnedData[0].frete);                         
+                $$("input[name=total-ped-v]").val(returnedData[0].valor_total);
+                $$("input[name=nf]").val(returnedData[0].nf);
+                $$("input[name=email-producao]").val(returnedData[0].email_cli);
+                $$("input[name=transportadora]").val(returnedData[0].transportadora);
+
+                if ($$("input[name=situacao-ped").val() == "PRODUÇÃO"){
+                    $$("#producao").addClass("producao-active");
+                    //myApp.showTab('#tab-2');
+                }
+                if ($$("input[name=situacao-ped").val() == "EXPEDIÇÃO"){
+                    $$("#producao").addClass("producao-active");
+                    $$("#expedicao").addClass("expedicao-active");
+                    //myApp.showTab('#tab-3');
+                }
+                if ($$("input[name=situacao-ped").val() == "ENTREGA"){
+                    $$("#producao").addClass("producao-active");
+                    $$("#expedicao").addClass("expedicao-active");
+                    $$("#entrega").addClass("entrega-active");
+
+                    //myApp.showTab('#tab-4');
+                }
+                if ($$("input[name=situacao-ped").val() == "FINALIZADO"){
+                    $$("#producao").addClass("producao-active");
+                    $$("#expedicao").addClass("expedicao-active");           
+                    $$("#entrega").addClass("entrega-active");
+                    $$("#finalizado").addClass("finalizado-active");
+                    //myApp.showTab('#tab-5');
+                }
+            }
+
+        });
+
+        $$.ajax({
+            url: baseurl+'loads/loadLotesProdutosPedido.php?idped='+idped,
+            type: 'get',      
+            success: function(returnedData) {
+                $$(".lotes-produtos").html(returnedData);
+            }
+        });
+
+        
+
+        $$(".pendente").click(function(){
+            $$("input[name=situacao-ped").val("PENDENTE");
+            $$("#producao").removeClass("producao-active");
+            $$("#expedicao").removeClass("expedicao-active");
+            $$("#entrega").removeClass("entrega-active");
+            $$("#finalizado").removeClass("finalizado-active");
+            removeRequired(); 
+        })
+        $$(".producao").click(function(){
+            $$("input[name=situacao-ped").val("PRODUÇÃO");
+            $$("#producao").addClass("producao-active");
+            $$("#expedicao").removeClass("expedicao-active");
+            $$("#entrega").removeClass("entrega-active");
+            $$("#finalizado").removeClass("finalizado-active");
+            removeRequired();            
+        })
+        $$(".expedicao").click(function(){
+            $$("input[name=situacao-ped").val("EXPEDIÇÃO");
+            $$("#producao").addClass("producao-active");
+            $$("#expedicao").addClass("expedicao-active");
+            $$("#entrega").removeClass("entrega-active");
+            $$("#finalizado").removeClass("finalizado-active");
+            removeRequired(); 
+            $$(".td-lotes input").attr("required", true);            
+
+        })
+        $$(".entrega").click(function(){
+            $$("input[name=situacao-ped").val("ENTREGA");
+            $$("#producao").addClass("producao-active");
+            $$("#expedicao").addClass("expedicao-active");           
+            $$("#entrega").addClass("entrega-active");
+            $$("#finalizado").removeClass("finalizado-active");
+            removeRequired(); 
+            $$("input[name=nf]").attr("required", true);
+            $$("input[name=transportadora]").attr("required", true);
+        })
+        $$(".finalizado").click(function(){
+            $$("#producao").addClass("producao-active");
+            $$("#expedicao").addClass("expedicao-active");           
+            $$("#entrega").addClass("entrega-active");
+            $$("input[name=situacao-ped").val("FINALIZADO");
+            $$("#finalizado").addClass("finalizado-active");
+            removeRequired(); 
+        })       
+
+        // atualiza data de entrega do pedido
+        $$('.modal-pendentee').on('click', function () {
+            myApp.modal({
+              title: 'Data de entrega',
+              text: '',
+              afterText: '<input type="date" name="dataentrega2" class="modal-text-input" value="'+$$("input[name=data-entrega-ped]").val()+'" style="border-bottom:1px solid #ccc">',
+              buttons: [{
+                text: 'OK',
+                onClick: function() {
+                  $$("input[name=data-entrega-ped]").val($$("input[name=dataentrega2").val());
+                  $$.ajax({
+                    url: baseurl+'saves/atualizaDadosPedido.php?idped='+$$("input[name=idped]").val()+'&datae='+$$("input[name=dataentrega2").val(),
+                    type: 'post',
+                    success: function( response ) {
+                      myApp.addNotification({
+                          message: response,
+                          button: {
+                            text: 'Fechar',
+                            color: 'lightgreen'
+                          },
+                      });
+                    }
+                }) 
+                }
+              }, {
+                text: 'CANCELAR',
+                onClick: function() {
+                  //myApp.alert('You clicked Cancel!');
+                }
+              }, ]
+            });
+        })
+
+        $$.ajax({
+            url: baseurl+'loads/loadListaProdutosPedido.php?idped='+idped,
+            type: 'get',      
+            success: function(returnedData) {
+                $$(".list-products-ped").prepend(returnedData);
+                totalizaCot();
+            }
+        });
+
+
+
+        function removeRequired(){
+            $$(".td-lotes input").removeAttr("required");
+            $$("input[name=nf]").removeAttr("required");
+            $$("input[name=transportadora]").removeAttr("required");
+        }
+    }
+
+    
+
+    $$(".addprodutopedido").click(function(){
+
+        $$(".addprodutopedido").addClass("disabled");               
+
+        $$(".list-products-ped").append('<li>'+
+                                        '<div class="item-content">'+
+                                                 
+                                            '<div class="item-inner" style="width:40%">'+               
+                                                '<div class="item-input">'+
+                                                '<select name="produto-ped" class="produto-ped prod"></select>'+
+                                                '</div>'+
+                                            '</div>'+
+                            
+                                            '<div class="item-inner" style="width:20%">'+
+                                                '<div class="item-title label" style="text-alicn:right">QTDE</div>'+              
+                                                '<div class="item-input subtotaliza">'+
+                                                '<input type="text" class="calculo-pedido qtdprod" name="qtd-ped-v[]" value="0" style="color:green"/>'+
+                                                '</div>'+
+                                            '</div>'+
+
+                                            '<div class="item-inner" style="width:20%">'+
+                                                '<div class="item-title label" style="text-alicn:right">PREÇO UNIT.</div>'+
+                                                '<div class="item-input subtotaliza">'+
+                                                '<input type="text" class="calculo-pedido preco_aplicado" name="preco-ped-v[]" value="0.00" style="color:green"/>'+
+                                                '</div>'+
+                                            '</div>'+
+
+                                            '<div class="item-inner" style="width:20%">'+
+                                                '<div class="item-title label" style="text-alicn:right">PREÇO TOTAL</div>'+
+                                                '<div class="item-input">'+
+                                                '<input type="text" class="calculo-pedido" name="subtotal-ped-v[]" value="0.00" style="color:green"/>'+
+                                                '</div>'+
+                                            '</div>'+
+ 
+                                        '</div>'+
+                                        '<div class="item-content" style="border-bottom:1px dotted #ddd">'+
+                                            '<div class="item-inner">'+               
+                                                '<div class="item-input">'+
+                                                    '<textarea name="obs-ped-v[]" id="obs-ped-v[]" rows=2 placeholder="observações"></textarea>'+
+                                                '</div>'+
+                                            '</div>'+
+                                        '</div>'+
+                                        '</li>');
+                if($$('.list-products-ped').html() != "") {
+                    $$("#salvar-pedido").removeClass("disabled");
+                } else {
+                    $$("#salvar-pedido").addClass("disabled");
+                }
+
+                $$.ajax({
+                    url: baseurl+'loads/loadProdutosCotacao.php',
+                    type: 'get',        
+                    success: function(returnedData) {
+                        //$$(".produto-cot").html(returnedData);
+                        $$(".list-products-ped li:last-child").find(".produto-ped").html(returnedData);
+                        
+                    }
+                });
+
+                $$(".produto-ped").change(function(e){
+                    var produto = this.value;
+                    var prod = produto.split(";");
+                    $$(".list-products-ped li:last-child").append(
+                                                    '<input type="hidden" name="cod-produto-ped-v[]" value="'+prod[0]+'">'+
+                                                    '<input type="hidden" name="produto-ped-v[]" value="'+prod[1]+'"/>');
+                    
+                    //toggleAddProd();
+                    
+                })
+
+                
+
+                $(".preco_aplicado").maskMoney({decimal:".",thousands:""});
+                $(".qtdprod").maskMoney({decimal:""});
+
+                var inputs = new Array();
+                $$(".calculo-pedido").keyup(function(){
+
+                    var qtdCot = $$('input[name^="qtd-ped-v"]');
+                    var precoCot = $$('input[name^="preco-ped-v"]');
+                    var subtotalCot = $$('input[name^="subtotal-ped-v"]');
+                    var totalCot = $$('input[name="total-ped-v"]');
+                    var obsCot = $$('textarea[name="obs-ped-v"]');
+                    var subtotal = 0;
+                    var total = 0;
+                    var values = [];
+                    for(var i = 0; i < qtdCot.length; i++){
+                       subtotal = $$(qtdCot[i]).val() * $$(precoCot[i]).val();
+                       total += subtotal;
+                       subtotal = subtotal.toFixed(2);                   
+                       $$(subtotalCot[i]).val(subtotal);
+                       $$(totalCot.val(total.toFixed(2)));
+                    }
+                    toggleAddProd(subtotal);
+                })
+    })
+
+    $$(".minusprodutopedido").click(function(){
+        $$(".addprodutopedido").removeClass("disabled");
+        $$(".list-products-ped li:last-child").remove();
+        totalizaCot();
+    })    
+
+    function toggleAddProd(sub){
+        if (sub == '0.00' || $$(".list-products-ped li:last-child").find(".produto-ped").val() == ""){
+            $$(".addprodutopedido").addClass("disabled");
+        } else {
+            $$(".addprodutopedido").removeClass("disabled");
+        }
+    } 
+
+    function totalizaCot(){
+        var qtdCot = $$('input[name^="qtd-ped-v"]');
+        var precoCot = $$('input[name^="preco-ped-v"]');
+        var subtotalCot = $$('input[name^="subtotal-ped-v"]');
+        var totalCot = $$('input[name="total-ped-v"]');
+        var subtotal = 0;
+        var total = 0;
+        var values = [];                
+        for(var i = 0; i < qtdCot.length; i++){
+            subtotal = $$(qtdCot[i]).val() * $$(precoCot[i]).val();
+            total += subtotal;
+            subtotal = subtotal.toFixed(2);                   
+            $$(subtotalCot[i]).val(subtotal);
+            $$(totalCot.val(total.toFixed(2)));
+        }
+    }
+
+
+    // SALVANDO PEDIDO
+    $$("#salvar-pedido").click(function(){
+        var form = $$('#form-pedido'); 
+        $('#form-pedido').parsley().validate();
+
+        var cliente = $$("input[name=codcliente]").val();
+        var nomecliente = $$("input[name=nomecliente]").val();
+        
+        if ($('#form-pedido').parsley().isValid()) {
+        $$.ajax({
+            url: baseurl+'saves/savePedido.php?cliente='+cliente,           
+            data: new FormData(form[0]),
+            type: 'post',
+            success: function( response ) {
+              myApp.addNotification({
+                  message: response,
+                  button: {
+                    text: 'Fechar',
+                    color: 'lightgreen'
+                  },
+              });
+              //mainView.router.back(); 
+              mainView.router.loadPage("forms/clientes_form.html?cliente="+cliente+"&nomecliente="+nomecliente+"&contato=&telefone=&tab=tab3-d");
+            }
+        }) 
+        }
+    });
+
+})
+
+
 // VISUALIZAÇÃO DE COTAÇÃO
 myApp.onPageInit('form-cotacao-adm', function (page){
     var cliente = page.query.cliente;
@@ -3772,6 +4728,8 @@ myApp.onPageInit('form-cotacao-adm', function (page){
                                             '</li>');
                 if($$('.list-products').html() != "") {
                     $$("#salvar-cotacao").removeClass("disabled");
+                } else {
+                    $$("#salvar-cotacao").addClass("disabled");
                 }
 
                 $$.ajax({
@@ -3791,7 +4749,7 @@ myApp.onPageInit('form-cotacao-adm', function (page){
                                                     '<input type="hidden" name="cod-produto-cot-v[]" value="'+prod[0]+'">'+
                                                     '<input type="hidden" name="produto-cot-v[]" value="'+prod[1]+'"/>');
                     
-                    toggleAddProd();
+                    //toggleAddProd();
                     
                 })
 
@@ -3826,6 +4784,7 @@ myApp.onPageInit('form-cotacao-adm', function (page){
     $$(".minusprodutocotacao").click(function(){
         $$(".addprodutocotacao").removeClass("disabled");
         $$(".list-products li:last-child").remove();
+        totalizaCot();
     })
     
 
@@ -3858,6 +4817,9 @@ myApp.onPageInit('form-cotacao-adm', function (page){
     // SALVANDO COTAÇÃO
     $$("#salvar-cotacao").click(function(){
         var form = $$('#form-cotacao-adm'); 
+        $('#form-cotacao-adm').parsley().validate();
+        
+        if ($('#form-cotacao-adm').parsley().isValid()) {
         $$.ajax({
             url: baseurl+'saves/saveCotacao.php?cliente='+cliente+'&nomecliente='+nomecliente,           
             data: new FormData(form[0]),
@@ -3870,9 +4832,11 @@ myApp.onPageInit('form-cotacao-adm', function (page){
                     color: 'lightgreen'
                   },
               });
-              mainView.router.back();              
+              //mainView.router.back(); 
+              mainView.router.loadPage("forms/clientes_form.html?cliente="+cliente+"&nomecliente=&contato=&telefone=&tab=tab4-b");
             }
         }) 
+        }
     });
 
 })
@@ -4104,7 +5068,7 @@ myApp.onPageInit('form-teste-visualizar', function (page){
     $$(".teste").html("Teste: "+idteste);
 
     $$.ajax({
-        url: baseurl+'loads/loadProdutosCotacao.php',
+       url: baseurl+'loads/loadProdutosCotacao.php',
         type: 'get',        
         success: function(returnedData) {
             $$("#produto-teste").append(returnedData);
@@ -4130,9 +5094,14 @@ myApp.onPageInit('form-teste-visualizar', function (page){
 
             $$.ajax({
                 url: baseurl+'loads/loadListaTeste.php?idteste='+idteste,
-                type: 'get',      
+                type: 'get',   
+                dataType: 'json',  
                 success: function(returnedData) {
-                    $$(".list-products-teste").prepend(returnedData);
+                    //$$(".list-products-teste").prepend(returnedData);
+                    $$("#produto-teste").val(returnedData[0].produto);
+                    $$("#lote-obs").val(returnedData[0].obs_lote);
+                    $$("#qtd-obs").val(returnedData[0].obs_qtd);
+                    $$("#equip-obs").val(returnedData[0].obs_equip);
                 } 
             });
 
@@ -4205,7 +5174,9 @@ myApp.onPageInit('form-teste-visualizar', function (page){
                 $$(".list-products-teste li:last-child").remove();
             })
         }
-    });    
+    });  
+
+
     
     //$$.ajax({
     //    url: 'loads/loadListaProdutosTeste.php?idteste='+idteste,
@@ -4235,8 +5206,11 @@ myApp.onPageInit('form-teste-visualizar', function (page){
      // ATUALIZANDO COTAÇÃO
     $$("#atualizar-teste").click(function(){
         var form = $$('#form-teste-visualizar'); 
+        $('#form-teste-visualizar').parsley().validate();
+        
+        if ($('#form-teste-visualizar').parsley().isValid()) {
         $$.ajax({
-            url: baseurl+'saves/saveTeste.php',           
+            url: baseurl+'saves/saveTeste.php?cliente='+cliente+'&nomecliente='+nomecliente,           
             data: new FormData(form[0]),
             type: 'post',
             success: function( response ) {
@@ -4258,6 +5232,7 @@ myApp.onPageInit('form-teste-visualizar', function (page){
               // );
             }
         }) 
+        }
     });
 
 })
@@ -4488,6 +5463,7 @@ myApp.onPageInit('notificacoes', function (page) {
     var nomerep = page.query.nomerep;
     var cliente = page.query.cliente;
     var nomecliente = page.query.nomecliente;
+    var id = page.query.id;
 
     //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos')); 
     //var usuarioTipo = usuarioHagnos.hagnosUsuarioTipo;
@@ -4499,7 +5475,7 @@ myApp.onPageInit('notificacoes', function (page) {
     }
 
     $$.ajax({
-        url: baseurl+'loads/loadNotificacoes.php?tipointeracao='+tipointeracao+'&idlanc='+idlanc+'&rep='+rep+'&nomerep='+nomerep+'&tipousuario='+tipousuario+'&quem='+quem,
+        url: baseurl+'loads/loadNotificacoes.php?tipointeracao='+tipointeracao+'&idlanc='+idlanc+'&rep='+rep+'&nomerep='+nomerep+'&tipousuario='+tipousuario+'&quem='+quem+'$id='+id,
         type: "GET",
         success: function (data) {           
             $$(".notificacoes-list").html(data);            
@@ -4781,6 +5757,7 @@ myApp.onPageInit('clientes', function (page) {
     var sProd = page.query.sProd;
     var sSituacao = page.query.sSituacao;
     var sInteracao = page.query.sInteracao;
+    var id = page.query.id;
 
     $$(".totalregistros").html("Registros encontrados: "+$$(".lista-clientes").find('.item-content').length);
 
@@ -4796,7 +5773,7 @@ myApp.onPageInit('clientes', function (page) {
 
     $$.ajax({
         url: baseurl+'loads/loadClientes.php',
-        data: { "rep": rep, "tipoUsuario": tipousuario, "sCidade": sCidade, "sRep": sRep, "sProd": sProd, "sSituacao": sSituacao, "sInteracao": sInteracao },
+        data: { "rep": rep, "tipoUsuario": tipousuario, "sCidade": sCidade, "sRep": sRep, "sProd": sProd, "sSituacao": sSituacao, "sInteracao": sInteracao, "id": id },
         type: 'get',
         //dataType: 'json',
         
@@ -5249,11 +6226,11 @@ myApp.onPageInit('autocomplete', function (page) {
 
     // Dropdown with ajax data CONSTRUTORAS
     var autocompleteDropdownAjax = myApp.autocomplete({
-        input: '#autocomplete-dropdown-ajax',
+        input: '#ajax-clientes-list',
         openIn: 'dropdown',
         preloader: true, //enable preloader
         valueProperty: 'id', //object's "value" property name
-        textProperty: 'name', //object's "text" property name
+        textProperty: 'nome', //object's "text" property name
         limit: 20, //limit to 20 results
         //dropdownPlaceholderText: 'Try "JavaScript"',
         
@@ -5271,7 +6248,7 @@ myApp.onPageInit('autocomplete', function (page) {
             autocomplete.showPreloader();
             // Do Ajax request to Autocomplete data
             $$.ajax({
-                url: 'https://wdlopes.com.br/obras/js/autocomplete-languages.php',
+                url: baseurl+'loads/ajax-clientes-list.php',
                 method: 'GET',
                 dataType: 'json',
                 //send "query" to server. Useful in case you generate response dynamically
@@ -5283,7 +6260,7 @@ myApp.onPageInit('autocomplete', function (page) {
                     
                     // Find matched items
                     for (var i = 0; i < data.length; i++) {
-                        if (data[i].name.toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(data[i]);
+                        if (data[i].nome.toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(data[i]);
                     }
                     // Hide Preoloader
                     autocomplete.hidePreloader();
@@ -5295,13 +6272,13 @@ myApp.onPageInit('autocomplete', function (page) {
         onChange: function (autocomplete, value) {
 
             // Add item text value to item-after
-            $$('#autocomplete-dropdown-ajax').find('.item-after').text(value[0]);
+            $$('#ajax-clientes-list').find('.item-after').text(value[0]);
             // Add item value to input value
-            $$('#autocomplete-dropdown-ajax').find('input').val(value[0]);
+            $$('#ajax-clientes-list').find('input').val(value[0]);
 
-            ao_empreendimento = $$('#autocomplete-dropdown-ajax').val();
+            //ao_empreendimento = $$('#ajax-clientes-list').val();
             
-            $$("#libera").attr("href", "https://wdlopes.com.br/obras/resultC.php?c="+$$('#autocomplete-dropdown-ajax').val());
+            //$$("#libera").attr("href", "https://wdlopes.com.br/obras/resultC.php?c="+$$('#autocomplete-dropdown-ajax').val());
             //$$("#libera").click(); 
             
 
