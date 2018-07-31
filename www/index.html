@@ -49,7 +49,7 @@
                       </a>
                   </li>
 
-                  <li class="esconde-cliente"><a href="lancamentos.html" class="item-link close-panel" style="color:#000">
+                  <li class="esconde-cliente"><a href="menu2.html" class="item-link close-panel" style="color:#000">
                       <div class="item-content">
                         <div class="item-media"><img src="img/icons/settings.png" style="width:60%"></div>
                         <div class="item-inner">
@@ -59,66 +59,7 @@
                       </a>
                   </li>
 
-                  <li class="esconde-rep esconde-cliente">
-                    <a href="cotacoes.html" class="item-link close-panel" style="color:#000">
-                      <div class="item-content">
-                        <div class="item-media"><img src="img/icons/budget.png" style="width:60%"></div>
-                        <div class="item-inner">
-                          <div class="item-title">Cotações <span class="notificacao-span"></span></div> 
-                        </div>
-                      </div>
-                      </a>
-                  </li>
-
-                   <li class="esconde-cliente">
-                    <a href="acoescorretivas.html" class="item-link close-panel" style="color:#000">
-                      <div class="item-content">
-                        <div class="item-media"><img src="img/icons/repair.png" style="width:60%"></div>
-                        <div class="item-inner">
-                          <div class="item-title">Ações Corretivas <span class="notificacao-span"></span></div> 
-                        </div>
-                      </div>
-                      </a>
-                  </li>
-
-                  
-
-                  <li class="esconde-rep esconde-admin">
-                    <a href="" class="item-link close-panel" style="color:#000">
-                      <div class="item-content">
-                        <div class="item-media"><img src="img/icons/budget.png" style="width:60%"></div>
-                        <div class="item-inner">
-                          <div class="item-title">Solicitar Cotação</span></div> 
-                        </div>
-                      </div>
-                      </a>
-                  </li>
-
-                 
-                  <li class="esconde-cliente">
-                    <a href="higienizacoes.html" class="item-link close-panel" style="color:#000">
-                      <div class="item-content">
-                        <div class="item-media"><img src="img/icons/cleaner.png" style="width:60%"></div>
-                        <div class="item-inner">
-                          <div class="item-title">Higienizações <span class="notificacao-span-h"></span></div> 
-                        </div>
-                      </div>
-                      </a>
-                  </li>
-
-                 
-
-                  <li class="esconde-cliente">
-                    <a href="testes.html" class="item-link close-panel" style="color:#000">
-                      <div class="item-content">
-                        <div class="item-media"><img src="img/icons/tests.png" style="width:60%"></div>
-                        <div class="item-inner">
-                          <div class="item-title">Testes <span class="notificacao-span"></span></div> 
-                        </div>
-                      </div>
-                      </a>
-                  </li>
-
+    
                   <li class="esconde-cliente"><a href="clientes.html" class="item-link close-panel" style="color:#000">
                       <div class="item-content">
                         <div class="item-media"><img src="img/icons/user.png" style="width:60%"></div>
@@ -255,11 +196,23 @@
 
                    <div class="row">
 
-                     <!-- Each "cell" has col-[widht in percents] class -->
+                   
+                   <!-- Each "cell" has col-[widht in percents] class -->
                     <div class="col-100 esconde-cliente menugeral">
-                      <a href="#" class="menu-bloco item-link ks-pb-standalone">
-                          <div><img src="img/icons/presentation.png"></div>
-                          <span>APRESENTAÇÃO</span>
+                      <a href="pedidos.html" class="menu-bloco item-link">
+                          <div><img src="img/icons/pedidos.png"></div>
+                          <span>PEDIDOS</span>
+                          <div class="notif" style="width:80%">
+                            <div>
+                              <span class="notificacao-expedicao"><span></span></span>
+                              <span class="notificacao-enviado"><span></span></span>
+                            </div>
+                            <div style="margin-right:6px">
+                              <span class="notificacao-pendente"><span></span></span>
+                              <span class="notificacao-producao"><span></span></span>
+                            </div>
+                            
+                          </div> 
                       </a>                      
                     </div>
 
@@ -268,12 +221,20 @@
                       <a href="menu2.html" class="menu-bloco item-link" data-clear-previous-history="true">
                           <div><img src="img/icons/settings.png"></div>
                           <span>ACOMPANHAMENTO TÉCNICO</span>
-                          <div class="notif" style="width:72%">
+                          <div class="notif" style="width:80%">
                             <div>
                               <span class="notificacao-acomp"><span></span></span>
                               <span class="notificacao-acomp2"><span></span></span>
                             </div>
                           </div> 
+                      </a>                      
+                    </div>
+
+                     <!-- Each "cell" has col-[widht in percents] class -->
+                    <div class="col-50 esconde-cliente menugeral">
+                      <a href="#" class="menu-bloco item-link ks-pb-standalone">
+                          <div><img src="img/icons/presentation.png"></div>
+                          <span>APRESENTAÇÃO</span>
                       </a>                      
                     </div>
 
@@ -414,28 +375,7 @@
     <script type="text/javascript" src="js/plugins/maskedinput/jquery.maskedinput-1.3.min.js"></script>
     <script type="text/javascript" src="js/plugins/fileinput/fileinput.js"></script>
 
-    <script>
-    var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));   
-    
-    if(!usuarioHagnos){
-      mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true });
-    } else {
-      
-      $$(".nomeusuario").html(usuarioHagnos.hagnosUsuarioNome); 
-      $$(".tipousuario").html(usuarioHagnos.hagnosUsuarioNomeTipo);   
-      if (usuarioHagnos.hagnosUsuarioTipo == 2){
-          $$(".esconde-rep").hide();
-      }
-      if (usuarioHagnos.hagnosUsuarioTipo == 3){
-          $$(".esconde-cliente").hide();   
-      }
-      if (usuarioHagnos.hagnosUsuarioTipo == 1){
-          $$(".esconde-admin").hide();   
-      }
-    }
-      
-    
-    </script>
+   
     
 
   </body>

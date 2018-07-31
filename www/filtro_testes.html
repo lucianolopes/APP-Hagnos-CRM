@@ -15,9 +15,23 @@
 
 	<form action="testes.html" method="GET" id="form-filtro-testes" class="store-data list-block inputs-list ajax-submit">
 
+	<ul>
+    	<li>
+			<div class="item-content">
+			<div class="item-inner">
+			<div class="item-title label">#ID</div>
+			<div class="item-input">
+			<input type="text" name="id_search" id="id_search"/>
+			</div>
+			</div>
+			</div>
+		</li>
+    </ul>
+
 	<div class="content-block-title">Situação</div>
     
-    <ul class="ul-filtro">
+    <ul class="ul-filtro">    	
+
 		<li>
 		    <label class="label-checkbox item-content">
 		    <input type="checkbox" name="situacao_search" class="situacao_search" value="PENDENTE" />
@@ -78,6 +92,7 @@
 				<div class="item-input">
 				<input type="text" name="data_search" id="data_search" readonly="readonly" placeholder="Selecione período"/>
 				</div>
+				<a href="#" class="limparPT button button-raised">limpar</a>
 				</div>
 				</div>
 			</li>
