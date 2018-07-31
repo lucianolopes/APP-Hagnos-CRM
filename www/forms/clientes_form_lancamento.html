@@ -118,7 +118,8 @@
 									<div class="item-inner">
 									<div class="item-title label">Situação</div>
 									<div class="item-input">
-									<select name="status_padrao" id="status_padrao">
+									<select name="status_padrao" id="status_padrao" required>
+									<option value="">-- Selecione a situação do cliente --</option>
 									<option value="ativo">ATIVO</option>
 									<option value="inativo">INATIVO</option>
 									<option value="prospectado">PROSPECTADO</option>									
@@ -134,7 +135,8 @@
 									<div class="item-title label">Interação</div>
 									<div class="item-input">
 									<select name="status_interativo" id="status_interativo" required>
-									<option value="AÇÃO CORRETIVA" selected=selected>AÇÃO CORRETIVA</option>
+									<option value="">-- Selecione a interação da visita --</option>
+									<option value="AÇÃO CORRETIVA">AÇÃO CORRETIVA</option>
 									<option value="COTAÇÃO">COTAÇÃO</option>
 									<option value="HIGIENIZAÇÃO">HIGIENIZAÇÃO</option>
 									<option value="TESTE">TESTE</option>
@@ -146,7 +148,7 @@
 								</li>
 							</ul>
 
-							<a href="#" class="bt-tb2 button button-fill color-teal">Avançar</a>
+							<a href="#" class="bt-tb2 button button-fill color-teal disabled">Avançar</a>
 
 						</form>
 
@@ -175,7 +177,7 @@
 				<div id="tab4l" class="page-content tab tab-descricao-visita">				
 					<div class="content-block" style="padding:0px">
 						
-						<form id="form-lancamento-4" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+						<form id="form-lancamento-4" class="list-block inputs-list ajax-submit" data-parsley-validate="true" enctype="multipart/form-data">
 
 						<ul>
 							<li class="align-top">
@@ -192,19 +194,39 @@
 
 							</li>
 
-							<li>
-								<div class="item-content">
+							<li style="display:none">
+								<div class="item-content">									
 									<div class="item-inner">
-									<div class="item-title label">Adicionar um produto</div>
-									<div class="item-input">
-									<select name="prod-lanc" id="prod-lanc"></select>
-									</div>
-									</div>
-								</div>
-							</li>
+										<div class="item-title label">Mensagem de audio</div>
+										<div class="fileinput fileinput-new input-group" data-provides="fileinput" style="padding-top:15px">
+										    <div data-trigger="fileinput">
+										    	<i class="fileinput-exists"></i> 
+										    	<span class="fileinput-filename"></span>
+										   	</div>
+										    <span class="input-group-addon btn btn-default btn-file">
+											    <span class="fileinput-new button button-fill color-teal" style="padding-top:6px"><i class="material-icons">mic</i></span>
+											    <input type="file" name="audioAT" accept="audio/*;capture=microphone">			    
+											</span>
+										    <a href="#" class="button button-fill color-red fileinput-exists" data-dismiss="fileinput">Remover</a>
+									    </div>	
+		    						</div>
+		    					</div>
+		    				</li>
 
-							<li>
-								<div class="item-content">
+						</ul>
+
+						<ul>
+								<li>
+								<div class="item-content">									
+									<div class="item-inner">
+										<div class="item-title label">Adicionar um produto</div>
+										<div class="item-input">
+											<select name='prod-lanc' id='prod-lanc' class='prod'>
+												<option value="">Selecione um produto</option>
+											</select>
+										</div>
+									</div>
+
 									<div class="item-inner">
 									<div class="item-title label">Finalidade</div>
 									<div class="item-input">
@@ -215,10 +237,27 @@
 									</select>
 									</div>
 									</div>
-								</div>
-							</li>
 
-						</ul>	
+								</div>
+								</li>
+
+								
+								
+								<li>
+								<div class="item-content">
+									<div class="item-inner">
+										<div class="item-input">
+										<button type='button' class='button button-fill color-teal addproduto-l disabled' style="float:right">adicionar</button>
+										</div>
+									</div>
+								</div>
+								</li>
+							</ul>
+
+							<ul class="prod-lanc-rows" style="margin-bottom:30px"></ul>
+
+
+
 
 						<a href="#" class="bt-tb4 button button-fill color-teal">Avançar</a>					
 
@@ -231,6 +270,7 @@
 					<div class="content-block previsaovenda" style="padding:0px">
 						<div class="card data-table">
 						<div class="card-content">
+						<form id="form-lancamento-5" class="list-block inputs-list ajax-submit">
 						<table style="white-space:nowrap;">
 							<thead>
 							<tr>
@@ -245,6 +285,7 @@
 							<tbody id="previsaovenda">										
 							</tbody>
 						</table>
+						</form>
 						</div>
 						</div>
 					</div>

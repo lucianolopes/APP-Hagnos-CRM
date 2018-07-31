@@ -69,7 +69,7 @@
 			<div class="item-inner">
 				<div class="item-title label">&nbsp;</div>
 				<div class="item-input">
-					<select name='produto-teste' id='produto-teste' class='prod'>
+					<select name='produto-teste' id='produto-teste' class='prod' required>
 						<option value="">Adicione um produto</option>
 					</select>
 					<input type="hidden" name="codcliente" value="">
@@ -78,23 +78,23 @@
 			<div class="item-inner">
 				
 				<div class="row">
-					<div class="item-title floating-label">LOTE</div>
+					<div class="item-title label">LOTE</div>
 					<div class="item-input">
-						<input type="text" name="lote-obs" id="lote-obs">
+						<input type="text" name="lote-obs" id="lote-obs" required>
 					</div>
 				</div>
 
 				<div class="row">
-					<div class="item-title floating-label">QTDE</div>
+					<div class="item-title label">QTDE</div>
 					<div class="item-input">
-						<input type="text" name="qtd-obs" id="qtd-obs">
+						<input type="text" name="qtd-obs" id="qtd-obs" required>
 					</div>
 				</div>
 
 				<div class="row">
-					<div class="item-title floating-label">EQUIPAMENTO</div>
+					<div class="item-title label">EQUIPAMENTO</div>
 					<div class="item-input">
-						<input type="text" name="equip-obs" id="equip-obs">
+						<input type="text" name="equip-obs" id="equip-obs" required>
 					</div>
 				</div>
 			</div>
@@ -102,15 +102,7 @@
 		</li>
 
 		
-		<li>
-		<div class="item-content">
-			<div class="item-inner">
-				<div class="item-input">
-				<button type='button' class='button button-fill color-teal addprodutoteste disabled' style="float:right">adicionar à lista</button>
-				</div>
-			</div>
-		</div>
-		</li>
+		
 	</ul>
 
 	
@@ -135,13 +127,22 @@
 		<li>
 		<div class="item-content">
 			<div class="item-inner">
-				<div class="item-title label">Desempenho do teste</div>
+				<div class="item-title label">Desempenho do teste (será adicionado ao histórico abaixo)</div>
 				<div class="item-input">
-					<textarea class="resizable" name="info-teste" id="info-teste" rows=8 style="min-height:180px"></textarea>
+					<textarea class="resizable" name="desempenho-input" id="desempenho-input" rows=2 style="min-height:80px" required></textarea>
 				</div>				
 			</div>
 		</div>
 		</li>
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Histórico de desempenho do teste</div>
+				<div class="item-input">
+					<textarea class="resizable" name="info-teste" id="info-teste" rows=8 style="min-height:180px" readonly></textarea>
+				</div>				
+			</div>
+		</div>
 		</li>
 	</ul>
 

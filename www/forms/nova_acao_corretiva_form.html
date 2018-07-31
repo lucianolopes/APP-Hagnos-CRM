@@ -47,18 +47,55 @@
 			<div class="item-inner">
 			<div class="item-title label">Data/hora</div>
 			<div class="item-input">
-			<input type="datetime-local" name="data_acao" id="data_acao" value=""/>
+			<input type="datetime-local" name="data_acao" id="data_acao" value="" required/>
 			</div>
 			</div>
 			</div>
 		</li>
 
 		<li>
+			<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Produto</div>
+				<div class="item-input">
+					<select name='produto-acao' id='produto-acao' class='prod' required>
+					</select>
+					<input type="hidden" name="codcliente" value="">
+				</div>
+			</div>
+			</div>
+		</li>
+
+		<li>
+			<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Lote</div>
+				<div class="item-input">
+					<input type="text" name="acao-lote" id="acao-lote" value="" required>
+				</div>
+			</div>
+			</div>
+		</li>
+
+		<li>
+			<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Equipamento</div>
+				<div class="item-input">
+					<input type="text" name="acao-equip" id="acao-equip" value="" required>
+				</div>
+			</div>
+			</div>
+		</li>
+
+		
+
+		<li>
 		<div class="item-content">
 			<div class="item-inner">
 				<div class="item-title label">Descrição do problema</div>
 				<div class="item-input">
-					<textarea class="resizable" name="descricao-acao" id="descricao-acao" rows=8 style="min-height:140px"></textarea>
+					<textarea class="resizable" name="descricao-acao" id="descricao-acao" rows=8 style="min-height:140px" required></textarea>
 				</div>
 			</div>
 		</div>
@@ -78,9 +115,20 @@
 		<li>
 		<div class="item-content">
 			<div class="item-inner">
-				<div class="item-title label">Ação corretiva</div>
+				<div class="item-title label">Ação corretiva (será adicionado ao histórico abaixo)</div>
 				<div class="item-input">
-					<textarea class="resizable" name="descricao2-acao" id="descricao2-acao" rows=8 style="min-height:140px"></textarea>
+					<textarea class="resizable" name="acao-input" id="acao-input" rows=2 style="min-height:80px"></textarea>
+				</div>				
+			</div>
+		</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Histórico de ação corretiva</div>
+				<div class="item-input">
+					<textarea class="resizable" name="descricao2-acao" id="descricao2-acao" rows=8 style="min-height:140px" readonly></textarea>
 				</div>
 			</div>
 		</div>

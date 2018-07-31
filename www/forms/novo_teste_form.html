@@ -77,13 +77,24 @@
 
 	<ul class="testes-rows"></ul>
 
-	<ul style="margin-top:60px">
+	
+	<ul>
 		<li>
 		<div class="item-content">
 			<div class="item-inner">
-				<div class="item-title label">Desempenho do teste</div>
+				<div class="item-title label">Desempenho do teste (será adicionado ao histórico abaixo)</div>
 				<div class="item-input">
-					<textarea class="resizable" name="info-teste" id="info-teste" rows=8 style="min-height:180px"></textarea>
+					<textarea class="resizable" name="desempenho-input" id="desempenho-input" rows=2 style="min-height:80px" required></textarea>
+				</div>				
+			</div>
+		</div>
+		</li>
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Histórico de desempenho do teste</div>
+				<div class="item-input">
+					<textarea class="resizable" name="info-teste" id="info-teste" rows=8 style="min-height:180px" readonly></textarea>
 				</div>				
 			</div>
 		</div>
