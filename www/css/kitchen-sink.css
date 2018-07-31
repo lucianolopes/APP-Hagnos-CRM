@@ -465,10 +465,49 @@ input {font-size:16px!important;}
 .list-group-title {*background-color:#C0EDD7!important;color:#000!important;font-weight:bold;}
 
 
-.notificacao-c, .notificacao-h, .notificacao-h2, .notificacao-a, .notificacao-t, .notificacao-c2, .notificacao-comm, .notificacao-acomp, .notificacao-acomp2 {display:none;position:relative;width:28px; height:28px; background-color:red;border-radius:50%; color:white;text-align:center;margin-bottom:5px;}
-.notificacao-c span, .notificacao-h span, .notificacao-h2 span, .notificacao-c2 span, .notificacao-a span, .notificacao-t span, .notificacao-comm span, .notificacao-acomp span, .notificacao-acomp2 span {display:block;padding-top:5px;font-size:12px!important;}
+.notificacao-c, 
+.notificacao-h, 
+.notificacao-h2, 
+.notificacao-a, 
+.notificacao-t, 
+.notificacao-c2, 
+.notificacao-comm, 
+.notificacao-acomp, 
+.notificacao-acomp2, 
+.notificacao-pendente, 
+.notificacao-producao, 
+.notificacao-expedicao, 
+.notificacao-enviado {display:none;position:relative;width:28px; height:28px; background-color:red;border-radius:50%; color:white;text-align:center;margin-bottom:5px;}
 
-.notificacao-h2, .notificacao-c2, .notificacao-acomp2, .notificacao-acomp2 {background-color:blue;}
+.notificacao-c span, 
+.notificacao-h span, 
+.notificacao-h2 span, 
+.notificacao-c2 span, 
+.notificacao-a span, 
+.notificacao-t span, 
+.notificacao-comm span, 
+.notificacao-acomp span, 
+.notificacao-acomp2 span, 
+.notificacao-pendente span, 
+.notificacao-producao span, 
+.notificacao-expedicao span, 
+.notificacao-enviado span {display:block;padding-top:5px;font-size:12px!important;}
+
+.notificacao-h2, 
+.notificacao-c2, 
+.notificacao-acomp2, 
+.notificacao-acomp2, 
+.notificacao-producao {background-color:blue!important;}
+
+.notificacao-pendente {background-color:red!important}
+.notificacao-expedicao {background-color:orange!important}
+.notificacao-enviado {background-color:green!important}
+
+
+.notificacao-pendente {display:block}
+.notificacao-producao {display:block}
+.notificacao-expedicao {display:block}
+.notificacao-enviado {display:block}
 
  /*input file*/
     .fileUpload 
@@ -502,9 +541,12 @@ input {font-size:16px!important;}
     input, select, textarea, .lista-clientes {text-transform:uppercase!important;}
 
     .notificacao-span {background:red; color:white;text-align:center; padding:3px 8px;border-radius:8px!important;font-size:12px; height:26px;width:26px;}
+}
 .menu-bloco span {font-size:12px!important;}
-.menu-bloco .notif {position:absolute;z-index:9999;width:30px;width:42%;margin-top:-70px!important}
+.menu-bloco .notif, .menu-bloco .notif2 {position:absolute;z-index:9999;width:30px;width:42%;margin-top:-70px!important}
 .menu-bloco .notif div {width:auto;float:right}
+.menu-bloco .notif2 div {width:auto;float:left}
+
 .resumoCliente {text-transform:uppercase!important}
 
 .totalAc, .totalHig, .totalAcoes, .totalTestes, .totalCotacoes {font-size:16px!important;font-weight:bold!important;}
@@ -517,4 +559,15 @@ input {font-size:16px!important;}
 
 .swiper-slide img {
    max-width: auto!important;
+}
+.pendente {padding:0px 10px;padding-right:30px!important;text-align:center;box-shadow:none;color:#fff;margin:2px!important;line-height:50px;height:50px;background: #D90000 url(../img/time-pendente.png) no-repeat;background-position:right;opacity:0.6;}
+.producao {padding:0px 10px;padding-right:30px!important;text-align:center;box-shadow:none;color:#fff;margin:2px!important;line-height:50px;height:50px;background: #00468C url(../img/time-producao.png) no-repeat;background-position:right;opacity:0.3; filter: grayscale(100%);}
+.expedicao {padding:0px 10px;padding-right:30px!important;text-align:center;box-shadow:none;color:#fff;margin:2px!important;line-height:50px;height:50px;background: #FF8000 url(../img/time-expedicao.png) no-repeat;background-position:right;opacity:0.3; filter: grayscale(100%);}
+.finalizado {padding:0px 10px;padding-right:30px!important;text-align:center;box-shadow:none;color:#fff;margin:2px!important;line-height:50px;height:50px;background: #008C23 url(../img/time-enviado.png) no-repeat;background-position:right;opacity:0.3; filter: grayscale(100%);}
+.entrega {padding:0px 10px;padding-right:30px!important;text-align:center;box-shadow:none;color:#fff;margin:2px!important;line-height:50px;height:50px;background: #008C69 url(../img/time-entregue.png) no-repeat;background-position:right;opacity:0.3; filter: grayscale(100%);}
+
+.producao-active, .expedicao-active, .entrega-active, .finalizado-active {opacity:0.6;filter: grayscale(0%);}
+
+@media (min-width: 480px) {
+.pendente {content:'PE...';}
 }
