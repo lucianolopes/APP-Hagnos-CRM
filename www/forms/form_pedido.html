@@ -31,7 +31,7 @@
           <div class="item-inner">
             <div class="item-title label-cliente">Selecione o cliente</div>
             <div class="item-input">
-              <input type="text" name="nomecliente" id="ajax-clientes-list" autocomplete="off" />              
+              <input type="text" name="nomecliente" id="ajax-clientes-list" autocomplete="off" required/>              
             </div>
           </div>
         </li>
@@ -99,7 +99,7 @@
 			              <div class="item-title label">ENVIAR EMAIL AO CLIENTE APÓS SALVAR?</div>
 			              <div class="item-input">
 			                <label class="label-switch">
-			                  <input type="checkbox" name="enviar-producao" value="S" checked/>
+			                  <input type="checkbox" name="enviar-producao" value="S"/>
 			                  <div class="checkbox"></div>
 			                </label>
 			              </div>
@@ -138,7 +138,16 @@
         	</div>
         	<div id="tab-5" class="tab">
         		<div class="content-block">
-          			<p>PEDIDO FINALIZADO</p>
+
+          			<div class="item-content">
+						<div class="item-inner">
+							<p>PEDIDO FINALIZADO</p>
+							<div class="item-title label">Comentários</div>
+							<div class="item-input">
+								<textarea name="comentarios_finalizacao" id="comentarios_finalizacao" rows=3  style="background:#fff"></textarea>
+							</div>
+						</div>
+					</div>
         		</div>
         	</div>
     	</div>
@@ -147,11 +156,11 @@
     
    
     <input type="hidden" name="codcliente">
-    <input type="hidden" name="nomecliente">
+    <input type="hidden" name="nomecliente2">
 	<input type="hidden" name="codrep">
 	<input type="hidden" name="nomerep">			
 	<input type="hidden" name="idped" value="">	
-	<input type="hidden" name="situacao-ped" value="">
+	<input type="hidden" name="situacao-ped" value="PENDENTE">
 	
 	<ul style="margin-top:20px">
 
