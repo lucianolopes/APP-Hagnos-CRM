@@ -477,7 +477,7 @@ input {font-size:16px!important;}
 .notificacao-pendente, 
 .notificacao-producao, 
 .notificacao-expedicao, 
-.notificacao-enviado {display:none;position:relative;width:28px; height:28px; background-color:red;border-radius:50%; color:white;text-align:center;margin-bottom:5px;}
+.notificacao-enviado {opacity:0.6;display:none;position:relative;width:28px; height:28px; background-color:red;border-radius:50%; color:white;text-align:center;margin-bottom:5px;}
 
 .notificacao-c span, 
 .notificacao-h span, 
@@ -501,7 +501,7 @@ input {font-size:16px!important;}
 
 .notificacao-pendente {background-color:red!important}
 .notificacao-expedicao {background-color:orange!important}
-.notificacao-enviado {background-color:green!important}
+.notificacao-enviado {background-color:#008C69!important}
 
 
 .notificacao-pendente {display:block}
