@@ -377,6 +377,18 @@ function loadNotificacoes(tipointeracao, id){
     });
 }
 
+function detalhaCotacoes(cliente){  
+    
+    $$.ajax({
+        url: baseurl+'loads/loadCotacoesDetalhamento.php?cliente='+cliente,
+        method: 'GET',
+        success: function (data) { 
+            $$(".detalhamento"+cliente).html(data);
+        }
+    })
+    $$(".detalhamento").hide();
+    $$(".detalhamento"+cliente).show();
+}
 
 function deletaProd(idp, idcliente, idequip){
     // deleta um produto do equipamento
@@ -1353,7 +1365,9 @@ myApp.onPageInit('form-cliente', function (page){
 
  
     $$(".link-voltar").click(function(){
-      mainView.router.back({ url: myApp.mainView.history[1], force: true });
+      mainView.router.back({ url: myApp.mainView.history[2], force: true });
+      //mainView.router.back();
+
     })
   
     // SALVANDO CADASTRO DE CLIENTE
@@ -2344,10 +2358,11 @@ myApp.onPageInit('pedidos', function (page){
     if (tipousuario == 3){
         var nomecliente = usuarioNome;
     }
+
+
     if (tipousuario == 2){
         var repres = rep;
     }
-
 
     $$.ajax({
         url: baseurl+'loads/loadPedidosAgrupado.php',
@@ -2365,20 +2380,20 @@ myApp.onPageInit('pedidos', function (page){
         }
     });
 
-    var ptrContent = $$(page.container).find('.pull-to-refresh-content');
-        ptrContent.on('refresh', function (e) {
-        // Emulate 2s loading
-        setTimeout(function () {
-            $$.ajax({
-            url: baseurl+'loads/loadPedidosAgrupado.php',
-            method: 'GET',
-            success: function (data) {                               
-                $$("#results-pedidos").html(data);
-            }
-        });
-        myApp.pullToRefreshDone();
-        }, 2000);
-    }); 
+    //var ptrContent = $$(page.container).find('.pull-to-refresh-content');
+    //    ptrContent.on('refresh', function (e) {
+    //    // Emulate 2s loading
+    //    setTimeout(function () {
+    //        $$.ajax({
+    //        url: baseurl+'loads/loadPedidosAgrupado.php',
+    //        method: 'GET',
+    //        success: function (data) {                               
+    //            $$("#results-pedidos").html(data);
+    //        }
+    //    });
+    //    myApp.pullToRefreshDone();
+    //    }, 2000);
+    //}); 
 
     $$(".remove-filtro-pedidos").click(function(){
         mainView.router.reloadPage('pedidos.html');
@@ -2397,6 +2412,12 @@ myApp.onPageInit('cotacoes', function (page){
     var periodo_entrega = page.query.periodo_entrega;
     var id = page.query.id;
 
+    if (page.query.detalhado == undefined){
+        var urlcot = baseurl+'loads/loadCotacoesAgrupado.php';
+    } else {
+        var urlcot = baseurl+'loads/loadCotacoesDetalhamento.php';
+    }
+
     if (tipousuario == 3){
         //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
         var nomecliente = usuarioNome;
@@ -2409,7 +2430,8 @@ myApp.onPageInit('cotacoes', function (page){
 
     $$.ajax({
         //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
-        url: baseurl+'loads/loadCotacoesAgrupado.php',             
+        //url: baseurl+'loads/loadCotacoesAgrupado.php',  
+        url: urlcot,           
         data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
         success: function(returnedData) {
             $$("#results-cotacoes").html(returnedData);
@@ -3974,14 +3996,14 @@ myApp.onPageInit('form-acaocorretiva', function (page){
             success: function(returnedData) {
                 //$$(".cotacoes-rows-visualizar").html(returnedData);
                 $$("input[name=id-acao]").val(returnedData[0].id);
-                $$("input[type=datetime-local][name=data_acao]").val(returnedData[0].data);
-                $$("#produto-acao").val(returnedData[0].produto+';'+returnedData[0].nomeproduto);
+                $$("input[type=datetime-local][name=data_acao]").val(returnedData[0].data);                
                 $$("input[name=acao-lote]").val(returnedData[0].lote);
                 $$("input[name=acao-equip]").val(returnedData[0].equipamento);
                 $$("select[name=situacao-acao]").val(returnedData[0].situacao);
                 $$("textarea[name=descricao-acao]").val(returnedData[0].descricao);
                 $$("textarea[name=parecer-acao]").val(returnedData[0].parecer);
-                $$("textarea[name=descricao2-acao]").val(returnedData[0].acaocorretiva);                 
+                $$("textarea[name=descricao2-acao]").val(returnedData[0].acaocorretiva);
+                $$("#produto-acao").val(returnedData[0].produto+';'+returnedData[0].nomeproduto);                 
             } 
 
         });
@@ -4037,27 +4059,29 @@ myApp.onPageInit('form-acaocorretiva', function (page){
                   //mainView.router.reloadPage('acoescorretivas.html');
                   //mainView.router.reloadPage('forms/clientes_form.html?cliente='+cliente+'&nomecliente='+nomecliente+'&contato='+contato+'&telefone='+telefone);
                   //myApp.showTab('#tab8');
-                  $$.ajax({
-                        url: baseurl+'loads/loadAcoesCorretivas.php?cliente='+cliente,                        
-                        success: function(returnedData) {
-                            $$("#acoes-corretivas-cliente").html(returnedData);
 
-                            var i = 0;
-                            $$("#acoes-corretivas-cliente").find("tr").each(function(){
-                                i++;
-                            });
-                            $$(".totalregistros-acao").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");
+                  mainView.router.loadPage("forms/clientes_form.html?cliente="+cliente+"&nomecliente=&contato=&telefone=&tab=tab4-e");
 
-
-                            var dadosRep = $$("select[name=cliente_representante]").val();
-                            //myApp.alert(dadosRep);
-                            var arr_rep = dadosRep.split(";");
-                            var nomer = arr_rep[1];
-                            $$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
-                            mainView.router.back();
-                        }
+                  //$$.ajax({
+                  //      url: baseurl+'loads/loadAcoesCorretivas.php?cliente='+cliente,                        
+                  //      success: function(returnedData) {
+                  //          $$("#acoes-corretivas-cliente").html(returnedData);
+//
+                  //          var i = 0;
+                  //          $$("#acoes-corretivas-cliente").find("tr").each(function(){
+                  //              i++;
+                  //          });
+                  //          $$(".totalregistros-acao").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");
+//
+//
+                  //          var dadosRep = $$("select[name=cliente_representante]").val();
+                  //          //myApp.alert(dadosRep);
+                  //          var nomer = arr_rep[1];
+                  //          $$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
+                            //mainView.router.back();
+                  //      }
                         
-                    });
+                  //});
                 }
             }) 
         }
@@ -4231,7 +4255,7 @@ function pesquisar_cliente(){
             autocomplete.showPreloader();
             // Do Ajax request to Autocomplete data
             $$.ajax({
-                url: baseurl+'loads/ajax-clientes-list.php',
+                url: baseurl+'loads/ajax-clientes-list.php?rep='+rep,
                 method: 'GET',
                 dataType: 'json',
                 //send "query" to server. Useful in case you generate response dynamically
@@ -4307,7 +4331,7 @@ myApp.onPageInit('form-pedido', function (page){
 
     //$$(".e-cliente").html(nomecliente);
     $$("input[name=codcliente]").val(cliente);
-    $$("input[name=nomecliente]").val(nomecliente);
+    $$("input[name=nomecliente], input[name=nomecliente2]").val(nomecliente);
     $$("input[name=codrep]").val(idrep);
     $$("input[name=nomerep]").val(nomerep);
 
@@ -4368,6 +4392,14 @@ myApp.onPageInit('form-pedido', function (page){
                 $$("input[name=nf]").val(returnedData[0].nf);
                 $$("input[name=email-producao]").val(returnedData[0].email_cli);
                 $$("input[name=transportadora]").val(returnedData[0].transportadora);
+                $$("textarea[name=comentarios_finalizacao]").val(returnedData[0].comentarios_finalizacao);
+
+                if ($$("#nf").val() != '' && $$("#transportadora").val() != ''){
+                    $$("#finalizado").removeClass("disabled");
+                } else {
+                    $$("#finalizado").addClass("disabled");
+                }
+
 
                 if ($$("input[name=situacao-ped").val() == "PRODUÇÃO"){
                     $$("#producao").addClass("producao-active");
@@ -4401,8 +4433,22 @@ myApp.onPageInit('form-pedido', function (page){
             type: 'get',      
             success: function(returnedData) {
                 $$(".lotes-produtos").html(returnedData);
+                var inputLotes = [];
+                $$("input[name='lote-produto[]']").each(function() {
+                    var valor = $(this).val();
+                    if (valor) {
+                        inputLotes.push(valor);
+                    }
+                });
+                if (inputLotes.length === 0) {
+                    $$("#entrega").addClass("disabled");
+                } else {
+                    $$("#entrega").removeClass("disabled");
+                } 
             }
         });
+
+
 
         
 
@@ -4513,21 +4559,21 @@ myApp.onPageInit('form-pedido', function (page){
                                                  
                                             '<div class="item-inner" style="width:40%">'+               
                                                 '<div class="item-input">'+
-                                                '<select name="produto-ped" class="produto-ped prod"></select>'+
+                                                '<select name="produto-ped" class="produto-ped prod" required></select>'+
                                                 '</div>'+
                                             '</div>'+
                             
                                             '<div class="item-inner" style="width:20%">'+
                                                 '<div class="item-title label" style="text-alicn:right">QTDE</div>'+              
                                                 '<div class="item-input subtotaliza">'+
-                                                '<input type="text" class="calculo-pedido qtdprod" name="qtd-ped-v[]" value="0" style="color:green"/>'+
+                                                '<input type="text" class="calculo-pedido qtdprod" name="qtd-ped-v[]" value="" placeholder="0" style="color:green" required/>'+
                                                 '</div>'+
                                             '</div>'+
 
                                             '<div class="item-inner" style="width:20%">'+
                                                 '<div class="item-title label" style="text-alicn:right">PREÇO UNIT.</div>'+
                                                 '<div class="item-input subtotaliza">'+
-                                                '<input type="text" class="calculo-pedido preco_aplicado" name="preco-ped-v[]" value="0.00" style="color:green"/>'+
+                                                '<input type="text" class="calculo-pedido preco_aplicado" name="preco-ped-v[]" value="" placeholder="0.00" style="color:green" required/>'+
                                                 '</div>'+
                                             '</div>'+
 
@@ -4547,6 +4593,7 @@ myApp.onPageInit('form-pedido', function (page){
                                             '</div>'+
                                         '</div>'+
                                         '</li>');
+
                 if($$('.list-products-ped').html() != "") {
                     $$("#salvar-pedido").removeClass("disabled");
                 } else {
@@ -4601,9 +4648,13 @@ myApp.onPageInit('form-pedido', function (page){
                 })
     })
 
-    $$(".minusprodutopedido").click(function(){
+    $$(".minusprodutopedido").click(function(){        
         $$(".addprodutopedido").removeClass("disabled");
         $$(".list-products-ped li:last-child").remove();
+        
+        if($$('.list-products-ped').html() == "") {
+            $$("#salvar-pedido").addClass("disabled");
+        }
         totalizaCot();
     })    
 
@@ -4622,7 +4673,11 @@ myApp.onPageInit('form-pedido', function (page){
         var totalCot = $$('input[name="total-ped-v"]');
         var subtotal = 0;
         var total = 0;
-        var values = [];                
+        var values = []; 
+        if (qtdCot.length == 0){
+            $$('input[name="total-ped-v"]').val('0.00');
+            $$("#salvar-pedido").addClass("disabled");
+        }               
         for(var i = 0; i < qtdCot.length; i++){
             subtotal = $$(qtdCot[i]).val() * $$(precoCot[i]).val();
             total += subtotal;
@@ -4693,21 +4748,21 @@ myApp.onPageInit('form-cotacao-adm', function (page){
                                                 '<div class="item-content">'+
                                                    '<div class="item-inner" style="width:40%">'+               
                                                         '<div class="item-input">'+
-                                                        '<select name="produto-cot" class="produto-cot prod"></select>'+
+                                                        '<select name="produto-cot" class="produto-cot prod" required></select>'+
                                                         '</div>'+
                                                     '</div>'+
                         
                                                     '<div class="item-inner" style="width:20%">'+
                                                         '<div class="item-title label" style="text-alicn:right">QTDE</div>'+              
                                                         '<div class="item-input subtotaliza">'+
-                                                        '<input type="text" class="calculo-cotacao qtdprod" name="qtd-cot-v[]" value="0" style="color:green"/>'+
+                                                        '<input type="text" class="calculo-cotacao qtdprod" name="qtd-cot-v[]" value="" placeholder="0" style="color:green" required/>'+
                                                         '</div>'+
                                                     '</div>'+
 
                                                     '<div class="item-inner" style="width:20%">'+
                                                         '<div class="item-title label" style="text-alicn:right">PREÇO UNIT.</div>'+
                                                         '<div class="item-input subtotaliza">'+
-                                                        '<input type="text" class="calculo-cotacao preco_aplicado" name="preco-cot-v[]" value="0.00" style="color:green"/>'+
+                                                        '<input type="text" class="calculo-cotacao preco_aplicado" name="preco-cot-v[]" value="" placeholder="0.00" style="color:green" required/>'+
                                                         '</div>'+
                                                     '</div>'+
 
@@ -4803,7 +4858,11 @@ myApp.onPageInit('form-cotacao-adm', function (page){
         var totalCot = $$('input[name="total-cot-v"]');
         var subtotal = 0;
         var total = 0;
-        var values = [];                
+        var values = [];
+        if (qtdCot.length == 0){
+            $$('input[name="total-cot-v"]').val('0.00');
+            $$("#salvar-cotacao").addClass("disabled");
+        }                
         for(var i = 0; i < qtdCot.length; i++){
             subtotal = $$(qtdCot[i]).val() * $$(precoCot[i]).val();
             total += subtotal;
@@ -4883,30 +4942,34 @@ myApp.onPageInit('form-cotacao-visualizar', function (page){
 
                 $$(".list-products").append('<li>'+
                                             '<div class="item-content" style="border-bottom:1px dotted #ddd">'+
-                                               '<div class="item-inner" style="width:40%">'+               
+                                               '<div class="item-inner" style="width:40%">'+
+                                                    '<div class="item-title label">PRODUTO</div>'+              
                                                     '<div class="item-input">'+
-                                                    '<select name="produto-cot" class="produto-cot prod"></select>'+
+                                                    '<select name="produto-cot" class="produto-cot prod" required></select>'+
+                                                    '</div>'+
                                                 '</div>'+
-                                            '</div>'+
                     
-                                            '<div class="item-inner" style="width:20%">'+                
-                                                '<div class="item-input subtotaliza">'+
-                                                    '<input type="text" class="calculo-cotacao qtdprod" name="qtd-cot-v[]" value="0" style="color:green"/>'+
+                                                '<div class="item-inner" style="width:20%">'+ 
+                                                    '<div class="item-title label">QTDE</div>'+              
+                                                    '<div class="item-input subtotaliza">'+
+                                                        '<input type="text" class="calculo-cotacao qtdprod" name="qtd-cot-v[]" value="" placeholder="0" style="color:green" required/>'+
+                                                    '</div>'+
                                                 '</div>'+
-                                            '</div>'+
 
-                                            '<div class="item-inner" style="width:20%">'+
-                                                '<div class="item-input subtotaliza">'+
-                                                    '<input type="text" class="calculo-cotacao preco_aplicado" name="preco-cot-v[]" value="0.00" style="color:green"/>'+
+                                                '<div class="item-inner" style="width:20%">'+
+                                                    '<div class="item-title label">PREÇO</div>'+
+                                                    '<div class="item-input subtotaliza">'+
+                                                        '<input type="text" class="calculo-cotacao preco_aplicado" name="preco-cot-v[]" value="" pnaceholder="0.00" style="color:green" required/>'+
+                                                    '</div>'+
                                                 '</div>'+
-                                            '</div>'+
 
-                                            '<div class="item-inner" style="width:20%">'+
-                                                '<div class="item-input">'+
-                                                    '<input type="text" class="calculo-cotacao" name="subtotal-cot-v[]" value="0.00" style="color:green"/>'+
+                                                '<div class="item-inner" style="width:20%">'+
+                                                    '<div class="item-title label">VALOR TOTAL</div>'+
+                                                    '<div class="item-input">'+
+                                                        '<input type="text" class="calculo-cotacao" name="subtotal-cot-v[]" value="" placeholer="0.00" style="color:green"/>'+
+                                                    '</div>'+
                                                 '</div>'+
-                                            '</div>'+
-                                            '<div class="item-content" style="border-bottom:1px dotted #ddd">'+
+                                                '<div class="item-content" style="border-bottom:1px dotted #ddd">'+
                                                     '<div class="item-inner">'+               
                                                         '<div class="item-input">'+
                                                         '<textarea name="obs-cot-v[]" id="obs-cot-v[]" rows=2 placeholder="observações"></textarea>'+
@@ -4969,8 +5032,11 @@ myApp.onPageInit('form-cotacao-visualizar', function (page){
 
             $$(".minusprodutocotacao").click(function(){
                 $$(".addprodutocotacao").removeClass("disabled");
-                $$(".list-products li:last-child").remove();
+                $$(".cotacoes-rows-visualizar li:last-child").remove();
+                totalizaCot();
             })
+
+
         }
     });    
     
@@ -5026,34 +5092,36 @@ myApp.onPageInit('form-cotacao-visualizar', function (page){
         $$("#atualizar-cotacao").hide();
     }
 
-
-
      // ATUALIZANDO COTAÇÃO
     $$("#atualizar-cotacao").click(function(){
         var form = $$('#form-cotacao-visualizar'); 
-        $$.ajax({
-            url: baseurl+'saves/saveCotacao.php',           
-            data: new FormData(form[0]),
-            type: 'post',
-            success: function( response ) {
-              myApp.addNotification({
-                  message: response,
-                  button: {
-                    text: 'Fechar',
-                    color: 'lightgreen'
-                  },
-              });
-              //mainView.router.loadPage('cotacoes.html');
-              //myApp.confirm('Gostaria de fazer novo lançamento?','Cotação',
-              //      function () {
-              //         mainView.router.reloadPage('forms/nova_cotacao_form.html?cliente='+cliente+'&nomecliente='+nomecliente+'&contato='+contato+'&telefone='+telefone);
-              //      },
-              //      function () {
-                     mainView.router.back();
-              //     }
-              // );
-            }
-        }) 
+        $('#form-cotacao-visualizar').parsley().validate();
+        
+        if ($('#form-cotacao-visualizar').parsley().isValid()) {
+            $$.ajax({
+                url: baseurl+'saves/saveCotacao.php',           
+                data: new FormData(form[0]),
+                type: 'post',
+                success: function( response ) {
+                  myApp.addNotification({
+                      message: response,
+                      button: {
+                        text: 'Fechar',
+                        color: 'lightgreen'
+                      },
+                  });
+                  //mainView.router.loadPage('cotacoes.html');
+                  //myApp.confirm('Gostaria de fazer novo lançamento?','Cotação',
+                  //      function () {
+                  //         mainView.router.reloadPage('forms/nova_cotacao_form.html?cliente='+cliente+'&nomecliente='+nomecliente+'&contato='+contato+'&telefone='+telefone);
+                  //      },
+                  //      function () {
+                         mainView.router.back();
+                  //     }
+                  // );
+                }
+            })
+        }
     });
 
 })
@@ -6221,9 +6289,6 @@ myApp.onPageInit('autocomplete', function (page) {
 
 
 
-
-
-
     // Dropdown with ajax data CONSTRUTORAS
     var autocompleteDropdownAjax = myApp.autocomplete({
         input: '#ajax-clientes-list',
@@ -6248,7 +6313,7 @@ myApp.onPageInit('autocomplete', function (page) {
             autocomplete.showPreloader();
             // Do Ajax request to Autocomplete data
             $$.ajax({
-                url: baseurl+'loads/ajax-clientes-list.php',
+                url: baseurl+'loads/ajax-clientes-list.php?rep='+rep,
                 method: 'GET',
                 dataType: 'json',
                 //send "query" to server. Useful in case you generate response dynamically
