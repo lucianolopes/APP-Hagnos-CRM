@@ -205,16 +205,92 @@
 						</li>	
 
 						<li>
-						<div class="item-content">
-						<div class="item-inner">
-						<div class="item-title label">Comprador/Encarregado</div>
-						<div class="item-input">
-						<input type="text" name="cliente_responsavel" autocomplete="off" />
-						</div>
-						</div>
+						<h4 style="margin-left:15px">Responsáveis e setores</h4>
+						<div class="item-content">				
+							<div class="item-inner">
+								<div class="item-title label">Comprador/Encarregado</div>
+								<div class="item-input">
+									<input type="text" name="cliente_responsavel" autocomplete="off" />
+								</div>
+							</div>
+							<div class="item-inner">
+								<div class="item-title label">Setor Comprador/Encarregado</div>
+								<div class="item-input">
+									<input type="text" name="cliente_responsavel_setor" autocomplete="off" />
+								</div>
+							</div>
 						</div>
 						</li>
 
+						<li>
+						<div class="item-content">				
+							<div class="item-inner">
+								<div class="item-title label">Responsável 2</div>
+								<div class="item-input">
+									<input type="text" name="cliente_responsavel2" autocomplete="off" />
+								</div>
+							</div>
+							<div class="item-inner">
+								<div class="item-title label">Setor do Responsável 2</div>
+								<div class="item-input">
+									<input type="text" name="cliente_responsavel2_setor" autocomplete="off" />
+								</div>
+							</div>
+						</div>
+						</li>
+
+						<li>
+						<div class="item-content">				
+							<div class="item-inner">
+								<div class="item-title label">Responsável 3</div>
+								<div class="item-input">
+									<input type="text" name="cliente_responsavel3" autocomplete="off" />
+								</div>
+							</div>
+							<div class="item-inner">
+								<div class="item-title label">Setor do Responsável 3</div>
+								<div class="item-input">
+									<input type="text" name="cliente_responsavel3_setor" autocomplete="off" />
+								</div>
+							</div>
+						</div>
+						</li>
+
+						<li>
+						<div class="item-content">				
+							<div class="item-inner">
+								<div class="item-title label">Responsável 4</div>
+								<div class="item-input">
+									<input type="text" name="cliente_responsavel4" autocomplete="off" />
+								</div>
+							</div>
+							<div class="item-inner">
+								<div class="item-title label">Setor do Responsável 4</div>
+								<div class="item-input">
+									<input type="text" name="cliente_responsavel4_setor" autocomplete="off" />
+								</div>
+							</div>
+						</div>
+						</li>
+
+						<li>
+						<div class="item-content">				
+							<div class="item-inner">
+								<div class="item-title label">Responsável 5</div>
+								<div class="item-input">
+									<input type="text" name="cliente_responsavel5" autocomplete="off" />
+								</div>
+							</div>
+							<div class="item-inner">
+								<div class="item-title label">Setor do Responsável 5</div>
+								<div class="item-input">
+									<input type="text" name="cliente_responsavel5_setor" autocomplete="off" />
+								</div>
+							</div>
+						</div>
+						</li>
+
+					
 						<li>
 						<div class="item-content">
 						<div class="item-inner">
@@ -273,28 +349,110 @@
 					<h4 class="resumoCliente" style="padding:0px 15px"></h4>
 
 
-					<div class="toolbar tabbar" style="padding-top:0px!important;margin-top:0px!important">
+					<div class="toolbar tabbar tabbar-scrollable tabNegociacoes" style="padding-top:0px!important;margin-top:0px!important">
 						<div class="toolbar-inner">
-							<a href="#tab3-b" class="active tab-link"><span class="totalregistros-prod-n"></span></a>
-							<a href="#tab3-c" class="tab-link"><span class="totalregistros-prod-o"></span></a>
+							<a href="#tab3-c" class="active tab-link"><span class="totalregistros-prod-o"></span></a>
+							<a href="#tab4-b" class="tab-link">COTAÇÕES</a>
+							<a href="#tab3-b" class="tab-link"><span class="totalregistros-prod-n"></span></a>
+							<a href="#tab5p"  class="tab-link">PREVISÃO DE VENDA</a>
 							<a href="#tab3-d" class="tab-link"><span class="totalregistros-pedido"></span></a>
 						</div>
 					</div>
 
 					<div class="tabs-animated-wrap">
 						<div class="tabs">
-							
-							<div id="tab3-b" class="page-content tab active" style="padding-top:50px!important">
-								<div class="list-block accordion-list" style="margin-top:0px!important">									
-									<div class="lista-prods-negocios"></div>
-								</div>
-							</div>
-							<div id="tab3-c" class="page-content tab" style="padding-top:70px!important">
+							<div id="tab3-c" class="active page-content tab" style="padding-top:70px!important">
 								<div class="list-block accordion-list" style="margin-top:0px!important">									
 									<div class="lista-prods-oportunidades"></div>
 								</div>
 							</div>
+							<div id="tab4-b" class="page-content tab" style="padding-top:50px!important">
+								<div class="content-block" style="padding:0px">				
 
+									<div class="content-block">
+									<h3 class="totalregistros-cotacao"></h3>
+									<p class="buttons-row">
+									<a href="" class="button button-fill button-raised addTab">NOVA COTAÇÃO</a>
+									</p>
+									</div>
+
+									<div class="card data-table">
+						
+										<div class="card-header" style="display:none">
+											<div class="data-table-actions">
+												<a class="link icon-only">
+													<i class="icon material-icons">sort</i></a><a class="link icon-only"><i class="icon material-icons">more_vert</i>
+												</a>
+											</div>
+										</div>
+
+										<div class="card-content">
+											
+											<table style="white-space:nowrap;">
+											<thead>
+
+												<tr>
+												<th class="numeric-cell" style="text-align:center">VER/EDITAR</th>	
+												<TH class="numeric-cell">ID</TH>
+												<th class="label-cell">DATA/HORA</th>
+												<th class="label-cell" style="text-align:right">VALOR TOTAL</th>				
+												<th class="label-cell">ENTREGA</th>
+												<th class="label-cell">FRETE</th>				
+												<th class="label-cell">SITUAÇÃO</th>
+												<th class="numeric-cell" style="text-align:center">NOTIFICAÇÕES</th>
+												<th class="numeric-cell" style="text-align:center">EMAIL</th>
+												<th class="numeric-cell" style="text-align:center">EXCLUIR</th>
+												</tr>
+
+											</thead>
+											<tbody id="cotacoes-cliente">
+													
+											</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="tab3-b" class="page-content tab" style="padding-top:50px!important">
+								<div class="list-block accordion-list" style="margin-top:0px!important">									
+									<div class="lista-prods-negocios"></div>
+								</div>
+							</div>
+							<div id="tab5p" class="page-content tab tab-previsao">
+								<div class="content-block" style="padding:0px">								
+								
+									<div class="list-block accordion-list" style="margin-top:0px!important">
+										<div class="card data-table">
+									
+											<div class="card-header" style="display:none">
+												<div class="data-table-actions"><a class="link icon-only"><i class="icon material-icons">sort</i></a><a class="link icon-only"><i class="icon material-icons">more_vert</i></a></div>
+											</div>
+
+											<div class="card-content">
+														
+												<table style="white-space:nowrap;">
+												<thead>
+													<tr>
+													<th class="label-cell">PRODUTO</th>
+													<th class="label-cell" style="text-align:center">DATA ÚLTIMA COMPRA</th>
+													<th class="label-cell" style="text-align:center">PREVISÃO DE VENDA (DIAS)</th>
+													<th class="label-cell" style="text-align:center">PREVISÃO DE VENDA (DATA)</th>	
+													<th class="label-cell" style="text-align:center">QUANTIDADE</th>
+													
+																		
+													<th class="label-cell" style="display:none">PRÓXIMA VENDA</th>																							
+													<th class="label-cell" style="text-align:center;display:none">CONFIRMAÇÃO DE VENDA</th>
+													</tr>
+												</thead>
+												<tbody id="previsao-venda">
+														
+												</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 							<div id="tab3-d" class="page-content tab" style="padding-top:70px!important">
 								<div class="content-block" style="padding:0px">				
 
@@ -336,7 +494,8 @@
 									</div>
 								</div>
 							</div>
-
+							
+							
 						</div>
 					</div>
 				</div>
@@ -349,11 +508,9 @@
 				<div class="toolbar tabbar tabbar-scrollable" style="padding-top:0px!important;margin-top:0px!important">
 					<div class="toolbar-inner">
 						<a href="#tab4-a" class="active tab-link">HISTÓRICO AT</a>
-						<a href="#tab4-b" class="tab-link">COTAÇÕES</a>
 						<a href="#tab4-c" class="tab-link">HIGIENIZAÇÕES</a>
 						<a href="#tab4-d" class="tab-link">TESTES</a>
-						<a href="#tab4-e" class="tab-link">AÇÕES CORRETIVAS</a>
-						<a href="#tab5p" class="tab-link">PREVISÃO DE VENDA</a>
+						<a href="#tab4-e" class="tab-link">AÇÕES CORRETIVAS</a>						
 					</div>
 				</div>
 
@@ -393,50 +550,6 @@
 											</tr>
 										</thead>
 										<tbody id="historico-lancamentos">
-												
-										</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div id="tab4-b" class="page-content tab" style="padding-top:50px!important">
-							<div class="content-block" style="padding:0px">				
-
-								<div class="content-block">
-								<h3 class="totalregistros-cotacao"></h3>
-								<p class="buttons-row">
-								<a href="" class="button button-fill button-raised addTab">NOVA COTAÇÃO</a>
-								</p>
-								</div>
-
-								<div class="card data-table">
-					
-									<div class="card-header" style="display:none">
-									<div class="data-table-actions"><a class="link icon-only"><i class="icon material-icons">sort</i></a><a class="link icon-only"><i class="icon material-icons">more_vert</i></a></div>
-									</div>
-
-									<div class="card-content">
-										
-										<table style="white-space:nowrap;">
-										<thead>
-
-											<tr>
-											<th class="numeric-cell" style="text-align:center">VER/EDITAR</th>	
-											<TH class="numeric-cell">ID</TH>
-											<th class="label-cell">DATA/HORA</th>
-											<th class="label-cell" style="text-align:right">VALOR TOTAL</th>				
-											<th class="label-cell">ENTREGA</th>
-											<th class="label-cell">FRETE</th>				
-											<th class="label-cell">SITUAÇÃO</th>
-											<th class="numeric-cell" style="text-align:center">NOTIFICAÇÕES</th>
-											<th class="numeric-cell" style="text-align:center">EMAIL</th>
-											<th class="numeric-cell" style="text-align:center">EXCLUIR</th>
-											</tr>
-
-										</thead>
-										<tbody id="cotacoes-cliente">
 												
 										</tbody>
 										</table>
@@ -566,43 +679,7 @@
 									</div>
 								</div>
 							</div>
-						</div>
-
-						<div id="tab5p" class="page-content tab tab-previsao">
-							<div class="content-block" style="padding:0px">								
-								
-								<div class="list-block accordion-list" style="margin-top:0px!important">
-									<div class="card data-table">
-								
-										<div class="card-header" style="display:none">
-											<div class="data-table-actions"><a class="link icon-only"><i class="icon material-icons">sort</i></a><a class="link icon-only"><i class="icon material-icons">more_vert</i></a></div>
-										</div>
-
-										<div class="card-content">
-													
-											<table style="white-space:nowrap;">
-											<thead>
-												<tr>
-												<th class="label-cell">PRODUTO</th>
-												<th class="label-cell" style="text-align:center">DATA ÚLTIMA COMPRA</th>
-												<th class="label-cell" style="text-align:center">PREVISÃO DE VENDA (DIAS)</th>
-												<th class="label-cell" style="text-align:center">PREVISÃO DE VENDA (DATA)</th>	
-												<th class="label-cell" style="text-align:center">QUANTIDADE</th>
-												
-																	
-												<th class="label-cell" style="display:none">PRÓXIMA VENDA</th>																							
-												<th class="label-cell" style="text-align:center;display:none">CONFIRMAÇÃO DE VENDA</th>
-												</tr>
-											</thead>
-											<tbody id="previsao-venda">
-													
-											</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+						</div>						
 
 					</div>
 				</div>
