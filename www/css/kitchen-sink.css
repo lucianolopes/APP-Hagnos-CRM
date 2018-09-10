@@ -571,3 +571,7 @@ input {font-size:16px!important;}
 @media (min-width: 480px) {
 .pendente {content:'PE...';}
 }
+
+.e-cliente {text-transform:uppercase!important;}
+.list-contatos input, .equipamento-fields input {width:100%!important;border:1px solid #ddd!important;padding:8px 6px!important;}
+.list-contatos label, .equipamento-fields label {font-size:12px!important;}
