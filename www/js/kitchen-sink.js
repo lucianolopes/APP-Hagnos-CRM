@@ -82,6 +82,60 @@ function addProdEquip(id, nomeequip){
 
 }
 
+function converteEmNegocio(id,cliente){
+    myApp.confirm('Confirma a conversão para NEGÓCIO?', 'Conversão de oportunidade para negócio', function () {
+        $$.ajax({
+            url: baseurl+'saves/converteOportunidadeNegocio.php?id='+id+'&para=negocio',
+            method: 'GET',
+            success: function (data) {   
+                $$.ajax({
+                    url: baseurl+'loads/loadPrevisaoVendasLancamento2.php?cliente='+cliente,                                       
+                    success: function(returnedData) {
+                        $$("#previsaovenda").html(returnedData);
+                        var i = 0;
+                        $$("#previsaovenda").find("tr").each(function(){
+                            i++;
+                        });               
+                    }                    
+                });
+                $$.ajax({
+                    url: baseurl+'loads/loadProdutosNegociosOportunidades2.php?cliente='+cliente,                        
+                    success: function(returnedData) {
+                        $$("#prod-lanc-rows").html(returnedData);
+                    }
+                });             
+            }
+        });
+    });
+}
+
+function converteEmOportunidade(id, cliente){
+    myApp.confirm('Confirma a conversão para OPORTUNIDADE?', 'Conversão de negócio para oportunidade', function () {
+        $$.ajax({
+            url: baseurl+'saves/converteOportunidadeNegocio.php?id='+id+'&para=oportunidade',
+            method: 'GET',
+            success: function (data) {  
+                $$.ajax({
+                    url: baseurl+'loads/loadPrevisaoVendasLancamento2.php?cliente='+cliente,                                       
+                    success: function(returnedData) {
+                        $$("#previsaovenda").html(returnedData);
+                        var i = 0;
+                        $$("#previsaovenda").find("tr").each(function(){
+                            i++;
+                        });               
+                    }                    
+                });
+                $$.ajax({
+                    url: baseurl+'loads/loadProdutosNegociosOportunidades2.php?cliente='+cliente,                        
+                    success: function(returnedData) {
+                        $$("#prod-lanc-rows").html(returnedData);
+                    }
+                });  
+            }
+        });
+    });
+}
+
 function removeProdEquip(e,id){
     $$(e).closest('.row').remove();
     $$.ajax({
@@ -126,7 +180,7 @@ if(!usuarioHagnos){
     //tipousuario = usuarioHagnos.hagnosUsuarioTipo;
 
     var rp = "";
-    if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2){
+    if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2 || usuarioHagnos.hagnosUsuarioTipo == 4){
 
 
         cliente = "";
@@ -139,12 +193,16 @@ if(!usuarioHagnos){
         
 
         if (usuarioHagnos.hagnosUsuarioTipo == 1){
-        $$(".esconde-admin").hide();
+            $$(".esconde-admin").hide();
         }
 
         if (usuarioHagnos.hagnosUsuarioTipo == 2){
-        $$(".esconde-rep").hide(); 
-        var rp = usuarioHagnos.hagnosUsuarioIdRep;
+            $$(".esconde-rep").hide(); 
+            var rp = usuarioHagnos.hagnosUsuarioIdRep;
+        }
+
+        if (tipousuario == 4){
+            $$(".esconde-producao").hide();
         }
 
         if (usuarioHagnos.hagnosUsuarioTipo == 3){
@@ -170,23 +228,23 @@ if(!usuarioHagnos){
 
 
          //VEFIFICA TOTAIS DE ACOMPANHAMENTO
-        $$.ajax({
-            url: baseurl+'loads/verificaTotaisAcompanhamento.php?rep='+rp, 
-            dataType: 'json',
-            success: function(returnedData) {
-                var aTotalAc = returnedData[0].aTotalAc;
-                var aTotalAc2 = returnedData[0].aTotalAc2;
-                if (aTotalAc > 0){
-                   $$(".notificacao-acomp").show();
-                   $$(".notificacao-acomp span,  .notificacao-span-acomp").html(returnedData[0].aTotalAc); 
-                }
-                if (aTotalAc2 > 0){
-                   $$(".notificacao-acomp2").show();
-                   $$(".notificacao-acomp2 span,  .notificacao-span-acomp2").html(returnedData[0].aTotalAc2); 
-                }
-                
-            }
-        });
+        //$$.ajax({
+        //    url: baseurl+'loads/verificaTotaisAcompanhamento.php?rep='+rp, 
+        //    dataType: 'json',
+        //    success: function(returnedData) {
+        //        var aTotalAc = returnedData[0].aTotalAc;
+        //        var aTotalAc2 = returnedData[0].aTotalAc2;
+        //        if (aTotalAc > 0){
+        //           $$(".notificacao-acomp").show();
+        //           $$(".notificacao-acomp span,  .notificacao-span-acomp").html(returnedData[0].aTotalAc); 
+        //        }
+        //        if (aTotalAc2 > 0){
+        //           $$(".notificacao-acomp2").show();
+        //           $$(".notificacao-acomp2 span,  .notificacao-span-acomp2").html(returnedData[0].aTotalAc2); 
+        //        }
+        //        
+        //    }
+        //});
 
         
         //VEFIFICA SE EXISTEM COTAÇÕES NÃAO LIDAS
@@ -197,7 +255,7 @@ if(!usuarioHagnos){
                 var cotLidas = returnedData[0].cotacoesLidas;
                 if (cotLidas > 0){
                    $$(".notificacao-c").show();
-                   $$(".notificacao-c span,  .notificacao-span").html(returnedData[0].cotacoesLidas); 
+                   $$(".notificacao-c span,  .notificacao-span-c").html(returnedData[0].cotacoesLidas); 
                 }
                 
             }
@@ -208,10 +266,10 @@ if(!usuarioHagnos){
             url: baseurl+'loads/verificaNovasCotacoes.php?f=enviadas&rep='+rp, 
             dataType: 'json',
             success: function(returnedData) {
-                var hLidas2 = returnedData[0].cotacoesEnviadas;
-                if (hLidas2 > 0){
+                var cotLidas2 = returnedData[0].cotacoesEnviadas;
+                if (cotLidas2 > 0){
                    $$(".notificacao-c2").show();
-                   $$(".notificacao-c2 span,  .notificacao-span-c").html(returnedData[0].cotacoesEnviadas); 
+                   $$(".notificacao-c2 span,  .notificacao-span-c2").html(returnedData[0].cotacoesEnviadas); 
                 }
                 
             }
@@ -685,7 +743,6 @@ $$(document).on('ajaxComplete', function (e) {
 //ROTINAS INICIAIS
 
 myApp.onPageInit('index', function (page) {
-
    
     // verifica se existem dados do usuario logado. Se "sim", carrega os dados (nome, usuario, senha, tipo)
 
@@ -707,13 +764,16 @@ myApp.onPageInit('index', function (page) {
             cliente = usuarioHagnos.hagnosUsuarioIdCli;
             $$(".esconde-cliente").hide();   
         }
+        if (tipousuario == 4){
+            $$(".esconde-producao").hide();
+        }
 
         $$('.ks-pb-standalone').on('click', function () {
             photoBrowserStandalone.open();
         });
 
         var rp = "";
-        if (tipousuario == 1 || tipousuario == 2){
+        if (tipousuario == 1 || tipousuario == 2 || tipousuario == 4){
             
 
             if (tipousuario == 1){
@@ -744,19 +804,33 @@ myApp.onPageInit('index', function (page) {
                 }
             });
 
-             //VEFIFICA TOTAIS PEDIDOS
+            //VEFIFICA TOTAIS PEDIDOS
+            //$$.ajax({
+            //    url: baseurl+'loads/verificaTotaisPedidos.php?rep='+rp, 
+            //    dataType: 'json',
+            //    success: function(returnedData) {
+            //        $$(".notificacao-pendente").show();
+            //        $$(".notificacao-pendente span").html(returnedData[0].pendente); 
+            //        $$(".notificacao-producao").show();
+            //        $$(".notificacao-producao span").html(returnedData[0].producao); 
+            //        $$(".notificacao-expedicao").show();
+            //        $$(".notificacao-expedicao span").html(returnedData[0].expedicao); 
+            //        $$(".notificacao-enviado").show();
+            //        $$(".notificacao-enviado span").html(returnedData[0].enviado); 
+            //        
+            //    }
+            //});
+
+            //VEFIFICA NOTIFICAÇÕES NÃO LIDAS
             $$.ajax({
-                url: baseurl+'loads/verificaTotaisPedidos.php?rep='+rp, 
+                url: baseurl+'loads/verificaNotificacoes.php?rep='+rp+'&tipousuario='+tipousuario, 
                 dataType: 'json',
                 success: function(returnedData) {
-                    $$(".notificacao-pendente").show();
-                    $$(".notificacao-pendente span").html(returnedData[0].pendente); 
-                    $$(".notificacao-producao").show();
-                    $$(".notificacao-producao span").html(returnedData[0].producao); 
-                    $$(".notificacao-expedicao").show();
-                    $$(".notificacao-expedicao span").html(returnedData[0].expedicao); 
-                    $$(".notificacao-enviado").show();
-                    $$(".notificacao-enviado span").html(returnedData[0].enviado); 
+                    var notNaoLidas = returnedData[0].notificacoesNaoLidas;
+                    if (notNaoLidas > 0){
+                       $$(".notificacao-comm").show();
+                       $$(".notificacao-comm span").html(returnedData[0].notificacoesNaoLidas); 
+                    }
                     
                 }
             });
@@ -797,6 +871,194 @@ myApp.onPageInit('photo-browser', function (page) {
     //$$('.ks-pb-lazy').on('click', function () {
     //    photoBrowserLazy.open();
     //});
+});
+
+myApp.onPageInit('menu-acompanhamento', function (page) {   
+
+    $$(".nomeusuario").html(usuarioNome); 
+    $$(".tipousuario").html(usuarioNomeTipo); 
+
+    $$('.swiperTab').on('show', function(){
+        $$(this).find('.swiper-container')[0].swiper.update();
+    });
+    
+    if (tipousuario == 2){
+        $$(".esconde-rep").hide();
+    }
+    if (tipousuario == 3){
+        $$(".esconde-cliente").hide();   
+    }
+
+    var rp = "";
+    if (tipousuario == 1 || tipousuario == 2){
+        
+
+        if (tipousuario == 1){
+        $$(".esconde-admin").hide(); 
+        }
+
+        if (tipousuario == 2){
+        $$(".esconde-rep").hide(); 
+        var rp = rep;
+        }
+        
+
+             
+
+        //VEFIFICA SE EXISTEM HIGIENIZAÇÕES PENDENTES
+        $$.ajax({
+            url: baseurl+'loads/verificaNovasHigienizacoes.php?f=pendentes&rep='+rp, 
+            dataType: 'json',
+            success: function(returnedData) {
+                var hLidas = returnedData[0].hLidas;
+                if (hLidas > 0){
+                   $$(".notificacao-h").show();
+                   $$(".notificacao-h span,  .notificacao-span-h").html(returnedData[0].hLidas); 
+                }
+                
+            }
+        });
+
+        //VEFIFICA SE EXISTEM HIGIENIZAÇÕES AGENDADAS
+        $$.ajax({
+            url: baseurl+'loads/verificaNovasHigienizacoes.php?f=agendadas&rep='+rp, 
+            dataType: 'json',
+            success: function(returnedData) {
+                var hLidas2 = returnedData[0].hLidas2;
+                if (hLidas2 > 0){
+                   $$(".notificacao-h2").show();
+                   $$(".notificacao-h2 span,  .notificacao-span-h").html(returnedData[0].hLidas2); 
+                }
+                
+            }
+        });
+
+        //VEFIFICA SE EXISTEM ACOES CORRETIVAS PENDENTES
+        $$.ajax({
+            url: baseurl+'loads/verificaNovasAcoes.php?f=pendente&rep='+rp, 
+            dataType: 'json',
+            success: function(returnedData) {
+                var aPend = returnedData[0].aPend;
+                if (aPend > 0){
+                   $$(".notificacao-a").show();
+                   $$(".notificacao-a span,  .notificacao-span-a").html(returnedData[0].aPend); 
+                }
+                
+            }
+        });
+
+        //VEFIFICA SE EXISTEM TESTES PENDENTES
+        $$.ajax({
+            url: baseurl+'loads/verificaNovosTestes.php?f=pendente&rep='+rp, 
+            dataType: 'json',
+            success: function(returnedData) {
+                var tPend = returnedData[0].tPend;
+                if (tPend > 0){
+                   $$(".notificacao-t").show();
+                   $$(".notificacao-t span,  .notificacao-span-t").html(returnedData[0].tPend); 
+                }
+                
+            }
+        });
+
+        
+    } 
+});
+
+myApp.onPageInit('menu-comercial', function (page) {   
+
+    $$(".nomeusuario").html(usuarioNome); 
+    $$(".tipousuario").html(usuarioNomeTipo); 
+
+    $$('.swiperTab').on('show', function(){
+        $$(this).find('.swiper-container')[0].swiper.update();
+    });
+    
+    if (tipousuario == 2){
+        $$(".esconde-rep").hide();
+    }
+    if (tipousuario == 3){
+        $$(".esconde-cliente").hide();   
+    }
+
+    var rp = "";
+    if (tipousuario == 1 || tipousuario == 2){
+        
+
+        if (tipousuario == 1){
+        $$(".esconde-admin").hide(); 
+        }
+
+        if (tipousuario == 2){
+        $$(".esconde-rep").hide(); 
+        var rp = rep;
+        }
+
+        //VEFIFICA SE EXISTEM COTAÇÕES NÃAO LIDAS
+        $$.ajax({
+            url: baseurl+'loads/verificaNovasCotacoes.php?rep='+rp, 
+            dataType: 'json',
+            success: function(returnedData) {
+                var cotLidas = returnedData[0].cotacoesLidas;
+                if (cotLidas > 0){
+                   $$(".notificacao-c").show();
+                   $$(".notificacao-c span,  .notificacao-span-c").html(returnedData[0].cotacoesLidas); 
+                }
+                
+            }
+        });
+
+        //VEFIFICA SE EXISTEM cotacoes enviadas
+        $$.ajax({
+            url: baseurl+'loads/verificaNovasCotacoes.php?f=enviadas&rep='+rp, 
+            dataType: 'json',
+            success: function(returnedData) {
+                var cotLidas2 = returnedData[0].cotacoesEnviadas;
+                if (cotLidas2 > 0){
+                   $$(".notificacao-c2").show();
+                   $$(".notificacao-c2 span,  .notificacao-span-c2").html(returnedData[0].cotacoesEnviadas); 
+                }
+                
+            }
+        });
+
+        //VEFIFICA SE EXISTEM HIGIENIZAÇÕES AGENDADAS
+        $$.ajax({
+            url: baseurl+'loads/verificaNovasCotacoes.php?f=enviadas&rep='+rp, 
+            dataType: 'json',
+            success: function(returnedData) {
+                var hLidas2 = returnedData[0].cotacoesEnviadas;
+                if (hLidas2 > 0){
+                   $$(".notificacao-c2").show();
+                   $$(".notificacao-c2 span,  .notificacao-span-c").html(returnedData[0].cotacoesEnviadas); 
+                }
+                
+            }
+        });
+
+        //VEFIFICA TOTAIS PEDIDOS
+            $$.ajax({
+                url: baseurl+'loads/verificaTotaisPedidos.php?rep='+rp, 
+                dataType: 'json',
+                success: function(returnedData) {
+                    $$(".notificacao-pendente").show();
+                    $$(".notificacao-pendente span").html(returnedData[0].pendente); 
+                    $$(".notificacao-producao").show();
+                    $$(".notificacao-producao span").html(returnedData[0].producao); 
+                    $$(".notificacao-expedicao").show();
+                    $$(".notificacao-expedicao span").html(returnedData[0].expedicao); 
+                    $$(".notificacao-enviado").show();
+                    $$(".notificacao-enviado span").html(returnedData[0].enviado); 
+                    
+                }
+            });
+
+
+
+        
+
+        
+    } 
 });
 
 myApp.onPageInit('menu2', function (page) {   
@@ -1394,6 +1656,10 @@ myApp.onPageInit('form-cliente', function (page){
     //cria botao para adicionar equipamento   
     //$$(".addEquip").attr("href", "forms/equipamentos_form.html?"+paramsLink);
     //$$(".addLanc").attr("href", "forms/clientes_form_lancamento.html?"+paramsLink);   
+
+    if (tipousuario == 4){
+        $$(".addTab, .tabNegociacoes").hide();
+    }
     
     $$(".addTab").attr("href", "forms/clientes_form_lancamento.html?"+paramsLink);
    
@@ -1450,6 +1716,16 @@ myApp.onPageInit('form-cliente', function (page){
                 $$("#cliente_segmento").val(returnedData[0].segmento);
                 $$("#cliente_email").val(returnedData[0].email);
                 $$("input[type=text][name=cliente_responsavel").val(returnedData[0].responsavel);
+                $$("input[type=text][name=cliente_responsavel2").val(returnedData[0].responsavel2);
+                $$("input[type=text][name=cliente_responsavel3").val(returnedData[0].responsavel3);
+                $$("input[type=text][name=cliente_responsavel4").val(returnedData[0].responsavel4);
+                $$("input[type=text][name=cliente_responsavel5").val(returnedData[0].responsavel5);
+                $$("input[type=text][name=cliente_responsavel_setor").val(returnedData[0].setor);
+                $$("input[type=text][name=cliente_responsavel2_setor").val(returnedData[0].setor2);
+                $$("input[type=text][name=cliente_responsavel3_setor").val(returnedData[0].setor3);
+                $$("input[type=text][name=cliente_responsavel4_setor").val(returnedData[0].setor4);
+                $$("input[type=text][name=cliente_responsavel5_setor").val(returnedData[0].setor5);
+
                 $$("#cliente_cep").val(returnedData[0].cep);
                 $$("#cliente_estado").val(returnedData[0].estado);
                 $$("input[type=text][name=cliente_telefone]").val(returnedData[0].telefone);
@@ -1621,7 +1897,11 @@ myApp.onPageInit('form-cliente', function (page){
                         $$(".lista-prods-negocios").find("tr").each(function(){
                             i++;
                         });
-                        $$(".totalregistros-prod-n").html("NEGÓCIOS ("+(i-1)+")");
+                        var total_n = i-1;
+                        if (total_n < 0){
+                            total_n = 0;
+                        }
+                        $$(".totalregistros-prod-n").html("NEGÓCIOS ("+total_n+")");
                         
                         // adciona produto ao cliente
                         $$(".addprodutocliente-n").click(function(){
@@ -1671,7 +1951,11 @@ myApp.onPageInit('form-cliente', function (page){
                         $$(".lista-prods-oportunidades").find("tr").each(function(){
                             i++;
                         });
-                        $$(".totalregistros-prod-o").html("OPORTUNIDADES ("+(i-1)+")");
+                        var total_o = i-1;
+                        if (total_o < 0){
+                            total_o = 0;
+                        }
+                        $$(".totalregistros-prod-o").html("OPORTUNIDADES ("+total_o+")");
                         
                         // adciona produto ao cliente
                         $$(".addprodutocliente-o").click(function(){
@@ -1799,6 +2083,12 @@ myApp.onPageInit('form-cliente', function (page){
             if (tab == "tab3-d"){
               myApp.showTab('#tab3');
               myApp.showTab('#'+tab);   
+            } else if (tab == "tab4-b"){
+              myApp.showTab('#tab3');
+              myApp.showTab('#'+tab);
+            } else if (tab == "tab5p"){
+              myApp.showTab('#tab3');
+              myApp.showTab('#'+tab);
             } else {
               myApp.showTab('#tab4');
               myApp.showTab('#'+tab);   
@@ -1918,23 +2208,28 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
    var nomecliente = page.query.nomecliente;
    var contato = page.query.contato;
    var telefone = page.query.telefone;
+   var tab = page.query.tab;
    var acao = "insert";
    var idlanc = "";
 
+
    $$("#status_padrao").change(function(){
-    if ($$("#status_padrao").val() != "" && $$("#status_interativo").val() != ""){
-        $$(".bt-tb2").removeClass('disabled');
+   //if ($$("#status_padrao").val() != "" && $$("#status_interativo").val() != ""){
+    if ($$("#status_padrao").val() != ""){
+        $$(".bt-tb1, .tb2").removeClass('disabled');
     } else {
-        $$(".bt-tb2").addClass('disabled');
+        $$(".bt-tb1, .tb2").addClass('disabled');
     }
    })
-   $$("#status_interativo").change(function(){
-    if ($$("#status_padrao").val() != "" && $$("#status_interativo").val() != ""){
-        $$(".bt-tb2").removeClass('disabled');
-    } else {
-        $$(".bt-tb2").addClass('disabled');
-    }
-   })
+
+
+   //$$("#status_interativo").change(function(){
+   // if ($$("#status_padrao").val() != "" && $$("#status_interativo").val() != ""){
+   //     $$(".bt-tb2").removeClass('disabled');
+   // } else {
+   //     $$(".bt-tb2").addClass('disabled');
+   // }
+   //})    
 
    // ABA DESCRIÇÃO (ADICÃO DE PRODUTOS E FINALIDADES (OPORTUNIDADES E NEGÓCIOS))
    $$.ajax({
@@ -1945,78 +2240,86 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
         }
     });
 
-   $$("#prod-lanc, #finalidade-lanc").change(function(){
+    $$("#prod-lanc, #finalidade-lanc").change(function(){
         if ($$("#prod-lanc").val() != "" && $$("#finalidade-lanc").val() != ""){
             $$(".addproduto-l").removeClass("disabled");
         } else {$$(".addproduto-l").addClass("disabled");}
     });
 
-    $$.ajax({
-        url: baseurl+'loads/loadProdutosNegociosOportunidades.php?cliente='+cliente,                        
-        success: function(returnedData) {
-            $$(".prod-lanc-rows").html(returnedData);
-        }
-    });
+    $$("#prod-lanc").change(function(){
+        if ($$("#prod-lanc").val() != ""){
+            $$(".produto-fields").show();
+        } else {
+            $$(".produto-fields").hide();
+        }        
+    })
 
-   $$(".addproduto-l").click(function(){
+    $$("input[name='eq-nome'], input[name='eq-pressao'], input[name='eq-capacidade']").keyup(function(){
+        if ($$("input[name='eq-nome']").val() != "" && $$("input[name='eq-pressao']").val() != "" && $$("input[name='eq-capacidade']").val() != ""){
+            $$(".addproduto-e").removeClass("disabled");
+        } else {
+            $$(".addproduto-e").addClass("disabled");
+        }
+    })
+
+    $$(".addEquipamento").click(function(){        
+        $$(".equipamento-fields").show();
+    })
+
+    $$(".addproduto-l").click(function(){
+        $$(".produto-fields").hide();
         var produto = $$("#prod-lanc").val();
-        var pFinalidade = $$("#finalidade-lanc").val();
         var arr_produto = produto.split(";");
         var codproduto = arr_produto[0];
         var nomeproduto = arr_produto[1];
-        $$(".prod-lanc-rows").prepend(
-            '<li class="li-produto-lanc'+codproduto+'">'+ 
-                '<div class="item-content" style="border-bottom:1px dotted #ddd">'+
 
-                    '<div class="item-inner" style="width:50%">'+
-                        '<div class="item-input">'+
-                            '<input type="text" name="produto-lanc-v[]" id="produto-lanc-v[]" value="'+nomeproduto+'" readonly style="color:green"/>'+
-                            '<input type="hidden" name="cod-produto-lanc-v[]" value="'+codproduto+'">'+
-                        '</div>'+
-                    '</div>'+
+        var mediaConsumo = $$("input[name='p-media-consumo']").val();
+        var precoAplicado = $$("input[name='p-preco-aplicado']").val();
+        var prazoPagamento = $$("input[name='p-prazo-pagamento']").val();
+        var concorrente = $$("input[name='p-concorrente']").val();
 
-                    '<div class="item-inner" style="width:50%">'+
-                        '<div class="item-input">'+
-                            '<input type="text" name="finalidade-v[]" id="finalidade-v[]" value="'+pFinalidade+'" readonly style="color:green"/>'+
-                        '</div>'+
-                    '</div>'+                                   
-
-                    '<div class="item-inner" style="width:20%">'+
-                        '<div class="item-input">'+
-                        '<button type="button" class="button color-teal" style="margin-top:16px;float:right;margin-top:5px" onclick="deleta_produto_lanc('+codproduto+')"><i class="material-icons">remove_circle</i></button>'+
-                        '</div>'+
-                    '</div>'+                               
-                
-                '</div>'+
-            '</li>');
-        //$$("input[name=finalidade-lanc]").val("");
-
-        //if($$('.prod-lanc-rows').html() != "") {
-        //    $$("#salva-teste").removeClass("disabled");
-        //}
+        // salva oportunidade no banco de dados
+        $$.ajax({
+            url: baseurl+'saves/saveOportunidadeAT.php?cliente='+cliente+'&codp='+codproduto+'&nomep='+nomeproduto+'&mediaConsumo='+mediaConsumo+'&precoAplicado='+precoAplicado+'&prazoPagamento='+prazoPagamento+'&concorrente='+concorrente,
+            type: 'get',        
+            success: function(returnedData) {
+                $$.ajax({
+                    url: baseurl+'loads/loadProdutosNegociosOportunidades2.php?cliente='+cliente,                        
+                    success: function(returnedData) {
+                        $$("#prod-lanc-rows").html(returnedData);
+                    }
+                });
+            }
+        });
+        
+       
         $$("#prod-lanc, #finalidade-lanc").val("");
         $$(".addproduto-l").addClass("disabled");
     }) 
 
+    
     // FIM ABA DESCRIÇÃO (ADICÃO DE PRODUTOS E FINALIDADES (OPORTUNIDADES E NEGÓCIOS))
 
      
    $$(".bt-tb1").click(function(){
-      $$(".tb1").removeClass("disabled");
-      myApp.showTab('#tab3l');
+      $$(".tb0").removeClass("disabled");
+      myApp.showTab('#tab4l');
    })   
+
+   $$(".bt-tb4").click(function(){
+      $$(".tb3, .tb2").removeClass("disabled");
+      myApp.showTab('#tab2l');
+   })
+
    $$(".bt-tb3").click(function(){
       $$(".tb2").removeClass("disabled");
       myApp.showTab('#tab4l');
    })
-   $$(".bt-tb4").click(function(){
-      $$(".tb3").removeClass("disabled");
-      myApp.showTab('#tab2l');
-   })
+   
    $$(".bt-tb2").click(function(){
-      $$(".tb4").removeClass("disabled");
+      $$(".tb1").removeClass("disabled");
       $$(".salva-lancamento").removeClass("disabled");
-      myApp.showTab('#tab5l');
+      myApp.showTab('#tab3l');
    })
 
 
@@ -2035,7 +2338,31 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
     
        $$(".nCliente").html(nomecliente);
 
-       $$.ajax({
+       if (tab != undefined){
+            if (tab == "tab2l"){
+              myApp.showTab('#'+tab);   
+            }                       
+        }
+
+        $$(".addContato").click(function(){
+            $$(".list-contatos").append('<hr><div class="row">'+
+                                    '<div class="col-50 tablet-25">'+
+                                    '    <input type="text" name="responsavel-nome[]" placeholder="RESPONSÁVEL">'+
+                                    '</div>'+
+                                    '<div class="col-50 tablet-25">'+
+                                    '    <input type="text" name="responsavel-setor[]" placeholder="SETOR">'+
+                                    '</div>'+
+                                    '<div class="col-50 tablet-25">'+
+                                    '    <input type="text" name="responsavel-telefone[]" placeholder="TELEFONE">'+
+                                    '</div>'+
+                                    '<div class="col-50 tablet-25">'+
+                                    '    <input type="text" name="responsavel-email[]" placeholder="EMAIL">'+
+                                    '</div>'+
+                                '</div>');
+        })
+
+        
+        $$.ajax({
             url: baseurl+'loads/loadProdutosSelectOptions.php',
             type: "GET",
             success: function (data) {  
@@ -2043,12 +2370,78 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             }
         });
 
+        $$.ajax({
+            url: baseurl+'loads/loadProdutosNegociosOportunidades2.php?cliente='+cliente,                        
+            success: function(returnedData) {
+                $$("#prod-lanc-rows").html(returnedData);
+            }
+        });
+
+        var tVisita = "";
+        $$("input[name='tipo_visita']").change(function(){
+            $$("input[name='tpcontato']").val($$("input[name='tipo_visita']:checked").val());
+            tVisita = $$("input[name=tipo_visita]:checked").val();
+            
+            var listaInteracoesArray = new Array(); 
+            $$("input[name='interacao_visita']:checked").each(function(){
+                listaInteracoesArray.push(this.value);
+            });
+            if (listaInteracoesArray.length > 0 && $$("#lancamento-descricao").val() != ""){
+                $$(".bt-tb4").removeClass('disabled');
+            } else {
+                $$(".bt-tb4").addClass('disabled');
+            }
+        })
+
+        $$("#lancamento-descricao").keyup(function(){
+            $$("input[name='tpcontato']").val($$("input[name='tipo_visita']:checked").val());
+            tVisita = $$("input[name=tipo_visita]:checked").val();
+            
+            var listaInteracoesArray = new Array(); 
+            $$("input[name='interacao_visita']:checked").each(function(){
+                listaInteracoesArray.push(this.value);
+            });
+            if (listaInteracoesArray.length > 0 && $$("#lancamento-descricao").val().length > 0){
+                $$(".bt-tb4").removeClass('disabled');
+            } else {
+                $$(".bt-tb4").addClass('disabled');
+            }
+        })
+        
+        
+
+        $$("input[name='interacao_visita']").click(function(){
+            var listaInteracoesArray = new Array(); 
+            $$("input[name='interacao_visita']:checked").each(function(){
+                listaInteracoesArray.push(this.value);
+            });
+            var listaInteracoes = listaInteracoesArray.join(";");
+            $$("input[name='statusi']").val(listaInteracoes);
+            if (listaInteracoes.length > 0 && $$("#lancamento-descricao").val().length > 0){
+                if (tVisita == ""){
+                    $$(".bt-tb4").addClass('disabled');
+                } else {
+                    $$(".bt-tb4").removeClass('disabled');
+                }
+            } else {
+                $$(".bt-tb4").addClass('disabled');
+            }            
+        })
+
+        $$("#lancamento-descricao").blur(function(){
+            $$("#lancamento-descricao2").val($$("#lancamento-descricao").val());
+        })
+        
+
        // se existe um parametro "cliente" faz a edição e salvamento do registro
        if (cliente != null ){
             $$("#cliente-lanc-id").val(cliente);
             $$("#cliente-lanc-nome").val(nomecliente);
             $$("#cliente-contato").val(contato);
-            $$("#cliente-telefone").val(telefone);         
+            $$("#cliente-telefone").val(telefone);  
+
+            $$(".id-cliente").html(cliente);
+            $$(".nome-cliente").html(nomecliente);
             
             $$.ajax({
                 url: baseurl+'loads/loadDadosCliente.php',
@@ -2064,9 +2457,38 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                     }
                     $$("#l-codrep").val(returnedData[0].codrep);
                     $$("#l-nomerep").val(returnedData[0].nomerep);
+                    $$("#obs-cliente").val(returnedData[0].obs);
                     codrep = returnedData[0].codrep;
                     nomerep = returnedData[0].nomerep;
+
+                    $$("#cliente-email").val(returnedData[0].email);
+                    //$$("#situacao-cliente").html(returnedData[0].situacao);
+                    //$$(".s-situacao").html(returnedData[0].status);
+
+                    if (returnedData[0].responsavel != ""){
+                        $$(".resp-setores").append(returnedData[0].responsavel+" / "+returnedData[0].setor+"<br>");
+                    }
+                    if (returnedData[0].responsavel2 != ""){
+                        $$(".resp-setores").append(returnedData[0].responsavel2+" / "+returnedData[0].setor2+"<br>");
+                    }
+                    if (returnedData[0].responsavel3 != ""){
+                        $$(".resp-setores").append(returnedData[0].responsavel3+" / "+returnedData[0].setor3+"<br>");
+                    }
+                    if (returnedData[0].responsavel4 != ""){
+                        $$(".resp-setores").append(returnedData[0].responsavel4+" / "+returnedData[0].setor4+"<br>");
+                    }
+                    if (returnedData[0].responsavel5 != ""){
+                        $$(".resp-setores").append(returnedData[0].responsavel5+" / "+returnedData[0].setor5);
+                    }
                 }            
+            });
+
+            $$.ajax({
+                url: baseurl+'loads/loadContatosCliente.php?cliente='+cliente,
+                method: 'GET',
+                success: function (data) {
+                    $$(".list-contatos").html(data); 
+                }
             });
             
             $$.ajax({
@@ -2081,33 +2503,55 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
 
 
             $$.ajax({
-                    url: baseurl+'loads/loadPrevisaoVendasLancamento.php?cliente='+cliente, 
-                                      
-                    success: function(returnedData) {
-                        $$("#previsaovenda").html(returnedData);
-                        var i = 0;
-                        $$("#previsaovenda").find("tr").each(function(){
-                            i++;
-                        });                     
-                                           
-                    }
-                    
-                });
+                url: baseurl+'loads/loadPrevisaoVendasLancamento2.php?cliente='+cliente,                                       
+                success: function(returnedData) {
+                    $$("#previsaovenda").html(returnedData);
+                    var i = 0;
+                    $$("#previsaovenda").find("tr").each(function(){
+                        i++;
+                    });                   
+                }                    
+            });
 
 
             $$(".popup-info-equip").click(function(){
                 //myApp.alert();
             })
-        }   
+        }  
 
+
+        $$(".addproduto-e").click(function(){
+            $$(".equipamento-fields").hide();
+            var eq_equipamento = $$("input[name='eq-nome']").val();
+            var eq_pressao = $$("input[name='eq-pressao']").val();
+            var eq_capacidade = $$("input[name='eq-capacidade']").val();
+
+            // salva oportunidade no banco de dados
+            $$.ajax({
+                url: baseurl+'saves/saveEquipamentoLanc.php?cliente='+cliente+'&nomecliente='+nomecliente+'&eq_equipamento='+eq_equipamento+'&eq_pressao='+eq_pressao+'&eq_capacidade='+eq_capacidade,
+                type: 'get',        
+                success: function(returnedData) {
+                    $$.ajax({
+                        url: baseurl+'loads/loadListaEquip.php?cliente='+cliente+'&lanc=1&acao='+acao+'&idlanc='+idlanc,
+                        method: 'GET',
+                        success: function (data) {
+                            $$("#lista-equip2").html(data); 
+                            $("#p-conc, .conc").maskMoney({decimal:".",thousands:""});
+                        }
+                    });
+                }
+            });
+        }) 
+
+
+        
         // SALVANDO CADASTRO DE CLIENTE
         $$(".salva-lancamento").click(function(){
-            
-            //form dos produtos (negocios oportunidades)
-            var form2 = $$('#form-lancamento-4');
+
+            var form1 = $$('#form-lancamento-1');
             $$.ajax({
-                url: baseurl+'saves/saveLancamentoProdutos.php?codCliente='+cliente,           
-                data: new FormData(form2[0]),
+                url: baseurl+'saves/saveLancamentoCadastroCliente.php?codCliente='+cliente,           
+                data: new FormData(form1[0]),
                 type: 'post',
                 processData: false,  // Important!
                 contentType: false,
@@ -2116,11 +2560,27 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                     
                 }
             })
+
+                        
+            //form dos produtos (negocios oportunidades)
+            //var form2 = $$('#form-lancamento-4');
+            //$$.ajax({
+            //    url: baseurl+'saves/saveLancamentoProdutos.php?codCliente='+cliente,           
+            //    data: new FormData(form2[0]),
+            //    type: 'post',
+            //    processData: false,  // Important!
+           //     contentType: false,
+           //     cache: false,                  
+            //    success: function( response ) {
+            //        
+            //    }
+            //})
             //fim form dos produtos (negocios oportunidades)
 
             var form = $$('#form-lancamento-3');
             var statusPadrao = $$("#status_padrao").val();
-            var statusInterativo = $$("#status_interativo").val();
+            //var statusInterativo = $$("#status_interativo").val();
+            var statusInterativo = $$("#statusi").val();
             var obslanc = encodeURIComponent($$("#lancamento-descricao").val());
             var prodlanc = $$("#prod-lanc").val();
             var finalidadelanc = $$("#finalidade-lanc").val();
@@ -2146,40 +2606,41 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                             color: 'lightgreen'
                         },
                     });
+                    mainView.router.loadPage("lancamentos.html");
 
-                    var questao = "";
-                    var linkNovaInteracao = "";
-                    var paramsInteracao = "?cliente="+cliente+"&nomecliente="+nomecliente+"&contato="+contato+"&telefone="+telefone;
+                    //var questao = "";
+                    //var linkNovaInteracao = "";
+                    //var paramsInteracao = "?cliente="+cliente+"&nomecliente="+nomecliente+"&contato="+contato+"&telefone="+telefone;
 
-                    if (statusInterativo == "AÇÃO CORRETIVA"){
-                        questao = "Gostaria de lançar nova ação corretiva?";
-                        linkNovaInteracao = "forms/nova_acao_corretiva_form.html"+paramsInteracao;
-                    } else if (statusInterativo == "HIGIENIZAÇÃO"){
-                        questao = "Gostaria de lançar nova ação higienização?";
-                        linkNovaInteracao = "forms/nova_higienizacao_form.html"+paramsInteracao;
-                    } else if (statusInterativo == "TESTE"){
-                        questao = "Gostaria de lançar novo teste?";
-                        linkNovaInteracao = "forms/novo_teste_form.html"+paramsInteracao;
-                    } else if (statusInterativo == "COTAÇÃO"){
-                        questao = "Gostaria de lançar nova cotação?";
-                        linkNovaInteracao = "forms/nova_cotacao_form_adm.html"+paramsInteracao;
-                    } else {
-                        mainView.router.back();
-                    }
+                    //if (statusInterativo == "AÇÃO CORRETIVA"){
+                    //    questao = "Gostaria de lançar nova ação corretiva?";
+                    //    linkNovaInteracao = "forms/nova_acao_corretiva_form.html"+paramsInteracao;
+                    //} else if (statusInterativo == "HIGIENIZAÇÃO"){
+                    //    questao = "Gostaria de lançar nova ação higienização?";
+                    //    linkNovaInteracao = "forms/nova_higienizacao_form.html"+paramsInteracao;
+                    //} else if (statusInterativo == "TESTE"){
+                    //    questao = "Gostaria de lançar novo teste?";
+                    //    linkNovaInteracao = "forms/novo_teste_form.html"+paramsInteracao;
+                    //} else if (statusInterativo == "COTAÇÃO"){
+                    //    questao = "Gostaria de lançar nova cotação?";
+                    //    linkNovaInteracao = "forms/nova_cotacao_form_adm.html"+paramsInteracao;
+                    //} else {
+                    //    mainView.router.back();
+                    //}
 
-                    if (statusInterativo != "SEM INTERAÇÃO"){
-                        myApp.confirm(questao,'',
-                           function () {
-                              mainView.router.reloadPage(linkNovaInteracao);
-                           },
-                           function () {
-                            //mainView.router.reloadPage('lancamentos.html');
-                            //myApp.alert(statusInterativo);
-                            //mainView.router.back();                       
-                            mainView.router.back();                        
-                           }
-                        );
-                    }
+                    //if (statusInterativo != "SEM INTERAÇÃO"){
+                    //    myApp.confirm(questao,'',
+                   //        function () {
+                    //          mainView.router.reloadPage(linkNovaInteracao);
+                     //      },
+                    //       function () {
+                    //        //mainView.router.reloadPage('lancamentos.html');
+                    //        //myApp.alert(statusInterativo);
+                    //        //mainView.router.back();                       
+                    //        mainView.router.back();                        
+                    //       }
+                    //    );
+                    //}
                    
                   }
                 })           
@@ -2187,12 +2648,12 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             }   
 
             //form previsão de vendas
-            var form5 = $$('#form-lancamento-5');
+            var form4 = $$('#form-lancamento-4');
             $$.ajax({
                 url: baseurl+'saves/savePrevisaoVendasLancamento.php?codCliente='+cliente,           
-                data: new FormData(form5[0]),
+                data: new FormData(form4[0]),
                 type: 'post',
-                processData: false,  // Important!
+               processData: false,  // Important!
                 contentType: false,
                 cache: false,                  
                 success: function( response ) {
@@ -2284,6 +2745,7 @@ myApp.onPageInit('lancamentos', function (page){
     var periodo_lancamento = page.query.periodo_lancamento;
     var periodo_prox_lancamento = page.query.periodo_prox_lancamento; 
     var id = page.query.id;
+    var detalhado = page.query.detalhado;
 
     // verifica se for cliente logado, só mostra os lancamentos deste cliente
     //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
@@ -2296,6 +2758,13 @@ myApp.onPageInit('lancamentos', function (page){
     //    var repres = usuarioHagnos.hagnosUsuarioIdRep;
     //}
 
+    var agp = "";
+    if (page.query.detalhado == undefined || page.query.detalhado == 'nao'){
+        agp = "agrupado";
+    } else {
+        agp = "detalhado";
+    }
+
     if (tipousuario == 3){
         //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
         var nomecliente = usuarioNome;
@@ -2304,9 +2773,14 @@ myApp.onPageInit('lancamentos', function (page){
         var repres = rep;
     }
 
+    if (cliente_search != undefined){
+        $$(".lancamentos-detalhado").attr("href", "lancamentos.html?detalhado=sim&sp="+sp+"&si="+si+"&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
+        $$(".lancamentos-agrupado").attr("href", "lancamentos.html?detalhado=nao&sp="+sp+"&si="+si+"&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
+    }
+
     $$.ajax({
         url: baseurl+'loads/loadLancamentosAgrupado.php',
-        data: { "repres":repres, "cliente":cliente, "sp": sp, "si": si, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_prox_lancamento": periodo_prox_lancamento, "id": id  },
+        data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "sp": sp, "si": si, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_prox_lancamento": periodo_prox_lancamento, "id": id  },
         method: 'get',            
         success: function(returnedData) {
             $$("#results-lancamentos").html(returnedData);
@@ -2314,7 +2788,7 @@ myApp.onPageInit('lancamentos', function (page){
             $$("#results-lancamentos").find("tr").each(function(){
                 i++;
             });
-            $$(".totalregistros-lanc").html("Registros agrupados encontrados: <span style='font-size:18'>"+i+"</span>");
+            $$(".totalregistros-lanc").html("Registros agrupados encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
             //totaisHome();
 
         }
@@ -2366,7 +2840,7 @@ myApp.onPageInit('pedidos', function (page){
 
     $$.ajax({
         url: baseurl+'loads/loadPedidosAgrupado.php',
-        data: { "repres":repres, "cliente":cliente, "cliente_search": cliente_search, "situacao": situacao ,"rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
+        data: { "tipousuario": tipousuario, "repres":repres, "cliente":cliente, "cliente_search": cliente_search, "situacao": situacao ,"rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
         method: 'get',            
         success: function(returnedData) {
             $$("#results-pedidos").html(returnedData);
@@ -2411,11 +2885,15 @@ myApp.onPageInit('cotacoes', function (page){
     var periodo_lancamento = page.query.periodo_lancamento;
     var periodo_entrega = page.query.periodo_entrega;
     var id = page.query.id;
+    var detalhado = page.query.detalhado;
 
-    if (page.query.detalhado == undefined){
+    var agp = "";
+    if (page.query.detalhado == undefined || page.query.detalhado == 'nao'){
+        agp = "agrupado";
         var urlcot = baseurl+'loads/loadCotacoesAgrupado.php';
     } else {
-        var urlcot = baseurl+'loads/loadCotacoesDetalhamento.php';
+        agp = "detalhado";
+        var urlcot = baseurl+'loads/loadCotacoesAgrupado.php';
     }
 
     if (tipousuario == 3){
@@ -2432,14 +2910,14 @@ myApp.onPageInit('cotacoes', function (page){
         //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
         //url: baseurl+'loads/loadCotacoesAgrupado.php',  
         url: urlcot,           
-        data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
+        data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
         success: function(returnedData) {
             $$("#results-cotacoes").html(returnedData);
             var i = 0;
             $$("#results-cotacoes").find("tr").each(function(){
                 i++;
             });
-            $$(".totalregistros-cotacoes").html("Registros agrupados encontrados: <span style='font-size:18'>"+i+"</span>");
+            $$(".totalregistros-cotacoes").html("Registros encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
         }
     });
 
@@ -2528,6 +3006,14 @@ myApp.onPageInit('higienizacoes', function (page){
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
     var id = page.query.id;
+    var detalhado = page.query.detalhado;
+
+    var agp = "";
+    if (page.query.detalhado == undefined || page.query.detalhado == 'nao'){
+        agp = "agrupado";
+    } else {
+        agp = "detalhado";
+    }
 
     if (tipousuario == 3){
         //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
@@ -2537,12 +3023,16 @@ myApp.onPageInit('higienizacoes', function (page){
         var repres = rep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
-    
+
+    if (cliente_search != undefined){
+        $$(".higienizacoes-detalhado").attr("href", "higienizacoes.html?detalhado=sim&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
+        $$(".higienizacoes-agrupado").attr("href", "higienizacoes.html?detalhado=nao&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
+    }
 
     $$.ajax({
         //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
         url: baseurl+'loads/loadHigienizacoesAgrupado.php',             
-        data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
+        data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
         success: function(returnedData) {
             $$("#results-higienizacoes").html(returnedData);
 
@@ -2550,7 +3040,7 @@ myApp.onPageInit('higienizacoes', function (page){
             $$("#results-higienizacoes").find("tr").each(function(){
                 i++;
             });
-            $$(".totalregistros-hig").html("Registros agrupados encontrados: <span style='font-size:18'>"+i+"</span>");
+            $$(".totalregistros-hig").html("Registros agrupados encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
         }
     });
 
@@ -2583,7 +3073,14 @@ myApp.onPageInit('acoescorretivas', function (page){
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
     var id = page.query.id;
+    var detalhado = page.query.detalhado;
 
+    var agp = "";
+    if (page.query.detalhado == undefined || page.query.detalhado == 'nao'){
+        agp = "agrupado";
+    } else {
+        agp = "detalhado";
+    }
     
     if (tipousuario == 3){
         //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
@@ -2593,19 +3090,24 @@ myApp.onPageInit('acoescorretivas', function (page){
         var repres = rep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
+
+    if (cliente_search != undefined){
+        $$(".acoes-detalhado").attr("href", "acoescorretivas.html?detalhado=sim&sp="+sp+"&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
+        $$(".acoes-agrupado").attr("href", "acoescorretivas.html?detalhado=nao&sp="+sp+"&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
+    }
     
 
     $$.ajax({
         //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
         url: baseurl+'loads/loadAcoesCorretivasAgrupado.php',             
-        data: { "repres":repres, "cliente":cliente, "sp": sp, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
+        data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "sp": sp, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
         success: function(returnedData) {
             $$("#results-acoescorretivas").html(returnedData);
             var i = 0;
             $$("#results-acoescorretivas").find("tr").each(function(){
                 i++;
             });
-            $$(".totalregistros-acoes").html("Registros agrupados encontrados: <span style='font-size:18'>"+i+"</span>");
+            $$(".totalregistros-acoes").html("Registros agrupados encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
         }
     });
 
@@ -2637,6 +3139,14 @@ myApp.onPageInit('testes', function (page){
     var rep_search = page.query.rep_search;
     var periodo_lancamento = page.query.periodo_lancamento;
     var id = page.query.id;
+    var detalhado = page.query.detalhado;
+
+    var agp = "";
+    if (page.query.detalhado == undefined || page.query.detalhado == 'nao'){
+        agp = "agrupado";
+    } else {
+        agp = "detalhado";
+    }
 
     if (tipousuario == 3){
         //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
@@ -2647,36 +3157,26 @@ myApp.onPageInit('testes', function (page){
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
     
+    if (cliente_search != undefined){
+        $$(".testes-detalhado").attr("href", "testes.html?detalhado=sim&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
+        $$(".testes-agrupado").attr("href", "testes.html?detalhado=nao&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
+    }
 
     $$.ajax({
-        //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
-        url: baseurl+'loads/loadTestesAgrupado.php',             
-        data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
+        url: baseurl+'loads/loadTestesAgrupado.php',   
+        async: false,  
+        dataType: "html",        
+        data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
         success: function(returnedData) {
             $$("#results-testes").html(returnedData);
             var i = 0;
             $$("#results-testes").find("tr").each(function(){
                 i++;
             });
-            $$(".totalregistros-testes").html("Registros agrupados encontrados: <span style='font-size:18'>"+i+"</span>");
+            $$(".totalregistros-testes").html("Registros agrupados encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
+            
         }
-    });
-
-    var ptrContent = $$(page.container).find('.pull-to-refresh-content');
-        ptrContent.on('refresh', function (e) {
-        // Emulate 2s loading
-        setTimeout(function () {
-            $$.ajax({
-            url: baseurl+'loads/loadTestesAgrupado.php?cliente='+cliente+'&repres='+repres,
-            method: 'GET',
-            success: function (data) {
-                //ptrContent.find('#results-cotacoes').html(data);                                 
-                $$("#results-testes").html(data);
-            }
-        });
-        myApp.pullToRefreshDone();
-        }, 2000);
-    }); 
+    });   
 
     $$(".remove-filtro-testes").click(function(){
         mainView.router.reloadPage('testes.html');
@@ -2930,6 +3430,10 @@ myApp.onPageInit('filtro-pedidos', function (page){
     $$(".limparPCE").click(function(){
         calendarRange2.setValue("");
     })
+
+    if (tipousuario == 4){
+        $$(".ul-filtro").hide();
+    }
 
 
     var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
@@ -3973,13 +4477,13 @@ myApp.onPageInit('form-acaocorretiva', function (page){
     var telefone = page.query.telefone;
     var idacao = page.query.idacao;
 
-    $$.ajax({
-            url: baseurl+'loads/loadProdutosSelectOptions.php',
-            type: "GET",
-            success: function (data) {  
-                $$("#produto-acao").html(data);
-            }
-    });
+    //$$.ajax({
+    //        url: baseurl+'loads/loadProdutosSelectOptions.php',
+    //        type: "GET",
+    //        success: function (data) {  
+    //            $$("#produto-acao").html(data);
+    //        }
+    //});
 
     if (idacao == undefined){
         $$(".select-acao").hide();
@@ -4003,10 +4507,21 @@ myApp.onPageInit('form-acaocorretiva', function (page){
                 $$("textarea[name=descricao-acao]").val(returnedData[0].descricao);
                 $$("textarea[name=parecer-acao]").val(returnedData[0].parecer);
                 $$("textarea[name=descricao2-acao]").val(returnedData[0].acaocorretiva);
-                $$("#produto-acao").val(returnedData[0].produto+';'+returnedData[0].nomeproduto);                 
+                var produto = returnedData[0].produto;
+                //$$("#produto-acao").val(returnedData[0].produto+';'+returnedData[0].nomeproduto);
+
+                $$.ajax({
+                    url: baseurl+'loads/loadProdutosAcao.php?p='+produto,
+                    type: "GET",
+                    success: function (data) {  
+                        $$("#produto-acao").html(data);
+                    }
+                });                
             } 
 
         });
+
+        
 
         
     }
@@ -4395,38 +4910,57 @@ myApp.onPageInit('form-pedido', function (page){
                 $$("textarea[name=comentarios_finalizacao]").val(returnedData[0].comentarios_finalizacao);
 
                 if ($$("#nf").val() != '' && $$("#transportadora").val() != ''){
-                    $$("#finalizado").removeClass("disabled");
+                    if (tipousuario != 1){
+                        $$("#finalizado").removeClass("disabled");
+                    }
                 } else {
                     $$("#finalizado").addClass("disabled");
                 }
 
 
                 if ($$("input[name=situacao-ped").val() == "PRODUÇÃO"){
-                    $$("#producao").addClass("producao-active");
+                    if (tipousuario != 1){
+                        $$("#producao").addClass("producao-active");
+                    }
                     //myApp.showTab('#tab-2');
                 }
                 if ($$("input[name=situacao-ped").val() == "EXPEDIÇÃO"){
-                    $$("#producao").addClass("producao-active");
-                    $$("#expedicao").addClass("expedicao-active");
+                    if (tipousuario != 1){
+                        $$("#producao").addClass("producao-active");
+                        $$("#expedicao").addClass("expedicao-active");
+                    }
                     //myApp.showTab('#tab-3');
                 }
                 if ($$("input[name=situacao-ped").val() == "ENTREGA"){
-                    $$("#producao").addClass("producao-active");
-                    $$("#expedicao").addClass("expedicao-active");
-                    $$("#entrega").addClass("entrega-active");
+                    if (tipousuario != 1){
+                        $$("#producao").addClass("producao-active");
+                        $$("#expedicao").addClass("expedicao-active");
+                        $$("#entrega").addClass("entrega-active");
+                    }
 
                     //myApp.showTab('#tab-4');
                 }
                 if ($$("input[name=situacao-ped").val() == "FINALIZADO"){
-                    $$("#producao").addClass("producao-active");
-                    $$("#expedicao").addClass("expedicao-active");           
-                    $$("#entrega").addClass("entrega-active");
-                    $$("#finalizado").addClass("finalizado-active");
+                    if (tipousuario != 1){
+                        $$("#producao").addClass("producao-active");
+                        $$("#expedicao").addClass("expedicao-active");           
+                        $$("#entrega").addClass("entrega-active");
+                        $$("#finalizado").addClass("finalizado-active");
+                    }
                     //myApp.showTab('#tab-5');
                 }
             }
 
         });
+
+        if (tipousuario != 1){
+            $$("#salvar-pedido").addClass("disabled");
+            $$(".addprodutopedido").addClass("disabled");
+        }
+        if (tipousuario == 4){
+            $$("#salvar-pedido").removeClass("disabled");
+            $$(".pendente, .finalizado, input[name='condicao-ped'], select[name='frete-ped']").addClass("disabled");
+        }
 
         $$.ajax({
             url: baseurl+'loads/loadLotesProdutosPedido.php?idped='+idped,
@@ -5144,6 +5678,30 @@ myApp.onPageInit('form-teste-visualizar', function (page){
     });
 
     $$.ajax({
+        url: baseurl+'loads/loadListaTeste.php?idteste='+idteste,
+        type: 'get',   
+        dataType: 'json',  
+            success: function(returnedData) {
+            //$$(".list-products-teste").prepend(returnedData);
+            //$$("#produto-teste").val(returnedData[0].produto);
+            $$("#lote-obs").val(returnedData[0].obs_lote);
+            $$("#qtd-obs").val(returnedData[0].obs_qtd);
+            $$("#equip-obs").val(returnedData[0].obs_equip);
+            //$$("#produto-teste option[value='" + returnedData[0].produto + "']").attr("selected","selected");
+            var produto = returnedData[0].produto;
+            $$.ajax({
+                url: baseurl+'loads/loadProdTeste.php?p='+produto+'&idteste='+idteste,
+                type: "GET",
+                success: function (data) {  
+                    $$("#produto-teste").html(data);
+                }
+            }); 
+        } 
+    });
+
+       
+
+    $$.ajax({
         url: baseurl+'loads/loadDadosTeste.php?idteste='+idteste,
         type: 'get', 
         dataType: 'json',       
@@ -5160,18 +5718,7 @@ myApp.onPageInit('form-teste-visualizar', function (page){
                 } else {$$(".addprodutoteste").addClass("disabled");}
             })
 
-            $$.ajax({
-                url: baseurl+'loads/loadListaTeste.php?idteste='+idteste,
-                type: 'get',   
-                dataType: 'json',  
-                success: function(returnedData) {
-                    //$$(".list-products-teste").prepend(returnedData);
-                    $$("#produto-teste").val(returnedData[0].produto);
-                    $$("#lote-obs").val(returnedData[0].obs_lote);
-                    $$("#qtd-obs").val(returnedData[0].obs_qtd);
-                    $$("#equip-obs").val(returnedData[0].obs_equip);
-                } 
-            });
+            
 
             $$(".addprodutoteste").click(function(){
                 //var obs = $$("#produto-obs").val();
@@ -5364,6 +5911,10 @@ myApp.onPageInit('form-produto', function (page){
    $$(".email-boletim").attr("href", "email_boletim.html?prod="+prod);
    $$(".email-fispq").attr("href", "email_fispq.html?prod="+prod);
 
+   if (tipousuario != 1){
+      $$(".formulacao").hide();
+   }
+
    // se existe um parametro "representante" faz a edição e salvamento do registro
    if (prod != null ){
     
@@ -5378,6 +5929,7 @@ myApp.onPageInit('form-produto', function (page){
                 $$("#prod_id").val(returnedData[0].id);
                 $$("#prod_descricao").val(returnedData[0].descricao);
                 $$("#prod_obs").val(returnedData[0].obs);
+                $$("#prod_formulacao").val(returnedData[0].formulacao);
                 if (returnedData[0].boletim != ""){
                     $$(".ler-boletim").show();
                     $$(".email-boletim").show();
