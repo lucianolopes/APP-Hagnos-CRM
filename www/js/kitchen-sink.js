@@ -2437,8 +2437,8 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
        if (cliente != null ){
             $$("#cliente-lanc-id").val(cliente);
             $$("#cliente-lanc-nome").val(nomecliente);
-            $$("#cliente-contato").val(contato);
-            $$("#cliente-telefone").val(telefone);  
+            //$$("#cliente-contato").val(contato);
+            //$$("#cliente-telefone").val(telefone);  
 
             $$(".id-cliente").html(cliente);
             $$(".nome-cliente").html(nomecliente);
@@ -2461,7 +2461,7 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                     codrep = returnedData[0].codrep;
                     nomerep = returnedData[0].nomerep;
 
-                    $$("#cliente-email").val(returnedData[0].email);
+                    //$$("#cliente-email").val(returnedData[0].email);
                     //$$("#situacao-cliente").html(returnedData[0].situacao);
                     //$$(".s-situacao").html(returnedData[0].status);
 
@@ -2774,8 +2774,8 @@ myApp.onPageInit('lancamentos', function (page){
     }
 
     if (cliente_search != undefined){
-        $$(".lancamentos-detalhado").attr("href", "lancamentos.html?detalhado=sim&sp="+sp+"&si="+si+"&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
-        $$(".lancamentos-agrupado").attr("href", "lancamentos.html?detalhado=nao&sp="+sp+"&si="+si+"&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
+        $$(".lancamentos-detalhado").attr("href", "lancamentos.html?detalhado=sim&sp="+sp+"&si="+si+"&cliente_search="+cliente_search+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
+        $$(".lancamentos-agrupado").attr("href", "lancamentos.html?detalhado=nao&sp="+sp+"&si="+si+"&cliente_search="+cliente_search+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
     }
 
     $$.ajax({
