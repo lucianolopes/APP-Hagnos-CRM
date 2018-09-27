@@ -2,8 +2,8 @@ var myApp = new Framework7({
     modalTitle: 'Framework7',
     // Enable Material theme
     material: true,
-    uniqueHistory:true,
-    uniqueHistoryIgnoreGetParameters: true,
+    //uniqueHistory:true,
+    //uniqueHistoryIgnoreGetParameters: true,
 });
 
 //myApp.params.cacheIgnore = ['form-cliente'];
@@ -587,6 +587,23 @@ function deletaConversa(tipoint, idlanc){
             }
         });
     });
+}
+
+function deletaContato(id, origem){
+    // deleta um produto do equipamento
+    if (origem == 0){
+        myApp.confirm('Confirma remoção deste contato?', 'Exclusão', function () {
+            $$.ajax({
+                url: baseurl+'saves/deleta.php?tb=contatos_cliente&id='+id,
+                method: 'GET',
+                success: function (data){
+                    $$(".cl"+id).remove();
+                }
+            });
+        });
+    } else {
+        $$(".list-contatos .row:last-child, .list-contatos-cliente .row:last-child").remove();
+    }
 }
 
 function deletaNotificacao(id,tipoint,idlanc){
@@ -1627,11 +1644,17 @@ myApp.onPageInit('form-cliente', function (page){
 
  
     $$(".link-voltar").click(function(){
-      mainView.router.back({ url: myApp.mainView.history[2], force: true });
+      //mainView.router.back({ url: myApp.mainView.history[2], force: true });
       //mainView.router.back();
+      page.view.router.back({
+          url: page.view.history[page.view.history.length - 2],
+          force: true,
+          ignoreCache: true
+        });
 
     })
-  
+
+   
     // SALVANDO CADASTRO DE CLIENTE
     $$(".salva-concentracao").click(function(){
         var form = $$('#form-concentracoes');
@@ -1691,7 +1714,28 @@ myApp.onPageInit('form-cliente', function (page){
     $$( "#tab3-d" ).on("show",function() {
         //$$(".toolbar-cliente").show();
         $$(".addTab").attr("href", "forms/form_pedido.html?"+paramsLink);
-    });    
+    });
+
+    $$(".addContato").click(function(){
+            $$(".list-contatos-cliente").append('<div class="row" style="border-bottom:1px solid #999;padding-bottom:5px;padding-top:5px">'+
+                    '<div class="col-50 tablet-20">'+
+                    '    <input type="text" name="responsavel-nome[]" placeholder="RESPONSÁVEL">'+
+                    '</div>'+
+                    '<div class="col-50 tablet-20">'+
+                    '    <input type="text" name="responsavel-setor[]" placeholder="SETOR">'+
+                    '</div>'+
+                    '<div class="col-50 tablet-20">'+
+                    '    <input type="text" name="responsavel-telefone[]" placeholder="TELEFONE">'+
+                    '</div>'+
+                    '<div class="col-50 tablet-20">'+
+                    '    <input type="text" name="responsavel-email[]" placeholder="EMAIL">'+
+                    '</div>'+
+                    '<div class="col-50 tablet-20">'+
+                    '<a href="#" class="link item-link icon-only color-teal" onclick="deletaContato(0,1)"><i class="icon material-icons">delete</i></a>'+
+                    '</div>'+
+            '</div>');
+        })
+    
 
    
    // se existe um parametro "cliente" faz a edição e salvamento do registro
@@ -1714,25 +1758,13 @@ myApp.onPageInit('form-cliente', function (page){
                 $$("#cliente_cnpj").val(returnedData[0].cnpj);
                 $$("#cliente_inscricao").val(returnedData[0].inscricao);
                 $$("#cliente_segmento").val(returnedData[0].segmento);
-                $$("#cliente_email").val(returnedData[0].email);
-                $$("input[type=text][name=cliente_responsavel").val(returnedData[0].responsavel);
-                $$("input[type=text][name=cliente_responsavel2").val(returnedData[0].responsavel2);
-                $$("input[type=text][name=cliente_responsavel3").val(returnedData[0].responsavel3);
-                $$("input[type=text][name=cliente_responsavel4").val(returnedData[0].responsavel4);
-                $$("input[type=text][name=cliente_responsavel5").val(returnedData[0].responsavel5);
-                $$("input[type=text][name=cliente_responsavel_setor").val(returnedData[0].setor);
-                $$("input[type=text][name=cliente_responsavel2_setor").val(returnedData[0].setor2);
-                $$("input[type=text][name=cliente_responsavel3_setor").val(returnedData[0].setor3);
-                $$("input[type=text][name=cliente_responsavel4_setor").val(returnedData[0].setor4);
-                $$("input[type=text][name=cliente_responsavel5_setor").val(returnedData[0].setor5);
-
                 $$("#cliente_cep").val(returnedData[0].cep);
                 $$("#cliente_estado").val(returnedData[0].estado);
-                $$("input[type=text][name=cliente_telefone]").val(returnedData[0].telefone);
+                //$$("input[type=text][name=cliente_telefone]").val(returnedData[0].telefone);
                 $$("input[type=text][name=cliente_endereco]").val(returnedData[0].endereco);
                 $$("input[type=text][name=cliente_bairro]").val(returnedData[0].bairro);
                 $$("input[type=text][name=status_i]").val(returnedData[0].status_interativo);
-                //$$("input[type=text][name=cliente_representante]").val(returnedData[0].nomerep);
+                $$("input[type=text][name=cliente_representante]").val(returnedData[0].nomerep);
                 //$$("input[type=text][name=cliente_codrep]").val(returnedData[0].codrep);
 
                 $$.ajax({
@@ -1740,6 +1772,13 @@ myApp.onPageInit('form-cliente', function (page){
                     method: 'GET',
                     success: function (data) {
                         $$("#cliente_representante").html(data);
+                    }
+                });
+                $$.ajax({
+                    url: baseurl+'loads/loadContatosCliente.php?cliente='+cliente,
+                    method: 'GET',
+                    success: function (data) {
+                        $$(".list-contatos-cliente").html(data);
                     }
                 });
 
@@ -1998,7 +2037,9 @@ myApp.onPageInit('form-cliente', function (page){
                 
 
                 $$.ajax({
-                    url: baseurl+'loads/loadPedidosCliente.php?cliente='+cliente,                       
+                    url: baseurl+'loads/loadPedidosCliente.php',  
+                    data: {"cliente": cliente }, 
+                    method: 'get',                      
                     success: function(returnedData) {
                         $$("#lista-pedidos-cliente").html(returnedData);
 
@@ -2212,6 +2253,25 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
    var acao = "insert";
    var idlanc = "";
 
+   var currentDate = new Date();
+   var twoDigitMonth=((currentDate.getMonth()+1)>=10)? (currentDate.getMonth()+1) : '0' + (currentDate.getMonth()+1);  
+   var twoDigitDate=((currentDate.getDate())>=10)? (currentDate.getDate()) : '0' + (currentDate.getDate());
+   var createdDateTo = currentDate.getFullYear() + "-" + twoDigitMonth + "-" + twoDigitDate;
+
+   $$("#data_visita, #dtvisita").val(createdDateTo);
+
+   Date.prototype.addDias = function(dias){
+   this.setDate(this.getDate() + dias)
+   };
+   var dt = new Date();
+   dt.addDias(15);
+   var twoDigitMonth=((dt.getMonth()+1)>=10)? (dt.getMonth()+1) : '0' + (dt.getMonth()+1);  
+   var twoDigitDate=((dt.getDate())>=10)? (dt.getDate()) : '0' + (dt.getDate());
+   var dataProxVisita = dt.getFullYear() + "-" + twoDigitMonth + "-" + twoDigitDate;
+
+
+   $$("#data_proximo_contato, #dtproxcontato").val(dataProxVisita);   
+
 
    $$("#status_padrao").change(function(){
    //if ($$("#status_padrao").val() != "" && $$("#status_interativo").val() != ""){
@@ -2222,14 +2282,6 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
     }
    })
 
-
-   //$$("#status_interativo").change(function(){
-   // if ($$("#status_padrao").val() != "" && $$("#status_interativo").val() != ""){
-   //     $$(".bt-tb2").removeClass('disabled');
-   // } else {
-   //     $$(".bt-tb2").addClass('disabled');
-   // }
-   //})    
 
    // ABA DESCRIÇÃO (ADICÃO DE PRODUTOS E FINALIDADES (OPORTUNIDADES E NEGÓCIOS))
    $$.ajax({
@@ -2301,62 +2353,78 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
     // FIM ABA DESCRIÇÃO (ADICÃO DE PRODUTOS E FINALIDADES (OPORTUNIDADES E NEGÓCIOS))
 
      
-   $$(".bt-tb1").click(function(){
-      $$(".tb0").removeClass("disabled");
-      myApp.showTab('#tab4l');
-   })   
+       $$(".bt-tb1").click(function(){
+          $$(".tb0").removeClass("disabled");
+          myApp.showTab('#tab4l');
+       })   
 
-   $$(".bt-tb4").click(function(){
-      $$(".tb3, .tb2").removeClass("disabled");
-      myApp.showTab('#tab2l');
-   })
+       $$(".bt-tb4").click(function(){
+          $$(".tb3, .tb2").removeClass("disabled");
+          myApp.showTab('#tab2l');
+       })
 
-   $$(".bt-tb3").click(function(){
-      $$(".tb2").removeClass("disabled");
-      myApp.showTab('#tab4l');
-   })
-   
-   $$(".bt-tb2").click(function(){
-      $$(".tb1").removeClass("disabled");
-      $$(".salva-lancamento").removeClass("disabled");
-      myApp.showTab('#tab3l');
-   })
+       $$(".bt-tb3").click(function(){
+          $$(".tb2").removeClass("disabled");
+          myApp.showTab('#tab4l');
+       })
+       
+       $$(".bt-tb2").click(function(){
+          $$(".tb1").removeClass("disabled");
+          $$(".salva-lancamento").removeClass("disabled");
+          myApp.showTab('#tab3l');
+       })
 
 
-   if (page.query.edit == "yes"){
-       var acao = "edit"; 
-       var idlanc = page.query.idlanc;
-       $$(".lnc").html("AT: "+idlanc);
-       $$(".salva-lancamento").html(""); 
+       if (page.query.edit == "yes"){
+           var acao = "edit"; 
+           var idlanc = page.query.idlanc;
+           $$(".lnc").html("AT: "+idlanc);
+           $$(".salva-lancamento").html(""); 
 
-       $$(".tb1, .tb2, .tb3, .tb4").removeClass("disabled");
-       $$(".bt-tb1, .bt-tb2, .bt-tb3, .bt-tb4").hide();
+           $$(".tb1, .tb2, .tb3, .tb4").removeClass("disabled");
+           $$(".bt-tb1, .bt-tb2, .bt-tb3, .bt-tb4").hide();
 
-   }
+           $$(".dados-visita, .oportunidade-view").hide();
+            $$.ajax({
+                    url: baseurl+'loads/loadDadosHistorico.php', 
+                    data: { "idlanc": idlanc },
+                    type: 'get',
+                    dataType: 'json',                    
+                    success: function(returnedData) {
+                        $$(".dados_visita_visualizar").show();
+                        $$("#data_visita").val(returnedData[0].datalanc);
+                        $$("#data_proximo_contato").val(returnedData[0].proximocontato);
+                        $$(".span_tipo_visita").html(returnedData[0].tipovisita);     
+                        $$(".span_interacoes").html(returnedData[0].interacoes);                        
+                        $$("#lancamento-descricao").val(returnedData[0].obs);
+                    }                
+            });
+       }
 
-   if (idlanc == ""){
-    
        $$(".nCliente").html(nomecliente);
 
-       if (tab != undefined){
+        if (tab != undefined){
             if (tab == "tab2l"){
               myApp.showTab('#'+tab);   
             }                       
         }
 
         $$(".addContato").click(function(){
-            $$(".list-contatos").append('<hr><div class="row">'+
-                                    '<div class="col-50 tablet-25">'+
+            $$(".list-contatos").append('<div class="row" style="border-bottom:1px solid #999;padding-bottom:5px;padding-top:5px">'+
+                                    '<div class="col-50 tablet-20">'+
                                     '    <input type="text" name="responsavel-nome[]" placeholder="RESPONSÁVEL">'+
                                     '</div>'+
-                                    '<div class="col-50 tablet-25">'+
+                                    '<div class="col-50 tablet-20">'+
                                     '    <input type="text" name="responsavel-setor[]" placeholder="SETOR">'+
                                     '</div>'+
-                                    '<div class="col-50 tablet-25">'+
+                                    '<div class="col-50 tablet-20">'+
                                     '    <input type="text" name="responsavel-telefone[]" placeholder="TELEFONE">'+
                                     '</div>'+
-                                    '<div class="col-50 tablet-25">'+
+                                    '<div class="col-50 tablet-20">'+
                                     '    <input type="text" name="responsavel-email[]" placeholder="EMAIL">'+
+                                    '</div>'+
+                                    '<div class="col-50 tablet-20">'+
+                                    '<a href="#" class="link item-link icon-only color-teal" onclick="deletaContato(0,1)"><i class="icon material-icons">delete</i></a>'+
                                     '</div>'+
                                 '</div>');
         })
@@ -2374,10 +2442,47 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             url: baseurl+'loads/loadProdutosNegociosOportunidades2.php?cliente='+cliente,                        
             success: function(returnedData) {
                 $$("#prod-lanc-rows").html(returnedData);
+                if (page.query.edit == "yes"){
+                    $$(".oportunidade-view").hide();
+                    $$("input, textarea, select").attr("readonly", true);
+                }
             }
         });
 
         var tVisita = "";
+
+        $$("#data_visita").change(function(){
+            //$$("input[name='tpcontato']").val($$("input[name='tipo_visita']:checked").val());
+            //tVisita = $$("input[name=tipo_visita]:checked").val();
+            $$("input[name='dtvisita']").val($$("#data_visita").val());
+            var listaInteracoesArray = new Array(); 
+            $$("input[name='interacao_visita']:checked").each(function(){
+                listaInteracoesArray.push(this.value);
+            });
+            if (listaInteracoesArray.length > 0 && $$("#lancamento-descricao").val() != "" && $$("#data_visita").val() != "" && $$("#data_proximo_contato").val() != ""){
+                $$(".bt-tb4").removeClass('disabled');
+                $$(".tb3").removeClass("disabled");
+            } else {
+                $$(".bt-tb4").addClass('disabled');
+                $$(".tb3, .tb1").addClass("disabled");
+            }
+        })
+
+        $$("#data_proximo_contato").change(function(){
+            $$("input[name='dtproxcontato']").val($$("#data_proximo_contato").val());
+            var listaInteracoesArray = new Array(); 
+            $$("input[name='interacao_visita']:checked").each(function(){
+                listaInteracoesArray.push(this.value);
+            });
+            if (listaInteracoesArray.length > 0 && $$("#lancamento-descricao").val() != "" && $$("#data_visita").val() != "" && $$("#data_proximo_contato").val() != ""){
+                $$(".bt-tb4").removeClass('disabled');
+                $$(".tb3").removeClass("disabled");
+            } else {
+                $$(".bt-tb4").addClass('disabled');
+                $$(".tb3, .tb1").addClass("disabled");
+            }
+        })
+
         $$("input[name='tipo_visita']").change(function(){
             $$("input[name='tpcontato']").val($$("input[name='tipo_visita']:checked").val());
             tVisita = $$("input[name=tipo_visita]:checked").val();
@@ -2386,10 +2491,12 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             $$("input[name='interacao_visita']:checked").each(function(){
                 listaInteracoesArray.push(this.value);
             });
-            if (listaInteracoesArray.length > 0 && $$("#lancamento-descricao").val() != ""){
+            if (listaInteracoesArray.length > 0 && $$("#lancamento-descricao").val() != "" && $$("#data_visita").val() != "" && $$("#data_proximo_contato").val() != ""){
                 $$(".bt-tb4").removeClass('disabled');
+                $$(".tb3").removeClass("disabled");
             } else {
                 $$(".bt-tb4").addClass('disabled');
+                $$(".tb3, .tb1").addClass("disabled");
             }
         })
 
@@ -2401,13 +2508,14 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             $$("input[name='interacao_visita']:checked").each(function(){
                 listaInteracoesArray.push(this.value);
             });
-            if (listaInteracoesArray.length > 0 && $$("#lancamento-descricao").val().length > 0){
+            if (listaInteracoesArray.length > 0 && $$("#lancamento-descricao").val().length > 0 && $$("#data_visita").val() != "" && $$("#data_proximo_contato").val() != ""){
                 $$(".bt-tb4").removeClass('disabled');
+                $$("tb3").removeClass("disabled");
             } else {
                 $$(".bt-tb4").addClass('disabled');
+                $$(".tb3, .tb1").addClass("disabled");
             }
-        })
-        
+        })        
         
 
         $$("input[name='interacao_visita']").click(function(){
@@ -2420,11 +2528,14 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             if (listaInteracoes.length > 0 && $$("#lancamento-descricao").val().length > 0){
                 if (tVisita == ""){
                     $$(".bt-tb4").addClass('disabled');
+                    $$(".tb3, .tb1").addClass("disabled");
                 } else {
                     $$(".bt-tb4").removeClass('disabled');
+                    $$(".tb3").removeClass("disabled");
                 }
             } else {
                 $$(".bt-tb4").addClass('disabled');
+                $$(".tb3, .tb1").addClass("disabled");
             }            
         })
 
@@ -2433,8 +2544,8 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
         })
         
 
-       // se existe um parametro "cliente" faz a edição e salvamento do registro
-       if (cliente != null ){
+        // se existe um parametro "cliente" faz a edição e salvamento do registro
+        if (cliente != null ){
             $$("#cliente-lanc-id").val(cliente);
             $$("#cliente-lanc-nome").val(nomecliente);
             //$$("#cliente-contato").val(contato);
@@ -2458,6 +2569,7 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                     $$("#l-codrep").val(returnedData[0].codrep);
                     $$("#l-nomerep").val(returnedData[0].nomerep);
                     $$("#obs-cliente").val(returnedData[0].obs);
+                    $$("input[name='status_padrao_view']").val(returnedData[0].status_padrao);
                     codrep = returnedData[0].codrep;
                     nomerep = returnedData[0].nomerep;
 
@@ -2480,6 +2592,11 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                     if (returnedData[0].responsavel5 != ""){
                         $$(".resp-setores").append(returnedData[0].responsavel5+" / "+returnedData[0].setor5);
                     }
+                    if (page.query.edit == "yes"){
+                        $$("#status_padrao").remove();
+                        $$("input[name='status_padrao_view']").show();
+                        $$("input, textarea, select").attr("readonly", true);
+                    }  
                 }            
             });
 
@@ -2488,6 +2605,10 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                 method: 'GET',
                 success: function (data) {
                     $$(".list-contatos").html(data); 
+                    if (page.query.edit == "yes"){
+                        $$(".addct, .del").remove();
+                        $$("input, textarea, select").attr("readonly", true);
+                    }  
                 }
             });
             
@@ -2509,9 +2630,27 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                     var i = 0;
                     $$("#previsaovenda").find("tr").each(function(){
                         i++;
-                    });                   
+                    });  
+
+                    if (page.query.edit == "yes"){
+                        $$(".oportunidade-view").hide();
+                        $$("input, textarea, select").attr("readonly", true);
+                    }                 
                 }                    
             });
+
+           // if (page.query.edit == "yes"){
+            //    $$(".dados-visita").hide();
+            //    $$.ajax({
+            //        url: baseurl+'loads/loadDadosHistorico.php', 
+            //        data: { "idlanc": idlanc },
+            //        type: 'get',
+            //        dataType: 'json',                    
+            //        success: function(returnedData) {
+            //            $$("#data_visita").val(returnedData[0].datalanc);
+            //        }                
+            //    });
+            //}  
 
 
             $$(".popup-info-equip").click(function(){
@@ -2561,21 +2700,6 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                 }
             })
 
-                        
-            //form dos produtos (negocios oportunidades)
-            //var form2 = $$('#form-lancamento-4');
-            //$$.ajax({
-            //    url: baseurl+'saves/saveLancamentoProdutos.php?codCliente='+cliente,           
-            //    data: new FormData(form2[0]),
-            //    type: 'post',
-            //    processData: false,  // Important!
-           //     contentType: false,
-           //     cache: false,                  
-            //    success: function( response ) {
-            //        
-            //    }
-            //})
-            //fim form dos produtos (negocios oportunidades)
 
             var form = $$('#form-lancamento-3');
             var statusPadrao = $$("#status_padrao").val();
@@ -2607,40 +2731,6 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                         },
                     });
                     mainView.router.loadPage("lancamentos.html");
-
-                    //var questao = "";
-                    //var linkNovaInteracao = "";
-                    //var paramsInteracao = "?cliente="+cliente+"&nomecliente="+nomecliente+"&contato="+contato+"&telefone="+telefone;
-
-                    //if (statusInterativo == "AÇÃO CORRETIVA"){
-                    //    questao = "Gostaria de lançar nova ação corretiva?";
-                    //    linkNovaInteracao = "forms/nova_acao_corretiva_form.html"+paramsInteracao;
-                    //} else if (statusInterativo == "HIGIENIZAÇÃO"){
-                    //    questao = "Gostaria de lançar nova ação higienização?";
-                    //    linkNovaInteracao = "forms/nova_higienizacao_form.html"+paramsInteracao;
-                    //} else if (statusInterativo == "TESTE"){
-                    //    questao = "Gostaria de lançar novo teste?";
-                    //    linkNovaInteracao = "forms/novo_teste_form.html"+paramsInteracao;
-                    //} else if (statusInterativo == "COTAÇÃO"){
-                    //    questao = "Gostaria de lançar nova cotação?";
-                    //    linkNovaInteracao = "forms/nova_cotacao_form_adm.html"+paramsInteracao;
-                    //} else {
-                    //    mainView.router.back();
-                    //}
-
-                    //if (statusInterativo != "SEM INTERAÇÃO"){
-                    //    myApp.confirm(questao,'',
-                   //        function () {
-                    //          mainView.router.reloadPage(linkNovaInteracao);
-                     //      },
-                    //       function () {
-                    //        //mainView.router.reloadPage('lancamentos.html');
-                    //        //myApp.alert(statusInterativo);
-                    //        //mainView.router.back();                       
-                    //        mainView.router.back();                        
-                    //       }
-                    //    );
-                    //}
                    
                   }
                 })           
@@ -2662,40 +2752,9 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             })
             //fim form de previsao de vendas
 
-        });    
-
-   } else {         
-
-        $$.ajax({
-            url: baseurl+'loads/loadDadosHistorico.php',
-            data: { "idlanc": idlanc },
-            type: 'get',
-            dataType: 'json',
-                
-            success: function(returnedData) {
-                $$("#cliente-lanc-id").val(returnedData[0].cliente);
-                $$("#cliente-lanc-nome").val(returnedData[0].nomecliente);
-                $$("#cliente-contato").val(returnedData[0].nomecontato);
-                $$("#cliente-telefone").val(returnedData[0].telefone); 
-                $$("#lancamento-descricao").val(returnedData[0].obs);
-                $$("#status_padrao").val(returnedData[0].status);
-                $$("#status_interativo").val(returnedData[0].statusinterativo);
-            }            
         });  
 
-        $$.ajax({
-            url: baseurl+'loads/loadDadosLancamento.php?idlanc='+idlanc,
-            method: 'GET',
-            success: function (data) {
-                $$("#lista-equip2").html(data); 
-                $("#p-conc, .conc").maskMoney({decimal:".",thousands:""});
-            }
-        });  
         
-
-        $$("#form-lancamento-2 select, #form-lancamento-3 input, #form-lancamento-4 textarea").addClass("disabled"); 
-        
-   }   
        
 })
 
@@ -2825,6 +2884,7 @@ myApp.onPageInit('pedidos', function (page){
     var situacao = page.query.situacao;
     var cliente_search = page.query.cliente_search;
     var rep_search = page.query.rep_search;
+    var transportadora_search = page.query.transportadora_search;
     var periodo_lancamento = page.query.periodo_lancamento;
     var periodo_entrega = page.query.periodo_entrega; 
     var id = page.query.id;
@@ -2840,7 +2900,7 @@ myApp.onPageInit('pedidos', function (page){
 
     $$.ajax({
         url: baseurl+'loads/loadPedidosAgrupado.php',
-        data: { "tipousuario": tipousuario, "repres":repres, "cliente":cliente, "cliente_search": cliente_search, "situacao": situacao ,"rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
+        data: { "tipousuario": tipousuario, "repres":repres, "cliente":cliente, "cliente_search": cliente_search, "situacao": situacao ,"rep_search": rep_search, "transportadora_search": transportadora_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
         method: 'get',            
         success: function(returnedData) {
             $$("#results-pedidos").html(returnedData);
@@ -3071,6 +3131,7 @@ myApp.onPageInit('acoescorretivas', function (page){
     var situacao = page.query.situacao;
     var cliente_search = page.query.cliente_search;
     var rep_search = page.query.rep_search;
+    var produto_search = page.query.produto_search;
     var periodo_lancamento = page.query.periodo_lancamento;
     var id = page.query.id;
     var detalhado = page.query.detalhado;
@@ -3092,15 +3153,15 @@ myApp.onPageInit('acoescorretivas', function (page){
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
 
     if (cliente_search != undefined){
-        $$(".acoes-detalhado").attr("href", "acoescorretivas.html?detalhado=sim&sp="+sp+"&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
-        $$(".acoes-agrupado").attr("href", "acoescorretivas.html?detalhado=nao&sp="+sp+"&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
+        $$(".acoes-detalhado").attr("href", "acoescorretivas.html?detalhado=sim&sp="+sp+"&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&produto_search="+produto_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
+        $$(".acoes-agrupado").attr("href", "acoescorretivas.html?detalhado=nao&sp="+sp+"&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&produto_search="+produto_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
     }
     
 
     $$.ajax({
         //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
         url: baseurl+'loads/loadAcoesCorretivasAgrupado.php',             
-        data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "sp": sp, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
+        data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "sp": sp, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "produto_search": produto_search, "periodo_lancamento": periodo_lancamento, "id": id  },
         success: function(returnedData) {
             $$("#results-acoescorretivas").html(returnedData);
             var i = 0;
@@ -3467,11 +3528,12 @@ myApp.onPageInit('filtro-pedidos', function (page){
         });
         var cliente_search = $$("#cliente_search").val();
         var rep_search = $$("#representante_search").val();
+        var transportadora_search = $$("#transportadora_search").val();
         var periodo_lancamento = $$("#data_search").val();
         var periodo_entrega = $$("#data_entrega_search").val();
         var id = $$("#id_search").val();
 
-        mainView.router.loadPage('pedidos.html?situacao='+situacao+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&periodo_entrega='+periodo_entrega+'&id='+id);
+        mainView.router.loadPage('pedidos.html?situacao='+situacao+'&cliente_search='+cliente_search+'&transportadora_search='+transportadora_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&periodo_entrega='+periodo_entrega+'&id='+id);
     });
 })
 
@@ -3685,10 +3747,11 @@ myApp.onPageInit('filtro-acoescorretivas', function (page){
         });
         var cliente_search = $$("#cliente_search").val();
         var rep_search = $$("#representante_search").val();
+        var produto_search = $$("#produto_search").val();
         var periodo_lancamento = $$("#data_search").val();
         var id = $$("#id_search").val();
 
-        mainView.router.loadPage('acoescorretivas.html?situacao='+situacao+'&sp='+sp+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&id='+id);
+        mainView.router.loadPage('acoescorretivas.html?situacao='+situacao+'&sp='+sp+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&produto_search='+produto_search+'&periodo_lancamento='+periodo_lancamento+'&id='+id);
     });
 })
 
@@ -4477,13 +4540,13 @@ myApp.onPageInit('form-acaocorretiva', function (page){
     var telefone = page.query.telefone;
     var idacao = page.query.idacao;
 
-    //$$.ajax({
-    //        url: baseurl+'loads/loadProdutosSelectOptions.php',
-    //        type: "GET",
-    //        success: function (data) {  
-    //            $$("#produto-acao").html(data);
-    //        }
-    //});
+    $$.ajax({
+            url: baseurl+'loads/loadProdutosSelectOptions.php',
+            type: "GET",
+            success: function (data) {  
+                $$("#produto-acao").html(data);
+            }
+    });
 
     if (idacao == undefined){
         $$(".select-acao").hide();
