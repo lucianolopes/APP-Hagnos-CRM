@@ -2,7 +2,7 @@
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="left">
-				<a href="index.html" class="link back icon-only link-voltar"><i class="icon icon-back"></i></a>
+				<a href="index.html" class="link back icon-only link-voltar" id="formcliente-voltar"><i class="icon icon-back"></i></a>
 				<a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
 			</div>
 			<div class="center" class="nomeperfil"></div>
@@ -191,116 +191,7 @@
 						</div>
 						</div>
 						</div>
-						</li>
-
-						<li>
-						<div class="item-content">
-							<div class="item-inner">
-								<div class="item-title label" required>Telefone</div>
-								<div class="item-input">
-									<input type="text" name="cliente_telefone" required autocomplete="off"/>
-								</div>
-							</div>
-						</div>
-						</li>	
-
-						<li>
-						<h4 style="margin-left:15px">Responsáveis e setores</h4>
-						<div class="item-content">				
-							<div class="item-inner">
-								<div class="item-title label">Comprador/Encarregado</div>
-								<div class="item-input">
-									<input type="text" name="cliente_responsavel" autocomplete="off" />
-								</div>
-							</div>
-							<div class="item-inner">
-								<div class="item-title label">Setor Comprador/Encarregado</div>
-								<div class="item-input">
-									<input type="text" name="cliente_responsavel_setor" autocomplete="off" />
-								</div>
-							</div>
-						</div>
-						</li>
-
-						<li>
-						<div class="item-content">				
-							<div class="item-inner">
-								<div class="item-title label">Responsável 2</div>
-								<div class="item-input">
-									<input type="text" name="cliente_responsavel2" autocomplete="off" />
-								</div>
-							</div>
-							<div class="item-inner">
-								<div class="item-title label">Setor do Responsável 2</div>
-								<div class="item-input">
-									<input type="text" name="cliente_responsavel2_setor" autocomplete="off" />
-								</div>
-							</div>
-						</div>
-						</li>
-
-						<li>
-						<div class="item-content">				
-							<div class="item-inner">
-								<div class="item-title label">Responsável 3</div>
-								<div class="item-input">
-									<input type="text" name="cliente_responsavel3" autocomplete="off" />
-								</div>
-							</div>
-							<div class="item-inner">
-								<div class="item-title label">Setor do Responsável 3</div>
-								<div class="item-input">
-									<input type="text" name="cliente_responsavel3_setor" autocomplete="off" />
-								</div>
-							</div>
-						</div>
-						</li>
-
-						<li>
-						<div class="item-content">				
-							<div class="item-inner">
-								<div class="item-title label">Responsável 4</div>
-								<div class="item-input">
-									<input type="text" name="cliente_responsavel4" autocomplete="off" />
-								</div>
-							</div>
-							<div class="item-inner">
-								<div class="item-title label">Setor do Responsável 4</div>
-								<div class="item-input">
-									<input type="text" name="cliente_responsavel4_setor" autocomplete="off" />
-								</div>
-							</div>
-						</div>
-						</li>
-
-						<li>
-						<div class="item-content">				
-							<div class="item-inner">
-								<div class="item-title label">Responsável 5</div>
-								<div class="item-input">
-									<input type="text" name="cliente_responsavel5" autocomplete="off" />
-								</div>
-							</div>
-							<div class="item-inner">
-								<div class="item-title label">Setor do Responsável 5</div>
-								<div class="item-input">
-									<input type="text" name="cliente_responsavel5_setor" autocomplete="off" />
-								</div>
-							</div>
-						</div>
-						</li>
-
-					
-						<li>
-						<div class="item-content">
-						<div class="item-inner">
-						<div class="item-title label" required>E-mail</div>
-						<div class="item-input">
-						<input type="email" name="cliente_email" id="cliente_email"/>
-						</div>
-						</div>
-						</div>
-						</li>
+						</li>												
 
 						<li class="li-rep">
 						<div class="item-content">
@@ -314,10 +205,35 @@
 						</div>
 						</div>
 						</li>
-
-
-
 						</ul>
+
+						<div class="content-block">
+							<h5>CONTATOS</h5>
+							<div class="list-contatos-cliente">
+								<div class="row">
+									<div class="col-50 tablet-25">
+										<input type="text" name="responsavel-nome[]" placeholder="RESPONSÁVEL">
+									</div>
+									<div class="col-50 tablet-25">
+										<input type="text" name="responsavel-setor[]" placeholder="SETOR">
+									</div>
+									<div class="col-50 tablet-25">
+										<input type="text" name="responsavel-telefone[]" placeholder="TELEFONE">
+									</div>
+									<div class="col-50 tablet-25">
+										<input type="text" name="responsavel-email[]" placeholder="EMAIL">
+									</div>
+								</div>								
+							</div>
+
+							<div class="row" style="margin-top:15px">
+								<div class="col-100">
+									<a href="#" class="button button-fill color-teal addContato">ADICIONAR CONTATO</a>
+								</div>
+							</div>
+
+						</div>
+
 
 					</form>
 				</div>
@@ -479,7 +395,8 @@
 												<th class="label-cell">DATA/HORA</th>
 												<th class="label-cell" style="text-align:right">VALOR TOTAL</th>				
 												<th class="label-cell">ENTREGA</th>
-												<th class="label-cell">FRETE</th>				
+												<th class="label-cell">FRETE</th>
+												<th class="label-cell">TRANSPORTADORA</th>				
 												<th class="label-cell">SITUAÇÃO</th>
 												<th class="numeric-cell" style="text-align:center">NOTIFICAÇÕES</th>
 												<th class="numeric-cell" style="text-align:center">EXCLUIR</th>

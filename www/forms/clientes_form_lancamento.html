@@ -56,22 +56,24 @@
 							<h5>CONTATOS</h5>
 							<div class="list-contatos">
 								<div class="row">
-									<div class="col-50 tablet-25">
+									<div class="col-50 tablet-20">
 										<input type="text" name="responsavel-nome[]" placeholder="RESPONSÁVEL">
 									</div>
-									<div class="col-50 tablet-25">
+									<div class="col-50 tablet-20">
 										<input type="text" name="responsavel-setor[]" placeholder="SETOR">
 									</div>
-									<div class="col-50 tablet-25">
+									<div class="col-50 tablet-20">
 										<input type="text" name="responsavel-telefone[]" placeholder="TELEFONE">
 									</div>
-									<div class="col-50 tablet-25">
+									<div class="col-50 tablet-20">
 										<input type="text" name="responsavel-email[]" placeholder="EMAIL">
+									</div>
+									<div class="col-50 tablet-20">										
 									</div>
 								</div>								
 							</div>
 
-							<div class="row" style="margin-top:15px">
+							<div class="row addct" style="margin-top:15px">
 								<div class="col-100">
 									<a href="#" class="button button-fill color-teal addContato">ADICIONAR CONTATO</a>
 								</div>
@@ -112,6 +114,7 @@
 								<div class="item-inner">
 								<div class="item-title label" style='font-size:20px;color:red;font-weight:bold'>SITUAÇÃO</div>
 								<div class="item-input">
+								<input type="text" name="status_padrao_view" value="" style="display:none;font-size:18px!important;font-weight:bold;color:red">
 								<select name="status_padrao" id="status_padrao" required>
 								<option value="">-- Selecione a situação --</option>
 								<option value="ativo">ATIVO</option>
@@ -135,9 +138,56 @@
 					<div class="content-block" style="padding:0px">
 
 						<form id="form-lancamento-2" class="list-block ajax-submit" data-parsley-validate="true">
-							
-							<div class="content-block-title">TIPO:</div>
+
+							<div class="content-block-title">DATA DA VISITA:</div>
+
 							<div class="list-block">
+								<ul>
+							        <li>
+									<div class="item-content">
+									<div class="item-inner">
+									<div class="item-input">
+									<input type="date" name="data_visita" id="data_visita" value="" required/>
+									</div>
+									</div>
+									</div>
+									</li>	
+								</ul>
+							</div>
+
+							<div class="content-block-title">DATA PRÓXIMO CONTATO:</div>
+
+							<div class="list-block">
+								<ul>
+							        <li>
+									<div class="item-content">
+									<div class="item-inner">
+									<div class="item-input">
+									<input type="date" name="data_proximo_contato" id="data_proximo_contato" value="" required/>
+									</div>
+									</div>
+									</div>
+									</li>	
+								</ul>
+							</div>
+							
+							
+
+							<div class="dados_visita_visualizar" style="display:none">
+								<div class="content-block-title">TIPO DE VISITA:<BR>
+								<span class="span_tipo_visita" style="font-size:16px; color:#000; font-weight:normal;line-height:2"></span>
+								</div>
+								
+
+								<div class="content-block-title">INTERAÇÕES:<BR>
+								<span class="span_interacoes" style="font-size:16px; color:#000; font-weight:normal;line-height:2"></span>
+								</div>								
+
+							</div>
+
+							<div class="list-block dados-visita">
+
+								<div class="content-block-title">TIPO DE VISITA:</div>
 						        
 						        <ul>
 							        <li>
@@ -267,8 +317,6 @@
 						        </ul>
 						    </div>
 
-						    
-
 							<a href="#" class="bt-tb4 button button-fill color-teal disabled">Avançar</a>
 
 						</form>
@@ -307,7 +355,7 @@
 
 						<div class="content-block" style="">
 
-							<table style="white-space:nowrap;padding:0px!important;width:100%;margin-bottom:40px">
+							<table class="oportunidade-view" style="white-space:nowrap;padding:0px!important;width:100%;margin-bottom:40px">
 								<tr>
 									<td colspan=4>
 									<div class="item-title label">OPORTUNIDADE</div>
@@ -332,7 +380,7 @@
 								</tr>
 								<tr style="background:#eee;padding-bottom:6px">
 									<td colspan=4>
-										<button type='button' class='button button-fill color-teal addproduto-l disabled'>confirmar adição de oportunidade</button>
+										<button type='button' class='button button-fill color-teal addproduto-l disabled '>confirmar adição de oportunidade</button>
 									</td>
 								</tr>
 							</table>
@@ -361,7 +409,7 @@
 						<H3 class="nCliente" style="text-transform:uppercase"></H3>
 						<h3 style="padding-left:15px">CONCENTRAÇÕES ATUAIS</h3>
 
-						<a href="#" class="addEquipamento button button-fill color-teal">ADICIONAR EQUIPAMENTO AO CLIENTE</a>	
+						<a href="#" class="addEquipamento button button-fill color-teal oportunidade-view">ADICIONAR EQUIPAMENTO AO CLIENTE</a>	
 
 						<div class="equipamento-fields" style="display:none;margin-top:15px">
 							<div class="row">
@@ -383,6 +431,8 @@
 						<form id="form-lancamento-3" class="list-block inputs-list ajax-submit" data-parsley-validate="true" enctype="multipart/form-data">		
 							<input type="hidden" name="tpcontato" value="PRESENCIAL">
 							<input type="hidden" name="statusi" value="">
+							<input type="hidden" name="dtvisita" id="dtvisita" value="">
+							<input type="hidden" name="dtproxcontato" id="dtproxcontato" value="">
 							<textarea name="lancamento-descricao2" id="lancamento-descricao2" style='display:none'></textarea>				
 
 							<div id="resultado"></div>														
