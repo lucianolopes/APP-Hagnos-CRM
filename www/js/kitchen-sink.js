@@ -4984,24 +4984,37 @@ myApp.onPageInit('form-pedido', function (page){
                 if ($$("input[name=situacao-ped").val() == "PRODUÇÃO"){
                     if (tipousuario != 1){
                         $$("#producao").addClass("producao-active");
+                        myApp.showTab('#tab-2');
+                    } else {
+                        $$("#producao").addClass("producao-active");
+                        myApp.showTab('#tab-2');
                     }
-                    //myApp.showTab('#tab-2');
+                    
                 }
                 if ($$("input[name=situacao-ped").val() == "EXPEDIÇÃO"){
                     if (tipousuario != 1){
                         $$("#producao").addClass("producao-active");
                         $$("#expedicao").addClass("expedicao-active");
+                    } else {
+                        $$("#producao").addClass("producao-active");
+                        $$("#expedicao").addClass("expedicao-active");
+                        myApp.showTab('#tab-3');
                     }
-                    //myApp.showTab('#tab-3');
+                    
                 }
                 if ($$("input[name=situacao-ped").val() == "ENTREGA"){
                     if (tipousuario != 1){
                         $$("#producao").addClass("producao-active");
                         $$("#expedicao").addClass("expedicao-active");
                         $$("#entrega").addClass("entrega-active");
+                    } else {
+                        $$("#producao").addClass("producao-active");
+                        $$("#expedicao").addClass("expedicao-active");
+                        $$("#entrega").addClass("entrega-active");
+                        myApp.showTab('#tab-4');
                     }
 
-                    //myApp.showTab('#tab-4');
+                    
                 }
                 if ($$("input[name=situacao-ped").val() == "FINALIZADO"){
                     if (tipousuario != 1){
@@ -5009,8 +5022,14 @@ myApp.onPageInit('form-pedido', function (page){
                         $$("#expedicao").addClass("expedicao-active");           
                         $$("#entrega").addClass("entrega-active");
                         $$("#finalizado").addClass("finalizado-active");
+                    } else {
+                        $$("#producao").addClass("producao-active");
+                        $$("#expedicao").addClass("expedicao-active");           
+                        $$("#entrega").addClass("entrega-active");
+                        $$("#finalizado").addClass("finalizado-active");
+                        myApp.showTab('#tab-5');
                     }
-                    //myApp.showTab('#tab-5');
+                    
                 }
             }
 
@@ -5346,6 +5365,7 @@ myApp.onPageInit('form-cotacao-adm', function (page){
                                                    '<div class="item-inner" style="width:40%">'+               
                                                         '<div class="item-input">'+
                                                         '<select name="produto-cot" class="produto-cot prod" required></select>'+
+                                                        '<div class="productValues"></div>'+
                                                         '</div>'+
                                                     '</div>'+
                         
@@ -5397,7 +5417,13 @@ myApp.onPageInit('form-cotacao-adm', function (page){
                 $$(".produto-cot").change(function(e){
                     var produto = this.value;
                     var prod = produto.split(";");
-                    $$(".list-products li:last-child").append(
+                    //myApp.alert(produto);
+                    //$$(".list-products li:last-child").append(
+                    //                                '<input type="hidden" name="cod-produto-cot-v[]" value="'+prod[0]+'">'+
+                    //                                '<input type="hidden" name="produto-cot-v[]" value="'+prod[1]+'"/>');
+
+                   
+                    $$(".list-products li:last-child .productValues").html(
                                                     '<input type="hidden" name="cod-produto-cot-v[]" value="'+prod[0]+'">'+
                                                     '<input type="hidden" name="produto-cot-v[]" value="'+prod[1]+'"/>');
                     
