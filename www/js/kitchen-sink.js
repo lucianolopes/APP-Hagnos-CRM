@@ -2,6 +2,9 @@ var myApp = new Framework7({
     modalTitle: 'Framework7',
     // Enable Material theme
     material: true,
+    modalPreloaderTitle: 'Carregando...', // (german)
+    onAjaxStart: function (xhr) { myApp.showPreloader();},
+    onAjaxComplete: function (xhr) { myApp.hidePreloader();},
     //uniqueHistory:true,
     //uniqueHistoryIgnoreGetParameters: true,
 });
@@ -82,6 +85,64 @@ function addProdEquip(id, nomeequip){
 
 }
 
+
+function verificaOportunidadesNegocios(){
+
+
+    var liberaAba = false;    
+
+    var qtddias = [];
+    $$("input[name='qtddias[]']").each(function() {
+        var valor = $$(this).val();
+        if (valor) {
+            qtddias.push(valor);
+        }
+    });
+    var qtdvenda = [];
+    $$("input[name='qtdvenda[]']").each(function() {
+        var valor = $$(this).val();
+        if (valor) {
+            qtdvenda.push(valor);
+        }
+    });
+
+    if (qtddias.length === 0 || qtdvenda.length === 0) {
+        if ($$("#prod-lanc-rows").length > 0){
+            liberaAba = false;
+        } else {
+            liberaAba = true;
+        }
+    }
+
+    naoPreenchidos = false;
+
+    $$("#previsaovenda").find(".neg").each(function(){                            
+        if ($$(this).val() == ""){
+            //myApp.alert('campo vazio');
+            naoPreenchidos = true;
+        } else {
+            naoPreenchidos = false;  
+        }
+
+    });
+    if (naoPreenchidos){
+        liberaAba = false;
+    } else {
+        liberaAba = true;
+    }
+
+
+    if (!liberaAba){
+        $$(".bt-tb2").addClass('disabled');
+    } else {
+        $$(".bt-tb2").removeClass('disabled');
+    }
+
+    
+   
+}
+
+
 function converteEmNegocio(id,cliente){
     myApp.confirm('Confirma a conversão para NEGÓCIO?', 'Conversão de oportunidade para negócio', function () {
         $$.ajax({
@@ -92,21 +153,35 @@ function converteEmNegocio(id,cliente){
                     url: baseurl+'loads/loadPrevisaoVendasLancamento2.php?cliente='+cliente,                                       
                     success: function(returnedData) {
                         $$("#previsaovenda").html(returnedData);
-                        var i = 0;
-                        $$("#previsaovenda").find("tr").each(function(){
-                            i++;
-                        });               
+                        //verificaOportunidadesNegocios();
+                        $$("#previsaovenda input").keyup(function(){
+                            $$("#previsaovenda").find(".neg").each(function(){                            
+                                if ($$(this).val() == ""){
+                                   naoPreenchidos = true;
+                                } else {
+                                    naoPreenchidos = false;  
+                               }
+                            });
+                            if (naoPreenchidos){
+                                $$(".bt-tb2").addClass('disabled');
+                            } else {
+                                $$(".bt-tb2").removeClass('disabled');
+                            }
+                        })
                     }                    
                 });
                 $$.ajax({
                     url: baseurl+'loads/loadProdutosNegociosOportunidades2.php?cliente='+cliente,                        
                     success: function(returnedData) {
                         $$("#prod-lanc-rows").html(returnedData);
+                        //verificaOportunidadesNegocios();
                     }
                 });             
             }
         });
+        $$(".bt-tb2").addClass('disabled');
     });
+    
 }
 
 function converteEmOportunidade(id, cliente){
@@ -116,24 +191,23 @@ function converteEmOportunidade(id, cliente){
             method: 'GET',
             success: function (data) {  
                 $$.ajax({
-                    url: baseurl+'loads/loadPrevisaoVendasLancamento2.php?cliente='+cliente,                                       
-                    success: function(returnedData) {
-                        $$("#previsaovenda").html(returnedData);
-                        var i = 0;
-                        $$("#previsaovenda").find("tr").each(function(){
-                            i++;
-                        });               
-                    }                    
-                });
-                $$.ajax({
                     url: baseurl+'loads/loadProdutosNegociosOportunidades2.php?cliente='+cliente,                        
                     success: function(returnedData) {
                         $$("#prod-lanc-rows").html(returnedData);
                     }
                 });  
+                $$.ajax({
+                    url: baseurl+'loads/loadPrevisaoVendasLancamento2.php?cliente='+cliente,                                       
+                    success: function(returnedData) {
+                        $$("#previsaovenda").html(returnedData);
+                        verificaOportunidadesNegocios();
+                    }                    
+                });
+                
             }
         });
     });
+    $$(".bt-tb2").removeClass('disabled');
 }
 
 function removeProdEquip(e,id){
@@ -982,6 +1056,84 @@ myApp.onPageInit('menu-acompanhamento', function (page) {
     } 
 });
 
+myApp.onPageInit('desempenho-representante', function (page){
+
+        
+    // seleciona o cliente
+    pesquisar_representante();
+    var calendarRange = myApp.calendar({
+        input: '#data_search',
+        dateFormat: 'dd/mm/yyyy',
+        rangePicker: true
+    });
+    $$(".limparRD").click(function(){
+        calendarRange.setValue("");
+        //$$("#gera-rel-desempenho").addClass("disabled");
+    })
+
+    $$("input[name='codrep']").val("");
+    $$("#ajax-representantes-list").val("");
+
+    if ($$("#ajax-representantes-list").val() != ""){
+        $$("#gera-rel-desempenho").removeClass("disabled");
+    }
+
+    $$("#ajax-representantes-list").keyup(function(){
+        if ($$("#ajax-representantes-list").val() != "" && $$("input[name='codrep']").val() != ""){
+            $$("#gera-rel-desempenho").removeClass("disabled");
+        } else {
+            $$("#gera-rel-desempenho").addClass("disabled");
+            $$("input[name='codrep']").val("");
+        }
+    })
+
+   
+    // SALVANDO CADASTRO DE CLIENTE
+    $$(".gera-relatorio").click(function(){
+        var codrep = $$("input[name='codrep']").val();
+        var data_search = $$("#data_search").val();
+        $$.ajax({
+            url: baseurl+'relatorios/rel_desempenho_representante.php?rep='+codrep+'&data_search='+data_search,
+            method: 'GET',
+            success: function (data) {
+                $$(".relatorio-content").html(data);
+            }
+        });
+    });
+})
+
+myApp.onPageInit('menu-relatorios', function (page) {   
+
+    $$(".nomeusuario").html(usuarioNome); 
+    $$(".tipousuario").html(usuarioNomeTipo); 
+
+    $$('.swiperTab').on('show', function(){
+        $$(this).find('.swiper-container')[0].swiper.update();
+    });
+    
+    if (tipousuario == 2){
+        $$(".esconde-rep").hide();
+    }
+    if (tipousuario == 3){
+        $$(".esconde-cliente").hide();   
+    }
+
+    var rp = "";
+    if (tipousuario == 1 || tipousuario == 2){
+        
+
+        if (tipousuario == 1){
+        $$(".esconde-admin").hide(); 
+        }
+
+        if (tipousuario == 2){
+        $$(".esconde-rep").hide(); 
+        var rp = rep;
+        }        
+    } 
+});
+
+
 myApp.onPageInit('menu-comercial', function (page) {   
 
     $$(".nomeusuario").html(usuarioNome); 
@@ -1685,6 +1837,7 @@ myApp.onPageInit('form-cliente', function (page){
     }
     
     $$(".addTab").attr("href", "forms/clientes_form_lancamento.html?"+paramsLink);
+    $$(".addTabCot").attr("href", "forms/nova_cotacao_form_adm.html?"+paramsLink);
    
     $$( "#tab2" ).on("show",function() {
         // $$(".toolbar-cliente").show();
@@ -1765,7 +1918,22 @@ myApp.onPageInit('form-cliente', function (page){
                 $$("input[type=text][name=cliente_bairro]").val(returnedData[0].bairro);
                 $$("input[type=text][name=status_i]").val(returnedData[0].status_interativo);
                 $$("input[type=text][name=cliente_representante]").val(returnedData[0].nomerep);
+                $$("textarea[name=cliente_obs]").val(returnedData[0].obs);
                 //$$("input[type=text][name=cliente_codrep]").val(returnedData[0].codrep);
+
+                nomec = returnedData[0].nomec;
+                if (nomec == ""){
+                    nomec = '<i>nenhum informado</i>';
+                }
+                
+                fonec = "";
+                if (returnedData[0].fonec != "" && returnedData[0].fonec != null ){
+                    fonec = ' - '+returnedData[0].fonec;
+                }
+                emailc = returnedData[0].emailc;
+                nomer = returnedData[0].nomerep;
+
+                resumoCliente = $$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>Contato: "+nomec+fonec+"<br>Representante: "+nomer;
 
                 $$.ajax({
                     url: baseurl+'loads/loadRepsSelect.php?rep='+returnedData[0].codrep,
@@ -1845,7 +2013,8 @@ myApp.onPageInit('form-cliente', function (page){
                         //myApp.alert(dadosRep);
                         var arr_rep = dadosRep.split(";");
                         var nomer = arr_rep[1];
-                        $$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
+                        //$$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>Contato: "+nomec+"<br>Representante: "+nomer);
+                        $$(".resumoCliente").html(resumoCliente);
                     }
                 });
 
@@ -1864,7 +2033,8 @@ myApp.onPageInit('form-cliente', function (page){
                         //myApp.alert(dadosRep);
                         var arr_rep = dadosRep.split(";");
                         var nomer = arr_rep[1];
-                        $$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
+                        //$$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
+                        $$(".resumoCliente").html(resumoCliente);
                     }
                 });
 
@@ -1882,7 +2052,7 @@ myApp.onPageInit('form-cliente', function (page){
                         //myApp.alert(dadosRep);
                         var arr_rep = dadosRep.split(";");
                         var nomer = arr_rep[1];
-                        $$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
+                        $$(".resumoCliente").html(resumoCliente);
                     }
                 });
 
@@ -1902,7 +2072,7 @@ myApp.onPageInit('form-cliente', function (page){
                         //myApp.alert(dadosRep);
                         var arr_rep = dadosRep.split(";");
                         var nomer = arr_rep[1];
-                        $$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
+                        $$(".resumoCliente").html(resumoCliente);
                     }
                 });
 
@@ -1921,7 +2091,7 @@ myApp.onPageInit('form-cliente', function (page){
                         //myApp.alert(dadosRep);
                         var arr_rep = dadosRep.split(";");
                         var nomer = arr_rep[1];
-                        $$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
+                        $$(".resumoCliente").html(resumoCliente);
                     }
                 });
 
@@ -2073,7 +2243,7 @@ myApp.onPageInit('form-cliente', function (page){
                         var dadosRep = $$("select[name=cliente_representante]").val();
                         var arr_rep = dadosRep.split(";");
                         var nomer = arr_rep[1];
-                        $$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
+                        $$(".resumoCliente").html(resumoCliente);
                         
                         //var calendarPrevisao = myApp.calendar({
                             //input: 'input[type=text][name=ultimacompra]',
@@ -2339,14 +2509,25 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                     url: baseurl+'loads/loadProdutosNegociosOportunidades2.php?cliente='+cliente,                        
                     success: function(returnedData) {
                         $$("#prod-lanc-rows").html(returnedData);
+                        
+                        verificaOportunidadesNegocios();
+                        
                     }
                 });
             }
         });
         
        
-        $$("#prod-lanc, #finalidade-lanc").val("");
+        //$$("#prod-lanc, #finalidade-lanc").val("");
+        //if ( $$("#previsaovenda tr").length <= 1){
+        //    $$(".bt-tb2").addClass('disabled');
+        //} else {
+        //    $$(".bt-tb2").removeClass('disabled');
+        //}     
+
         $$(".addproduto-l").addClass("disabled");
+        $$(".bt-tb2").removeClass("disabled");
+
     }) 
 
     
@@ -2445,7 +2626,7 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                 if (page.query.edit == "yes"){
                     $$(".oportunidade-view").hide();
                     $$("input, textarea, select").attr("readonly", true);
-                }
+                }          
             }
         });
 
@@ -2623,21 +2804,49 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             });
 
 
+
             $$.ajax({
                 url: baseurl+'loads/loadPrevisaoVendasLancamento2.php?cliente='+cliente,                                       
                 success: function(returnedData) {
-                    $$("#previsaovenda").html(returnedData);
-                    var i = 0;
-                    $$("#previsaovenda").find("tr").each(function(){
-                        i++;
-                    });  
+                    $$("#previsaovenda").html(returnedData);                     
 
                     if (page.query.edit == "yes"){
                         $$(".oportunidade-view").hide();
                         $$("input, textarea, select").attr("readonly", true);
-                    }                 
-                }                    
+                    } 
+
+                    verificaOportunidadesNegocios();
+
+                    naoPreenchidos = false;
+
+                    $$("#previsaovenda input").keyup(function(){
+                        $$("#previsaovenda").find(".neg").each(function(){                            
+                            if ($$(this).val() == ""){
+                               naoPreenchidos = true;
+                            } else {
+                                naoPreenchidos = false;  
+                           }
+                        });
+                        if (naoPreenchidos){
+                            $$(".bt-tb2").addClass('disabled');
+                        } else {
+                            $$(".bt-tb2").removeClass('disabled');
+                        }
+                    })
+                    if ($$("#prod-lanc-rows").length <= 1 && $$("#previsaovenda tr").length <= 1){
+                        $$(".bt-tb2").addClass('disabled');
+                    }
+
+                }
+
             });
+
+            
+            
+            
+
+
+
 
            // if (page.query.edit == "yes"){
             //    $$(".dados-visita").hide();
@@ -2650,15 +2859,12 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             //            $$("#data_visita").val(returnedData[0].datalanc);
             //        }                
             //    });
-            //}  
-
-
-            $$(".popup-info-equip").click(function(){
-                //myApp.alert();
-            })
+            //}              
+            
         }  
 
-
+        
+        
         $$(".addproduto-e").click(function(){
             $$(".equipamento-fields").hide();
             var eq_equipamento = $$("input[name='eq-nome']").val();
@@ -2680,6 +2886,8 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                     });
                 }
             });
+
+
         }) 
 
 
@@ -4223,7 +4431,7 @@ myApp.onPageInit('form-cotacao', function (page){
                             var dadosRep = $$("select[name=cliente_representante]").val();
                             var arr_rep = dadosRep.split(";");
                             var nomer = arr_rep[1];
-                            $$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
+                            $$(".resumoCliente").html(resumoCliente);
                         }
                   });
                   //mainView.router.reloadPage('forms/clientes_form.html?cliente='+cliente);
@@ -4747,6 +4955,14 @@ myApp.onPageInit('email-cotacao', function (page){
     $$(".e-cliente").html(ncli+"<br>Cotação: "+idcot);
     $$("input[name=email_cliente]").val(emailcli);
 
+    $$.ajax({
+        url: baseurl+'loads/loadCheckboxContatos.php?idcot='+idcot,
+        type: 'get',        
+        success: function(returnedData) {
+            $$(".list-contatos-cliente").append(returnedData);
+        }
+    });
+
     
     //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
     $$("input[name=email_resposta]").val(usuarioEmail); 
@@ -4862,6 +5078,71 @@ function pesquisar_cliente(){
             $$("input[name=codcliente]").val(value.id);
             $$("input[name=codrep]").val(value.codrep);
             $$("input[name=nomerep]").val(value.nomerep);
+
+            //ao_empreendimento = $$('#ajax-clientes-list').val();
+            
+            //$$("#libera").attr("href", "https://wdlopes.com.br/obras/resultC.php?c="+$$('#autocomplete-dropdown-ajax').val());
+            //$$("#libera").click(); 
+            
+
+
+        }        
+    });
+}
+
+function pesquisar_representante(){
+    var autocompleteDropdownAjax = myApp.autocomplete({
+        input: '#ajax-representantes-list',
+        openIn: 'dropdown',
+        preloader: true, //enable preloader
+        valueProperty: 'id', //object's "value" property name
+        textProperty: 'nome', //object's "text" property name
+        limit: 20, //limit to 20 results
+        //dropdownPlaceholderText: 'Try "JavaScript"',
+        
+        source: function (autocomplete, query, render) {
+            var results = [];
+            if (query.length === 0) {
+                render(results);
+                //$$("#libera").addClass("disabled");
+                return;
+            } else {
+                //$$("#libera").removeClass("disabled");
+            }
+
+            // Show Preloader
+            autocomplete.showPreloader();
+            // Do Ajax request to Autocomplete data
+            $$.ajax({
+                url: baseurl+'loads/ajax-representantes-list.php?rep='+rep,
+                method: 'GET',
+                dataType: 'json',
+                //send "query" to server. Useful in case you generate response dynamically
+                data: {
+                    query: query
+                },
+
+                success: function (data) {
+                    
+                    // Find matched items
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].nome.toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(data[i]);
+                    }
+                    // Hide Preoloader
+                    autocomplete.hidePreloader();
+                    // Render items by passing array with result items
+                    render(results);
+                }
+            });
+        },
+        onChange: function (autocomplete, value) {
+            // Add item text value to item-after
+            $$('#ajax-representantes-list').find('.item-after').text(value.nome);
+            // Add item value to input value
+            $$('#ajax-representantes-list').val(value.nome);
+            $$("input[name=codrep]").val(value.id);
+            $$("#gera-rel-desempenho").removeClass("disabled");
+            
 
             //ao_empreendimento = $$('#ajax-clientes-list').val();
             
