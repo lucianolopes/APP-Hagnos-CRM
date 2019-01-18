@@ -1,10 +1,11 @@
 var myApp = new Framework7({
     modalTitle: 'Framework7',
     // Enable Material theme
-    material: true,
-    modalPreloaderTitle: 'Carregando...', // (german)
-    onAjaxStart: function (xhr) { myApp.showPreloader();},
-    onAjaxComplete: function (xhr) { myApp.hidePreloader();},
+    material: true
+    //swipePanel: 'left'
+    //modalPreloaderTitle: 'Carregando...', // (german)
+    //onAjaxStart: function (xhr) { myApp.showPreloader();},
+    //onAjaxComplete: function (xhr) { myApp.hidePreloader();},
     //uniqueHistory:true,
     //uniqueHistoryIgnoreGetParameters: true,
 });
@@ -250,7 +251,7 @@ if(!usuarioHagnos){
   mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true })          
 } else {
 
-    //rep = usuarioHagnos.hagnosUsuarioIdRep;
+    //rep = usuarioHagnos.hagnosep;
     //tipousuario = usuarioHagnos.hagnosUsuarioTipo;
 
     var rp = "";
@@ -263,6 +264,8 @@ if(!usuarioHagnos){
         usuarioNomeTipo = usuarioHagnos.hagnosUsuarioNomeTipo;
         usuarioNome = usuarioHagnos.hagnosUsuarioNome;
         usuarioEmail = usuarioHagnos.usuarioEmail;
+        usuarioID = usuarioHagnos.hagnosUsuarioId;
+
 
         
 
@@ -542,6 +545,26 @@ function deletaProd(idp, idcliente, idequip){
     });
 }
 
+function deletaRep(id){
+    // deleta um produto do equipamento
+    myApp.confirm('Confirma exclusão do representante?', 'Exclusão', function () {
+        $$.ajax({
+            url: baseurl+'saves/deleta.php?tb=representantes&id='+id,
+            method: 'GET',
+            success: function (data) {                                      
+                //mainView.router.reloadPage('forms/equipamentos_form.html?id='+idequip+"&cliente="+idcliente);
+                $$.ajax({
+                    url: baseurl+'loads/loadRepresentantes.php',
+                    method: 'GET',
+                    success: function (data) {
+                        $$(".lista-representantes").html(data); 
+                    }
+                })
+            }
+        });
+    });
+}
+
 function deletaProdCliente(idp, idcliente,t){
     // deleta um produto do equipamento
     //primeiro verifica se é da aba produtos, negocios ou oportunidades
@@ -635,7 +658,7 @@ function deletaCotacao(id,idcliente){
     });
 }
 
-function deletaPedido(id,idcliente){
+function deletaPedido(id,idcliente,nomecliente){
     // deleta um produto do equipamento
     myApp.confirm('Confirma remoção deste pedido?', 'Exclusão', function () {
         $$.ajax({
@@ -644,7 +667,7 @@ function deletaPedido(id,idcliente){
             success: function (data){                                                      
                 //mainView.router.reloadPage('forms/clientes_form.html?cliente='+idcliente);
                 //myApp.showTab('#tab5');
-                mainView.router.reloadPage("forms/clientes_form.html?cliente="+idcliente+"&nomecliente=&contato=&telefone=&tab=tab3-d");
+                mainView.router.reloadPage("forms/clientes_form.html?cliente="+idcliente+"&nomecliente="+nomecliente+"&contato=&telefone=&tab=tab3-d");
             }
         });
     });
@@ -664,8 +687,9 @@ function deletaConversa(tipoint, idlanc){
 }
 
 function deletaContato(id, origem){
+    myApp.alert(origem);
     // deleta um produto do equipamento
-    if (origem == 0){
+    if (origem == 0 || origem == ''){
         myApp.confirm('Confirma remoção deste contato?', 'Exclusão', function () {
             $$.ajax({
                 url: baseurl+'saves/deleta.php?tb=contatos_cliente&id='+id,
@@ -740,6 +764,7 @@ function deletaHigienizacao(id, idcliente){
 function enviaCotacao(id){
    mainView.router.loadPage('email_cotacao.html');
 }
+
 
 function liberaEntrega(valor){
    var inputLotes = [];
@@ -1075,28 +1100,67 @@ myApp.onPageInit('desempenho-representante', function (page){
     $$("#ajax-representantes-list").val("");
 
     if ($$("#ajax-representantes-list").val() != ""){
-        $$("#gera-rel-desempenho").removeClass("disabled");
+        $$("#gera-rel-desempenho, .enviaRel").removeClass("disabled");
     }
 
     $$("#ajax-representantes-list").keyup(function(){
         if ($$("#ajax-representantes-list").val() != "" && $$("input[name='codrep']").val() != ""){
-            $$("#gera-rel-desempenho").removeClass("disabled");
+            $$("#gera-rel-desempenho, .enviaRel").removeClass("disabled");
         } else {
-            $$("#gera-rel-desempenho").addClass("disabled");
+            $$("#gera-rel-desempenho, .enviaRel").addClass("disabled");
             $$("input[name='codrep']").val("");
         }
     })
 
+    $$.ajax({
+        url: baseurl+'loads/loadRelSelect.php',
+        method: 'GET',
+        success: function (data) {
+        $$("#reldesemp").html(data);
+        }
+    });
+
    
-    // SALVANDO CADASTRO DE CLIENTE
+    // GERANDO RELATÓRIO
     $$(".gera-relatorio").click(function(){
         var codrep = $$("input[name='codrep']").val();
         var data_search = $$("#data_search").val();
+        var codrel = $$("#reldesemp").val();
+
         $$.ajax({
-            url: baseurl+'relatorios/rel_desempenho_representante.php?rep='+codrep+'&data_search='+data_search,
+            url: baseurl+'relatorios/rel_desempenho_representante.php?rep='+codrep+'&data_search='+data_search+'&codrel='+codrel,
             method: 'GET',
             success: function (data) {
                 $$(".relatorio-content").html(data);
+            }
+        });
+    });
+
+    // ENVIANDO POR EMAIL
+    $$(".enviaRel").click(function(){
+        var codrep = $$("input[name='codrep']").val();
+        var codrel = $$("#reldesemp").val();
+        var data_search = $$("#data_search").val();
+        var nomerep = $$("input[name=nomerep]").val();
+        var emailDestino = $$("input[name=email_relatorio]").val();
+
+        //$$("#relFrame").attr("src", baseurl+'server/envia_rel_desempenho_representante.php?rep='+codrep+'&data_search='+data_search+'&nomerep='+nomerep);
+
+        //$$.get(baseurl+'server/pdf/arquivos/res/rel_desempenho_representante.php?rep='+codrep+'&data_search='+data_search+'&nomerep='+nomerep, {}, function (data) {        
+        //    $$('#PAGEPlaceHolder').html(data);          
+        //}); 
+       
+        $$.ajax({
+            url: baseurl+'server/envia_rel_desempenho_representante.php?rep='+codrep+'&data_search='+data_search+'&nomerep='+nomerep+'&emailDestino='+emailDestino+'&codrel='+codrel,
+            method: 'GET',
+            success: function (data) {
+                myApp.addNotification({
+                    message: data,
+                    button: {
+                        text: 'Fechar',
+                        color: 'lightgreen'
+                    },
+                });
             }
         });
     });
@@ -1620,6 +1684,33 @@ $$('#submit-login').click(function() {
         }
     });
 });
+
+//mostra/esconde senha
+   (function() {
+        try {
+            var passwordField = document.getElementById('senha');
+            passwordField.type = 'text';
+            passwordField.type = 'password';
+            var togglePasswordField = document.getElementById('togglePassword');
+            togglePasswordField.addEventListener('click', togglePasswordFieldClicked, false);
+            togglePasswordField.style.display = 'inline';            
+        }
+        catch(err) {
+        }
+    })();
+
+    function togglePasswordFieldClicked() {
+        var passwordField = document.getElementById('senha');
+        var value = passwordField.value;
+        if(passwordField.type == 'password') {
+            passwordField.type = 'text';
+        }
+        else {
+            passwordField.type = 'password';
+        }        
+        passwordField.value = value;
+    } 
+    //fim mostra/esconde senha
 });
 
 
@@ -1631,6 +1722,7 @@ myApp.onPageInit('form-usuario', function (page){
    
    //pega o parametro get "cliente" que vem do link da lista de clientes
    var usuario = page.query.usuario; 
+
 
    // se existe um parametro "cliente" faz a edição e salvamento do registro
    if (usuario != null ){
@@ -1647,6 +1739,7 @@ myApp.onPageInit('form-usuario', function (page){
                 $$("#usuario_nome").val(returnedData[0].nome);
                 $$("#usuario_apelido").val(returnedData[0].apelido);
                 $$("#usuario_email").val(returnedData[0].email);
+                $$("#senha_email").val(returnedData[0].senha_email);
                 $$("#usuario_tipo").val(returnedData[0].tipo+";"+returnedData[0].nometipo);
                 //$$("#usuario_senha").val(returnedData[0].senha);
                 //$$("#idc").val(returnedData[0].codcli);
@@ -1677,12 +1770,12 @@ myApp.onPageInit('form-usuario', function (page){
                 if (returnedData[0].tipo == 3){
                     $$(".li-representante").hide();
                     $$(".li-cliente").show();
-                    $$(".li-email-usuario").hide();
+                    //$$(".li-email-usuario").hide();
                     $$("#usuario_email").removeAttr("required");
                 } else if (returnedData[0].tipo == 2){
                     $$(".li-representante").show();
                     $$(".li-cliente").hide();
-                    $$(".li-email-usuario").hide();
+                    //$$(".li-email-usuario").hide();
                     $$("#usuario_email").removeAttr("required");
                 } else {
                     $$(".li-representante").hide();
@@ -1719,6 +1812,34 @@ myApp.onPageInit('form-usuario', function (page){
         });
 
    } 
+
+   //mostra/esconde senha
+   (function() {
+        try {
+            var passwordField = document.getElementById('senha_email');
+            passwordField.type = 'text';
+            passwordField.type = 'password';
+            var togglePasswordField = document.getElementById('togglePassword');
+            togglePasswordField.addEventListener('click', togglePasswordFieldClicked, false);
+            togglePasswordField.style.display = 'inline';            
+        }
+        catch(err) {
+        }
+    })();
+
+    function togglePasswordFieldClicked() {
+        var passwordField = document.getElementById('senha_email');
+        var value = passwordField.value;
+        if(passwordField.type == 'password') {
+            passwordField.type = 'text';
+        }
+        else {
+            passwordField.type = 'password';
+        }        
+        passwordField.value = value;
+    } 
+    //fim mostra/esconde senha
+
 
    $$(".novo-usuario").click(function(){
         mainView.router.reloadPage('forms/usuarios_form.html');
@@ -1776,11 +1897,11 @@ myApp.onPageInit('form-usuario', function (page){
      if ($$("#usuario_tipo").val() == "3;cliente"){
         $$(".li-representante").hide();
         $$(".li-cliente").show();
-        $$(".li-email-usuario").hide();
+        //$$(".li-email-usuario").hide();
      } else if ($$("#usuario_tipo").val() == "2;representante") {
         $$(".li-representante").show();
         $$(".li-cliente").hide();
-        $$(".li-email-usuario").hide();
+        //$$(".li-email-usuario").hide();
      } else {
         $$(".li-representante").hide();
         $$(".li-cliente").hide();
@@ -1836,38 +1957,16 @@ myApp.onPageInit('form-cliente', function (page){
         $$(".addTab, .tabNegociacoes").hide();
     }
     
-    $$(".addTab").attr("href", "forms/clientes_form_lancamento.html?"+paramsLink);
-    $$(".addTabCot").attr("href", "forms/nova_cotacao_form_adm.html?"+paramsLink);
    
-    $$( "#tab2" ).on("show",function() {
-        // $$(".toolbar-cliente").show();
-        $$(".addTab").attr("href", "forms/equipamentos_form.html?"+paramsLink);
-    });
-    $$( "#tab4-a" ).on("show",function() {
-        //$$(".toolbar-cliente").show();    
-        $$(".addTab").attr("href", "forms/clientes_form_lancamento.html?"+paramsLink);
-    }); 
-    $$( "#tab4-b" ).on("show",function() {
-        //$$(".toolbar-cliente").show();
-        $$(".addTab").attr("href", "forms/nova_cotacao_form_adm.html?"+paramsLink);
-    });  
-    $$( "#tab4-c" ).on("show",function() {
-        //$$(".toolbar-cliente").show();
-        $$(".addTab").attr("href", "forms/nova_higienizacao_form.html?"+paramsLink);
-    }); 
-    $$( "#tab4-d" ).on("show",function() {
-        //$$(".toolbar-cliente").show();
-        $$(".addTab").attr("href", "forms/novo_teste_form.html?"+paramsLink);
-    });
-    $$( "#tab4-e" ).on("show",function() {
-        //$$(".toolbar-cliente").show();
-        $$(".addTab").attr("href", "forms/nova_acao_corretiva_form.html?"+paramsLink);
-    }); 
 
-    $$( "#tab3-d" ).on("show",function() {
-        //$$(".toolbar-cliente").show();
-        $$(".addTab").attr("href", "forms/form_pedido.html?"+paramsLink);
-    });
+    $$(".addEquipamento").attr("href", "forms/equipamentos_form.html?"+paramsLink);
+    $$(".addTabCot").attr("href", "forms/nova_cotacao_form_adm.html?"+paramsLink);
+    $$(".addPedido").attr("href", "forms/form_pedido.html?"+paramsLink);
+    $$(".addAt").attr("href", "forms/clientes_form_lancamento.html?"+paramsLink);
+    $$(".addHig").attr("href", "forms/nova_higienizacao_form.html?"+paramsLink);
+    $$(".addTeste").attr("href", "forms/novo_teste_form.html?"+paramsLink);
+    $$(".addAcao").attr("href", "forms/nova_acao_corretiva_form.html?"+paramsLink);
+
 
     $$(".addContato").click(function(){
             $$(".list-contatos-cliente").append('<div class="row" style="border-bottom:1px solid #999;padding-bottom:5px;padding-top:5px">'+
@@ -1894,7 +1993,8 @@ myApp.onPageInit('form-cliente', function (page){
    // se existe um parametro "cliente" faz a edição e salvamento do registro
    if (cliente != null ){
 
-            
+
+        $$(".resumo-ats").attr("href", "resumo_ats.html?idcli="+cliente+'&nomecliente='+nomecliente);
         // AÇÃO SE FOR EDITAR O CLIENTE
         $$.ajax({
             url: baseurl+'loads/loadDadosCliente.php',
@@ -1921,6 +2021,14 @@ myApp.onPageInit('form-cliente', function (page){
                 $$("textarea[name=cliente_obs]").val(returnedData[0].obs);
                 //$$("input[type=text][name=cliente_codrep]").val(returnedData[0].codrep);
 
+                //myApp.alert(returnedData[0].totalInteracoes);
+
+                if (returnedData[0].totalInteracoes == "" || returnedData[0].totalInteracoes == 0){
+                    $$(".deleta-cliente").show();
+                } else {
+                    $$(".deleta-cliente").hide();
+                }
+
                 nomec = returnedData[0].nomec;
                 if (nomec == ""){
                     nomec = '<i>nenhum informado</i>';
@@ -1942,6 +2050,7 @@ myApp.onPageInit('form-cliente', function (page){
                         $$("#cliente_representante").html(data);
                     }
                 });
+
                 $$.ajax({
                     url: baseurl+'loads/loadContatosCliente.php?cliente='+cliente,
                     method: 'GET',
@@ -2124,7 +2233,7 @@ myApp.onPageInit('form-cliente', function (page){
                               type: 'POST',
                               success: function (data) {
                                     $$(".lista-prods-negocios").html(data); 
-                                    mainView.router.reloadPage('forms/clientes_form.html?cliente='+cliente);
+                                    mainView.router.reloadPage('forms/clientes_form.html?cliente='+cliente+'&nomecliente='+nomecliente+'&tab=tab3-b');
                                     myApp.showTab('#tab3');
                                     myApp.showTab('#tab3-b');
                                 }
@@ -2178,9 +2287,9 @@ myApp.onPageInit('form-cliente', function (page){
                               type: 'POST',
                               success: function (data) {
                                     $$(".lista-prods-oportunidades").html(data); 
-                                    mainView.router.reloadPage('forms/clientes_form.html?cliente='+cliente);
-                                    myApp.showTab('#tab3');
-                                    myApp.showTab('#tab3-c');
+                                    mainView.router.reloadPage('forms/clientes_form.html?cliente='+cliente+'&nomecliente='+nomecliente+'&tab=tab3-c');
+                                    //myApp.showTab('#tab3');
+                                    //myApp.showTab('#tab3-c');
                                 }
                             })
 
@@ -2189,15 +2298,16 @@ myApp.onPageInit('form-cliente', function (page){
 
                         $$("#s-prod2-o").change(function(){
                             $$(".form-auxiliar-o").show();
-                            $$("input[type=text][name=media_consumo_mensal_o], input[type=text][name=preco_aplicado_o], input[type=text][name=prazo_pagamento_o]").keyup(function(){
-                                if ($$("input[type=text][name=media_consumo_mensal_o]").val() != "" && 
-                                    $$("input[type=text][name=preco_aplicado_o]").val() != "" && 
-                                    $$("input[type=text][name=prazo_pagamento_o]").val() != ""){
+                            //$$("input[type=text][name=media_consumo_mensal_o], input[type=text][name=preco_aplicado_o], input[type=text][name=prazo_pagamento_o]").keyup(function(){
+                                if ( $$("#s-prod2-o").val() != ""){
+                                //if ($$("input[type=text][name=media_consumo_mensal_o]").val() != "" && 
+                                //    $$("input[type=text][name=preco_aplicado_o]").val() != "" && 
+                                //    $$("input[type=text][name=prazo_pagamento_o]").val() != ""){
                                         $$("#addprodutocliente-o").removeClass("disabled");
                                 } else {
                                     $$("#addprodutocliente-o").addClass("disabled");
                                 }                               
-                            })
+                            //})
                         })
 
                         $(".preco_aplicado").maskMoney({decimal:".",thousands:""});
@@ -2214,7 +2324,7 @@ myApp.onPageInit('form-cliente', function (page){
                         $$("#lista-pedidos-cliente").html(returnedData);
 
                         var i = 0;
-                        $$("#lista-pedidos-cliente").find("tr").each(function(){
+                        $$("#lista-pedidos-cliente").find(".trline").each(function(){
                             i++;
                         });
                         $$(".totalregistros-pedido").html("PEDIDOS <span style='font-size:18'> ("+i+")</span>");
@@ -2226,6 +2336,42 @@ myApp.onPageInit('form-cliente', function (page){
                         //$$(".resumoCliente").html($$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>"+$$("input[name=cliente_telefone]").val()+"<br>Representante: "+nomer);
                     }
                 });
+
+                $$(".p-search").click(function(){
+                    var prodSearch = $$("input[name=produto-search]").val();
+                    $$.ajax({
+                        url: baseurl+'loads/loadPedidosCliente.php',  
+                        data: {"cliente": cliente, "prodSearch": prodSearch }, 
+                        method: 'get',                      
+                        success: function(returnedData) {
+                            $$("#lista-pedidos-cliente").html(returnedData);
+
+                            var i = 0;
+                            $$("#lista-pedidos-cliente").find(".trline").each(function(){
+                                i++;
+                            });
+                            $$(".totalregistros-pedido").html("PEDIDOS <span style='font-size:18'> ("+i+")</span>");
+                        }
+                    });
+                })
+
+                $$(".p-search-cot").click(function(){
+                    var prodSearchCot = $$("input[name=produto-search-cotacao]").val();
+                    $$.ajax({
+                    url: baseurl+'loads/loadCotacoes.php', 
+                    data: {"cliente": cliente, "prodSearchCot": prodSearchCot }, 
+                    method: 'get',                         
+                    success: function(returnedData) {
+                        $$("#cotacoes-cliente").html(returnedData);
+
+                        var i = 0;
+                        $$("#cotacoes-cliente").find("tr").each(function(){
+                            i++;
+                        });
+                        $$(".totalregistros-cotacao").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");                        
+                    }
+                });
+                })
 
 
 
@@ -2295,6 +2441,12 @@ myApp.onPageInit('form-cliente', function (page){
               myApp.showTab('#tab3');
               myApp.showTab('#'+tab);   
             } else if (tab == "tab4-b"){
+              myApp.showTab('#tab3');
+              myApp.showTab('#'+tab);
+            } else if (tab == "tab3-c"){
+              myApp.showTab('#tab3');
+              myApp.showTab('#'+tab);
+            } else if (tab == "tab3-b"){
               myApp.showTab('#tab3');
               myApp.showTab('#'+tab);
             } else if (tab == "tab5p"){
@@ -2626,7 +2778,7 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                 if (page.query.edit == "yes"){
                     $$(".oportunidade-view").hide();
                     $$("input, textarea, select").attr("readonly", true);
-                }          
+                }                        
             }
         });
 
@@ -2642,7 +2794,7 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             });
             if (listaInteracoesArray.length > 0 && $$("#lancamento-descricao").val() != "" && $$("#data_visita").val() != "" && $$("#data_proximo_contato").val() != ""){
                 $$(".bt-tb4").removeClass('disabled');
-                $$(".tb3").removeClass("disabled");
+                $$(".tb3").removeClass("disabled");                
             } else {
                 $$(".bt-tb4").addClass('disabled');
                 $$(".tb3, .tb1").addClass("disabled");
@@ -2710,6 +2862,7 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                 if (tVisita == ""){
                     $$(".bt-tb4").addClass('disabled');
                     $$(".tb3, .tb1").addClass("disabled");
+                    $$(".salva-lancamento").addClass("disabled");
                 } else {
                     $$(".bt-tb4").removeClass('disabled');
                     $$(".tb3").removeClass("disabled");
@@ -2717,6 +2870,7 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             } else {
                 $$(".bt-tb4").addClass('disabled');
                 $$(".tb3, .tb1").addClass("disabled");
+                $$(".salva-lancamento").addClass("disabled");
             }            
         })
 
@@ -2806,7 +2960,7 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
 
 
             $$.ajax({
-                url: baseurl+'loads/loadPrevisaoVendasLancamento2.php?cliente='+cliente,                                       
+                url: baseurl+'loads/loadPrevisaoVendasLancamento2.php?cliente='+cliente+'&acao='+acao,                                       
                 success: function(returnedData) {
                     $$("#previsaovenda").html(returnedData);                     
 
@@ -2817,12 +2971,14 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
 
                     verificaOportunidadesNegocios();
 
+
                     naoPreenchidos = false;
 
                     $$("#previsaovenda input").keyup(function(){
                         $$("#previsaovenda").find(".neg").each(function(){                            
                             if ($$(this).val() == ""){
                                naoPreenchidos = true;
+
                             } else {
                                 naoPreenchidos = false;  
                            }
@@ -2833,13 +2989,52 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                             $$(".bt-tb2").removeClass('disabled');
                         }
                     })
-                    if ($$("#prod-lanc-rows").length <= 1 && $$("#previsaovenda tr").length <= 1){
-                        $$(".bt-tb2").addClass('disabled');
+
+                    //if ($$("#prod-lanc-rows").length <= 1 && $$("#previsaovenda tr").length <= 1){
+                    //    $$(".bt-tb2").addClass('disabled');
+                    //} else  {
+                    //    $$(".bt-tb2").removeClass('disabled');
+                    //}
+
+                    
+
+                    var listOport = false;
+                    $$("#prod-lanc-rows").find(".tr-list-prod").each(function(){ 
+                        listOport = true;
+                    })
+
+                    var listNeg = false;
+                    $$("#previsaovenda").find(".neg").each(function(){ 
+                        listNeg = true;
+                    }) 
+                    
+                    if (!listOport && !listNeg) {
+                      $$(".bt-tb2").addClass('disabled');
+                    } else if (listNeg){
+                      $$(".bt-tb2").addClass('disabled'); 
+                    } else {
+                      $$(".bt-tb2").removeClass('disabled');
                     }
+
+                    //if ($$("#prod-lanc-rows .tr-list-prod").length == null){
+                    //    $$(".bt-tb2").removeClass('disabled');
+                    //}
+
+                    //myApp.alert($$("#prod-lanc-rows").length);
+                    //myApp.alert($$("#previsaovenda tr").length);
+
+                    //if ($$("#prod-lanc-rows").length > 1){
+                    //    $$(".bt-tb2").removeClass('disabled');
+                    //    myApp.alert($$("#prod-lanc-rows").length);
+                    //}
+
+
+                    //verificaOportunidadesNegocios();
 
                 }
 
             });
+
 
             
             
@@ -2914,7 +3109,7 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             //var statusInterativo = $$("#status_interativo").val();
             var statusInterativo = $$("#statusi").val();
             var obslanc = encodeURIComponent($$("#lancamento-descricao").val());
-            var prodlanc = $$("#prod-lanc").val();
+            //var prodlanc = $$("#prod-lanc").val();
             var finalidadelanc = $$("#finalidade-lanc").val();
             $$("#lancamento-descricao-bd").val($$("#lancamento-descricao").val());
 
@@ -2922,13 +3117,10 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             
             if ($("#form-lancamento-3").parsley().isValid() && $("#form-lancamento-4").parsley().isValid()) {
               $$.ajax({
-                  url: baseurl+'saves/saveLancamento.php?codCliente='+cliente+'&nomeCliente='+nomecliente+'&codRep='+codrep+'&nomeRep='+nomerep+'&contato='+contato+'&telefone='+telefone+'&statusPadrao='+statusPadrao+'&statusInterativo='+statusInterativo+'&obslanc='+obslanc,           
+                  //url: baseurl+'saves/saveLancamento.php?codCliente='+cliente+'&nomeCliente='+nomecliente+'&codRep='+codrep+'&nomeRep='+nomerep+'&statusPadrao='+statusPadrao+'&statusInterativo='+statusInterativo+'&obslanc='+obslanc,           
+                  url: baseurl+'saves/saveLancamento.php?codCliente='+cliente+'&nomeCliente='+nomecliente+'&codRep='+codrep+'&nomeRep='+nomerep+'&statusPadrao='+statusPadrao,                             
                   data: new FormData(form[0]),
-                  type: 'post',
-                  enctype: 'multipart/form-data',
-                  processData: false,  // Important!
-                  contentType: false,
-                  cache: false,                  
+                  type: 'post',      
                   success: function( response ) {
                     //$$("#resultado").html(response);
                     myApp.addNotification({
@@ -3005,33 +3197,18 @@ myApp.onPageInit('menu-lancamento', function (page){
 
 // FORMULARIO DE LANÇAMENTO
 myApp.onPageInit('lancamentos', function (page){
-    var sp = page.query.sp;
-    var si = page.query.si;
-    var cliente_search = page.query.cliente_search;
-    var rep_search = page.query.rep_search;
-    var periodo_lancamento = page.query.periodo_lancamento;
-    var periodo_prox_lancamento = page.query.periodo_prox_lancamento; 
-    var id = page.query.id;
+
     var detalhado = page.query.detalhado;
 
-    // verifica se for cliente logado, só mostra os lancamentos deste cliente
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));    
-    //var cliente = "";
-    //if (usuarioHagnos.hagnosUsuarioTipo == 3){
-    //    var cliente = usuarioHagnos.hagnosUsuarioIdCli;
-    //    var nomecliente = usuarioHagnos.hagnosusuarioNome;
-   // }
-    //if (usuarioHagnos.hagnosUsuarioTipo == 2){
-    //    var repres = usuarioHagnos.hagnosUsuarioIdRep;
-    //}
-
     var agp = "";
-    if (page.query.detalhado == undefined || page.query.detalhado == 'nao'){
+    if (detalhado == 'nao' || detalhado == undefined){
         agp = "agrupado";
     } else {
         agp = "detalhado";
     }
 
+    
+    
     if (tipousuario == 3){
         //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
         var nomecliente = usuarioNome;
@@ -3040,128 +3217,101 @@ myApp.onPageInit('lancamentos', function (page){
         var repres = rep;
     }
 
-    if (cliente_search != undefined){
-        $$(".lancamentos-detalhado").attr("href", "lancamentos.html?detalhado=sim&sp="+sp+"&si="+si+"&cliente_search="+cliente_search+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
-        $$(".lancamentos-agrupado").attr("href", "lancamentos.html?detalhado=nao&sp="+sp+"&si="+si+"&cliente_search="+cliente_search+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
-    }
+    loadGridLancamentos();
 
-    $$.ajax({
+    var ptrContent = $$(page.container).find('.pull-to-refresh-content');
+        ptrContent.on('refresh', function (e) {
+        // Emulate 2s loading
+        setTimeout(function () {
+            loadGridLancamentos();
+        });
+        myApp.pullToRefreshDone();
+        }, 2000);    
+
+    $$(".lancamentos-detalhado").click(function(){
+        mainView.router.reloadPage('lancamentos.html?detalhado=sim');
+    })
+    $$(".lancamentos-agrupado").click(function(){
+        mainView.router.reloadPage('lancamentos.html?detalhado=nao');
+    }) 
+
+    $$(".remove-filtro-lancamentos").click(function(){
+        localStorage.removeItem('f7form-form-filtro-lancamentos'); 
+        mainView.router.reloadPage('lancamentos.html?detalhado='+detalhado);
+    })
+
+    function loadGridLancamentos(){
+
+       loadFiltroCacheLanc();
+
+        $$.ajax({
         url: baseurl+'loads/loadLancamentosAgrupado.php',
         data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "sp": sp, "si": si, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_prox_lancamento": periodo_prox_lancamento, "id": id  },
         method: 'get',            
         success: function(returnedData) {
             $$("#results-lancamentos").html(returnedData);
             var i = 0;
-            $$("#results-lancamentos").find("tr").each(function(){
+            $$("#results-lancamentos").find(".tr-result").each(function(){
                 i++;
             });
-            $$(".totalregistros-lanc").html("Registros agrupados encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
+            $$(".totalregistros-lanc").html("Registros encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
             //totaisHome();
 
         }
-    });
-
-    var ptrContent = $$(page.container).find('.pull-to-refresh-content');
-        ptrContent.on('refresh', function (e) {
-        // Emulate 2s loading
-        setTimeout(function () {
-            $$.ajax({
-            url: baseurl+'loads/loadLancamentosAgrupado.php',
-            method: 'GET',
-            success: function (data) {                               
-                $$("#results-lancamentos").html(data);
-            }
         });
-        myApp.pullToRefreshDone();
-        }, 2000);
-    }); 
-
-    $$(".remove-filtro-lancamentos").click(function(){
-        mainView.router.reloadPage('lancamentos.html');
-    })
-    
-})
-
-
-
-// FORMULARIO DE LANÇAMENTO
-myApp.onPageInit('pedidos', function (page){
-    //var sp = page.query.sp;
-    //var si = page.query.si;
-
-    var situacao = page.query.situacao;
-    var cliente_search = page.query.cliente_search;
-    var rep_search = page.query.rep_search;
-    var transportadora_search = page.query.transportadora_search;
-    var periodo_lancamento = page.query.periodo_lancamento;
-    var periodo_entrega = page.query.periodo_entrega; 
-    var id = page.query.id;
-
-    if (tipousuario == 3){
-        var nomecliente = usuarioNome;
     }
 
+    function loadFiltroCacheLanc(){
+        // carrega filtro a partir do local storage
+        sp = "";
+        si = "";
+        cliente_search = "";
+        rep_search = "";
+        periodo_lancamento = "";
+        periodo_prox_lancamento = ""; 
+        id = "";
 
-    if (tipousuario == 2){
-        var repres = rep;
-    }
+        var filtroLancamentos = JSON.parse(window.localStorage.getItem('f7form-form-filtro-lancamentos')); 
+        if(filtroLancamentos){  
 
-    $$.ajax({
-        url: baseurl+'loads/loadPedidosAgrupado.php',
-        data: { "tipousuario": tipousuario, "repres":repres, "cliente":cliente, "cliente_search": cliente_search, "situacao": situacao ,"rep_search": rep_search, "transportadora_search": transportadora_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
-        method: 'get',            
-        success: function(returnedData) {
-            $$("#results-pedidos").html(returnedData);
-            var i = 0;
-            $$("#results-pedidos").find("tr").each(function(){
-                i++;
-            });
-            $$(".totalregistros-ped").html("Registros agrupados encontrados: <span style='font-size:18'>"+i+"</span>");
-            //totaisHome();
-
+            sp = filtroLancamentos.statuspadrao_search;
+            si = filtroLancamentos.statusinterativo_search;
+            cliente_search = filtroLancamentos.cliente_search;
+            rep_search = filtroLancamentos.representante_search;
+            periodo_lancamento = filtroLancamentos.data_search;
+            periodo_prox_lancamento = filtroLancamentos.data_proximo_search;
+            id = filtroLancamentos.id_search;
         }
-    });
+    }
 
-    //var ptrContent = $$(page.container).find('.pull-to-refresh-content');
-    //    ptrContent.on('refresh', function (e) {
-    //    // Emulate 2s loading
-    //    setTimeout(function () {
-    //        $$.ajax({
-    //        url: baseurl+'loads/loadPedidosAgrupado.php',
-    //        method: 'GET',
-    //        success: function (data) {                               
-    //            $$("#results-pedidos").html(data);
-    //        }
-    //    });
-    //    myApp.pullToRefreshDone();
-    //    }, 2000);
-    //}); 
+    $$('.print').click(function() {
+        
+        loadFiltroCacheLanc();
 
-    $$(".remove-filtro-pedidos").click(function(){
-        mainView.router.reloadPage('pedidos.html');
-    })
-    
+        window.open(baseurl+"server/pdf/arquivos/print_lancamentos.php?detalhado="+detalhado
+            +"&cliente="+cliente
+            +"&repres="+repres
+            +"&sp="+sp
+            +"&si="+si
+            +"&cliente_search="+cliente_search
+            +"&rep_search="+rep_search
+            +"&periodo_lancamento="+periodo_lancamento
+            +"&periodo_prox_lancamento="+periodo_prox_lancamento
+            +"&id="+id
+            );       
+    });    
 })
 
 // COTACOES
 myApp.onPageInit('cotacoes', function (page){ 
-
     
-    var situacao = page.query.situacao;
-    var cliente_search = page.query.cliente_search;
-    var rep_search = page.query.rep_search;
-    var periodo_lancamento = page.query.periodo_lancamento;
-    var periodo_entrega = page.query.periodo_entrega;
-    var id = page.query.id;
     var detalhado = page.query.detalhado;
 
     var agp = "";
-    if (page.query.detalhado == undefined || page.query.detalhado == 'nao'){
+    if (detalhado == 'nao' || detalhado == undefined){
         agp = "agrupado";
-        var urlcot = baseurl+'loads/loadCotacoesAgrupado.php';
     } else {
         agp = "detalhado";
-        var urlcot = baseurl+'loads/loadCotacoesAgrupado.php';
     }
 
     if (tipousuario == 3){
@@ -3172,52 +3322,117 @@ myApp.onPageInit('cotacoes', function (page){
         var repres = rep;
     }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
+
+    loadGridCotacoes();
+
+    var ptrContent = $$(page.container).find('.pull-to-refresh-content');
+        ptrContent.on('refresh', function (e) {
+        // Emulate 2s loading
+        setTimeout(function () {
+            loadGridCotacoes();
+        });
+        myApp.pullToRefreshDone();
+        }, 2000); 
     
 
-    $$.ajax({
+    
+    
+    $$(".cotacoes-detalhado").click(function(){
+        mainView.router.reloadPage('cotacoes.html?detalhado=sim');
+    })
+    $$(".cotacoes-agrupado").click(function(){
+        mainView.router.reloadPage('cotacoes.html?detalhado=nao');
+    }) 
+
+    $$(".remove-filtro-cotacoes").click(function(){
+        localStorage.removeItem('f7form-form-filtro-cotacoes'); 
+        mainView.router.reloadPage('cotacoes.html?detalhado='+detalhado);
+    })
+
+    function loadGridCotacoes(){
+
+        // carrega filtro a partir do local storage
+        var situacao = "";
+        var cliente_search = "";
+        var rep_search = "";
+        var periodo_lancamento = "";
+        var periodo_entrega = ""; 
+        var id = "";
+
+        var filtroCotacoes = JSON.parse(window.localStorage.getItem('f7form-form-filtro-cotacoes')); 
+        if(filtroCotacoes){              
+            var situacao = filtroCotacoes.situacao_search;
+            var cliente_search = filtroCotacoes.cliente_search;
+            var rep_search = filtroCotacoes.representante_search;
+            var periodo_lancamento = filtroCotacoes.data_search;
+            var periodo_entrega = filtroCotacoes.data_entrega_search;
+            var id = filtroCotacoes.id_search;
+        }
+
+        $$.ajax({
         //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
         //url: baseurl+'loads/loadCotacoesAgrupado.php',  
-        url: urlcot,           
+        url: baseurl+'loads/loadCotacoesAgrupado.php',           
         data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
         success: function(returnedData) {
             $$("#results-cotacoes").html(returnedData);
             var i = 0;
-            $$("#results-cotacoes").find("tr").each(function(){
+            $$("#results-cotacoes").find(".tr-result").each(function(){
                 i++;
             });
             $$(".totalregistros-cotacoes").html("Registros encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
         }
-    });
-
-    var ptrContent = $$(page.container).find('.pull-to-refresh-content');
-        ptrContent.on('refresh', function (e) {
-        // Emulate 2s loading
-        setTimeout(function () {
-            $$.ajax({
-            url: baseurl+'loads/loadCotacoesAgrupado.php?cliente='+cliente+'&repres='+repres,
-            method: 'GET',
-            success: function (data) {
-                //ptrContent.find('#results-cotacoes').html(data);                                 
-                $$("#results-cotacoes").html(data);
-            }
         });
-        myApp.pullToRefreshDone();
-        }, 2000);
-    }); 
+    }
 
-    $$(".remove-filtro-cotacoes").click(function(){
-        mainView.router.reloadPage('cotacoes.html');
-    })
+    function loadFiltroCacheCot(){
+        // carrega filtro a partir do local storage
+        situacao = "";
+        cliente_search = "";
+        rep_search = "";
+        periodo_lancamento = "";
+        periodo_entrega = "";
+        id = "";
+
+        var filtroCot = JSON.parse(window.localStorage.getItem('f7form-form-filtro-cotacoes')); 
+        if(filtroCot){    
+            situacao = filtroCot.situacao_search;
+            cliente_search = filtroCot.cliente_search;
+            rep_search = filtroCot.representante_search;
+            periodo_lancamento = filtroCot.data_search;
+            periodo_entrega = filtroCot.data_entrega_search;
+            id = filtroCot.id_search;
+        }
+    }
+
+    $$('.print').click(function() {
+        
+        loadFiltroCacheCot();
+
+        window.open(baseurl+"server/pdf/arquivos/print_cotacoes.php?detalhado="+detalhado
+            +"&cliente="+cliente
+            +"&repres="+repres
+            +"&situacao="+situacao
+            +"&cliente_search="+cliente_search
+            +"&rep_search="+rep_search
+            +"&periodo_lancamento="+periodo_lancamento
+            +"&periodo_entrega="+periodo_entrega
+            +"&id="+id
+            );       
+    });
 })
 
-// previsão de vendas
-myApp.onPageInit('previsaovendas', function (page){ 
+// grid de oportunidades
+myApp.onPageInit('oportunidades', function (page){ 
 
-    var situacao = page.query.situacao;
-    var cliente_search = page.query.cliente_search;
-    var rep_search = page.query.rep_search;
-    var periodo_lancamento = page.query.periodo_lancamento;
-    var produto = page.query.produto_search;
+    var detalhado = page.query.detalhado;
+
+    var agp = "";
+    if (detalhado == 'nao' || detalhado == undefined){
+        agp = "agrupado";
+    } else {
+        agp = "detalhado";
+    }
 
     if (tipousuario == 3){
         //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
@@ -3226,58 +3441,572 @@ myApp.onPageInit('previsaovendas', function (page){
     if (tipousuario == 2){
         var repres = rep;
     }
-    //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
-    
 
-    $$.ajax({
-        url: baseurl+'loads/loadPrevisaoVendasAgrupado.php',             
-        data: { "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "produto_search": produto  },
-        success: function(returnedData) {
-            $$("#results-previsao").html(returnedData);
-
-            var i = 0;
-            $$("#results-previsao").find("tr").each(function(){
-                i++;
-            });
-            $$(".totalregistros-previsao").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");
-        }
-    });
+    loadGridOportunidades();
 
     var ptrContent = $$(page.container).find('.pull-to-refresh-content');
         ptrContent.on('refresh', function (e) {
         // Emulate 2s loading
         setTimeout(function () {
-            $$.ajax({
-            url: baseurl+'loads/loadPrevisaoVendasAgrupado.php?cliente='+cliente+'&repres='+repres,
-            method: 'GET',
-            success: function (data) {
-                //ptrContent.find('#results-cotacoes').html(data);                                 
-                $$("#results-previsao").html(data);
-            }
+            loadGridOportunidades();
         });
         myApp.pullToRefreshDone();
-        }, 2000);
-    }); 
+        }, 2000);     
+
+    $$(".oportunidades-detalhado").click(function(){
+        mainView.router.reloadPage('oportunidades.html?detalhado=sim');
+    })
+    $$(".oportunidades-agrupado").click(function(){
+        mainView.router.reloadPage('oportunidades.html?detalhado=nao');
+    })  
+
+    $$(".remove-filtro-oportunidades").click(function(){
+        localStorage.removeItem('f7form-form-filtro-oportunidades');
+        mainView.router.reloadPage('oportunidades.html');
+    })
+
+    function loadGridOportunidades(){
+
+        // carrega filtro a partir do local storage
+        var situacao = "";
+        var cliente_search = "";
+        var rep_search = "";
+        var produto = "";
+        var periodo_lancamento = "";
+        var concorrente_search = "";
+        var media_search = ""; 
+        var segmento_search = "";
+        var id = "";
+
+        var filtroOportunidades = JSON.parse(window.localStorage.getItem('f7form-form-filtro-oportunidades')); 
+        if(filtroOportunidades){              
+            var situacao = filtroOportunidades.situacao_search;
+            var cliente_search = filtroOportunidades.cliente_search;
+            var rep_search = filtroOportunidades.representante_search;
+            var produto = filtroOportunidades.produto_search;
+            var periodo_lancamento = filtroOportunidades.data_search;
+            var concorrente_search = filtroOportunidades.concorrente_search;
+            var media_search = filtroOportunidades.media_search;
+            var segmento_search = filtroOportunidades.segmento_search;
+            var id = filtroOportunidades.id_search;
+        }
+
+        $$.ajax({
+            url: baseurl+'loads/loadOportunidadesAgrupado.php',             
+            data: { "detalhado": detalhado,"repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "produto_search": produto, "concorrente_search": concorrente_search, "media_search": media_search, "segmento_search": segmento_search  },
+            success: function(returnedData) {
+                $$("#results-op").html(returnedData);
+
+                var i = 0;
+                $$("#results-op").find(".tr-result").each(function(){
+                    i++;
+                });
+                $$(".totalregistros-oportunidades").html("Registros encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
+            }
+        });
+    }
+
+    function loadFiltroCacheOp(){
+        // carrega filtro a partir do local storage
+        situacao = "";
+        cliente_search = "";
+        rep_search = "";
+        produto_search = "";
+        concorrente_search = "";
+        media_search = "";
+        segmento_search = "";
+        periodo_lancamento = "";
+        id = "";
+
+
+
+        var filtroOp = JSON.parse(window.localStorage.getItem('f7form-form-filtro-oportunidades')); 
+        if(filtroOp){    
+            situacao = filtroOp.situacao_search;
+            cliente_search = filtroOp.cliente_search;
+            rep_search = filtroOp.representante_search;
+            produto_search = filtroOp.produto_search;
+            concorrente_search = filtroOp.concorrente_search;
+            media_search = filtroOp.media_search;
+            segmento_search = filtroOp.segmento_search;
+            periodo_lancamento = filtroOp.data_search;
+            id = filtroOp.id_search;
+        }
+    }
+
+    $$('.print').click(function() {
+        
+        loadFiltroCacheOp();
+
+        window.open(baseurl+"server/pdf/arquivos/print_oportunidades.php?detalhado="+detalhado
+            +"&cliente="+cliente
+            +"&repres="+repres
+            +"&situacao="+situacao
+            +"&cliente_search="+cliente_search
+            +"&rep_search="+rep_search
+            +"&produto_search="+produto_search
+            +"&concorrente_search="+concorrente_search
+            +"&media_search="+media_search
+            +"&segmento_search="+segmento_search
+            +"&periodo_lancamento="+periodo_lancamento
+            +"&id="+id
+            );
+    });
+})
+
+// grid de negocios
+myApp.onPageInit('negocios', function (page){     
+
+    var detalhado = page.query.detalhado;
+
+    var agp = "";
+    if (detalhado == 'nao' || detalhado == undefined){
+        agp = "agrupado";
+    } else {
+        agp = "detalhado";
+    }
+
+    if (tipousuario == 3){
+        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioNome;
+    }
+    if (tipousuario == 2){
+        var repres = rep;
+    }
+
+    loadGridNegocios();
+
+    var ptrContent = $$(page.container).find('.pull-to-refresh-content');
+        ptrContent.on('refresh', function (e) {
+        // Emulate 2s loading
+        setTimeout(function () {
+            loadGridNegocios();
+        });
+        myApp.pullToRefreshDone();
+        }, 2000); 
+    
+
+    $$(".negocios-detalhado").click(function(){
+        mainView.router.reloadPage('negocios.html?detalhado=sim');
+    })
+    $$(".negocios-agrupado").click(function(){
+        mainView.router.reloadPage('negocios.html?detalhado=nao');
+    })  
+
+    $$(".remove-filtro-negocios").click(function(){
+        localStorage.removeItem('f7form-form-filtro-negocios');
+        mainView.router.reloadPage('negocios.html');
+    })
+
+    function loadGridNegocios(){
+
+        // carrega filtro a partir do local storage
+        var situacao = "";
+        var cliente_search = "";
+        var rep_search = "";
+        var produto = "";
+        var periodo_lancamento = "";
+        var periodo_ultima_compra = "";
+        var media_search = ""; 
+        var segmento_search = "";
+        var id = "";
+
+        var filtroNegocios = JSON.parse(window.localStorage.getItem('f7form-form-filtro-negocios')); 
+        if(filtroNegocios){              
+            var situacao = filtroNegocios.situacao_search;
+            var cliente_search = filtroNegocios.cliente_search;
+            var rep_search = filtroNegocios.representante_search;
+            var produto = filtroNegocios.produto_search;
+            var periodo_lancamento = filtroNegocios.data_search;
+            var periodo_ultima_compra = filtroNegocios.data_ultima_compra;
+            var media_search = filtroNegocios.media_search;
+            var segmento_search = filtroNegocios.segmento_search;
+            var id = filtroNegocios.id_search;
+        }
+
+        $$.ajax({
+            url: baseurl+'loads/loadNegociosAgrupado.php',             
+            data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_ultima_compra": periodo_ultima_compra, "segmento_search":segmento_search, "media_search":media_search, "produto_search": produto  },
+            success: function(returnedData) {
+                $$("#results-ne").html(returnedData);
+
+                var i = 0;
+                $$("#results-ne").find(".tr-result").each(function(){
+                    i++;
+                });
+                $$(".totalregistros-negocios").html("Registros encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
+            }
+        });            
+    }
+
+    function loadFiltroCacheNe(){
+        // carrega filtro a partir do local storage
+        situacao = "";
+        cliente_search = "";
+        rep_search = "";
+        produto_search = "";
+        media_search = "";
+        segmento_search = "";
+        periodo_lancamento = "";
+        periodo_ultima_compra = "";
+        id = "";
+
+
+
+        var filtroNe = JSON.parse(window.localStorage.getItem('f7form-form-filtro-negocios')); 
+        if(filtroNe){ 
+            situacao = filtroNe.situacao_search;
+            cliente_search = filtroNe.cliente_search;
+            rep_search = filtroNe.representante_search;
+            produto_search = filtroNe.produto_search;
+            periodo_lancamento = filtroNe.data_search;
+            periodo_ultima_compra = filtroNe.data_ultima_compra;
+            media_search = filtroNe.media_search;
+            segmento_search = filtroNe.segmento_search;
+            id = filtroNe.id_search;
+        }
+    }
+
+    $$('.print').click(function() {
+        
+        loadFiltroCacheNe();
+
+        window.open(baseurl+"server/pdf/arquivos/print_negocios.php?detalhado="+detalhado
+            +"&cliente="+cliente
+            +"&repres="+repres
+            +"&situacao="+situacao
+            +"&cliente_search="+cliente_search
+            +"&rep_search="+rep_search
+            +"&produto_search="+produto_search
+            +"&periodo_lancamento="+periodo_lancamento
+            +"&periodo_ultima_compra="+periodo_ultima_compra
+            +"&media_search="+media_search
+            +"&segmento_search="+segmento_search            
+            +"&id="+id
+            );
+    });
+})
+
+// previsão de vendas
+myApp.onPageInit('previsaovendas', function (page){     
+
+    var detalhado = page.query.detalhado;
+
+    var agp = "";
+    if (detalhado == 'nao' || detalhado == undefined){
+        agp = "agrupado";
+    } else {
+        agp = "detalhado";
+    }
+
+    if (tipousuario == 3){
+        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
+        var nomecliente = usuarioNome;
+    }
+    if (tipousuario == 2){
+        var repres = rep;
+    }
+    
+    loadGridPrevisaoVendas();
+
+    var ptrContent = $$(page.container).find('.pull-to-refresh-content');
+        ptrContent.on('refresh', function (e) {
+        // Emulate 2s loading
+        setTimeout(function () {
+            loadGridPrevisaoVendas();
+        });
+        myApp.pullToRefreshDone();
+        }, 2000);    
+    
+    $$(".previsao-detalhado").click(function(){
+        mainView.router.reloadPage('previsaovendas.html?detalhado=sim');
+    })
+    $$(".previsao-agrupado").click(function(){
+        mainView.router.reloadPage('previsaovendas.html?detalhado=nao');
+    })  
 
     $$(".remove-filtro-previsao").click(function(){
+        localStorage.removeItem('f7form-form-filtro-previsao');
         mainView.router.reloadPage('previsaovendas.html');
     })
+
+    function loadGridPrevisaoVendas(){        
+
+        // carrega filtro a partir do local storage
+        var situacao = "";
+        var cliente_search = "";
+        var rep_search = "";
+        var produto = "";
+        var periodo_lancamento = "";
+        var periodo_previsao = "";
+
+        var filtroPrevisaoVendas = JSON.parse(window.localStorage.getItem('f7form-form-filtro-previsao')); 
+        if(filtroPrevisaoVendas){              
+            var situacao = filtroPrevisaoVendas.situacao_search;
+            var cliente_search = filtroPrevisaoVendas.cliente_search;
+            var rep_search = filtroPrevisaoVendas.representante_search;
+            var produto = filtroPrevisaoVendas.produto_search;
+            var periodo_lancamento = filtroPrevisaoVendas.data_search;
+            var periodo_previsao = filtroPrevisaoVendas.data_search_prev;
+        }
+
+        $$.ajax({
+            url: baseurl+'loads/loadPrevisaoVendasAgrupado.php',             
+            data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_previsao": periodo_previsao, "produto_search": produto  },
+            success: function(returnedData) {
+                $$("#results-previsao").html(returnedData);
+
+                var i = 0;
+                $$("#results-previsao").find(".tr-result").each(function(){
+                    i++;
+                });
+                $$(".totalregistros-previsao").html("Registros encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
+            }
+        });   
+    }
+
+    function loadFiltroCachePrev(){
+        // carrega filtro a partir do local storage
+        situacao = "";
+        cliente_search = "";
+        rep_search = "";
+        produto_search = "";
+        periodo_lancamento = "";
+        periodo_previsao = "";
+        id = "";
+
+
+
+        var filtroPrev = JSON.parse(window.localStorage.getItem('f7form-form-filtro-previsao')); 
+        if(filtroPrev){ 
+            situacao = filtroPrev.situacao_search;
+            cliente_search = filtroPrev.cliente_search;
+            rep_search = filtroPrev.representante_search;
+            produto_search = filtroPrev.produto_search;
+            periodo_lancamento = filtroPrev.data_search;
+            periodo_previsao = filtroPrev.data_search_prev;
+            id = filtroPrev.id_search;
+        }
+    }
+
+    $$('.print').click(function() {
+        
+        loadFiltroCachePrev();
+
+        window.open(baseurl+"server/pdf/arquivos/print_previsaovendas.php?detalhado="+detalhado
+            +"&cliente="+cliente
+            +"&repres="+repres
+            +"&situacao="+situacao
+            +"&cliente_search="+cliente_search
+            +"&rep_search="+rep_search
+            +"&produto_search="+produto_search
+            +"&periodo_lancamento="+periodo_lancamento
+            +"&periodo_previsao="+periodo_previsao      
+            +"&id="+id
+            );
+    });
+})
+
+// COTACOES
+myApp.onPageInit('produtos_producao', function (page){ 
+
+    var detalhado = page.query.detalhado;
+
+    var agp = "";
+    if (detalhado == 'nao' || detalhado == undefined){
+        agp = "agrupado";
+    } else {
+        agp = "detalhado";
+    }
+
+    if (tipousuario == 3){
+        var nomecliente = usuarioNome;
+    }
+    if (tipousuario == 2){
+        var repres = rep;
+    }
+
+    loadGridPP();
+
+    var ptrContent = $$(page.container).find('.pull-to-refresh-content');
+        ptrContent.on('refresh', function (e) {
+        setTimeout(function () {
+            loadGridPP();
+        });
+        myApp.pullToRefreshDone();
+    }, 2000);
+    
+    
+    $$(".pp-detalhado").click(function(){
+        mainView.router.reloadPage('produtos_producao.html?detalhado=sim');
+    })
+    $$(".pp-agrupado").click(function(){
+        mainView.router.reloadPage('produtos_producao.html?detalhado=nao');
+    })     
+
+    function loadGridPP(){
+
+        $$.ajax({
+            url: baseurl+'loads/loadProdutosProducao.php', 
+            method: 'GET',
+            data: { "detalhado": detalhado, "repres":repres, "cliente":cliente  },
+            success: function(returnedData) {
+            $$("#results-pp").html(returnedData);
+
+            var i = 0;
+            $$("#results-pp").find(".tr-result").each(function(){
+                i++;
+            });
+            $$(".totalregistros-pp").html("("+agp+"): <span style='font-size:18'>"+i+"</span>");
+        }
+        });
+    }
+})
+
+
+// FORMULARIO DE LANÇAMENTO
+myApp.onPageInit('pedidos', function (page){
+
+    var detalhado = page.query.detalhado;
+
+    var agp = "";
+    if (detalhado == 'nao' || detalhado == undefined){
+        agp = "agrupado";
+    } else {
+        agp = "detalhado";
+    }
+
+    if (tipousuario == 3){
+        var nomecliente = usuarioNome;
+    }
+
+    if (tipousuario == 2){
+        var repres = rep;
+    }
+
+    if (tipousuario == 1 || tipousuario == 4){
+        $$(".prd").show();
+    }
+
+    loadGridPedidos();
+
+    var ptrContent = $$(page.container).find('.pull-to-refresh-content');
+        ptrContent.on('refresh', function (e) {
+        // Emulate 2s loading
+        setTimeout(function () {
+            loadGridPedidos();
+        });
+        myApp.pullToRefreshDone();
+        }, 2000);    
+    
+
+    $$(".pedidos-detalhado").click(function(){
+        mainView.router.reloadPage('pedidos.html?detalhado=sim');
+    })
+    $$(".pedidos-agrupado").click(function(){
+        mainView.router.reloadPage('pedidos.html?detalhado=nao');
+    }) 
+
+    $$(".remove-filtro-pedidos").click(function(){
+        localStorage.removeItem('f7form-form-filtro-pedidos');
+        mainView.router.reloadPage('pedidos.html');
+    })
+
+    function loadGridPedidos(){        
+
+        //var situacao = page.query.situacao;
+        //var cliente_search = page.query.cliente_search;
+        //var rep_search = page.query.rep_search;
+        //var transportadora_search = page.query.transportadora_search;
+        //var periodo_lancamento = page.query.periodo_lancamento;
+        //var periodo_entrega = page.query.periodo_entrega; 
+        //var id = page.query.id;
+
+        // carrega filtro a partir do local storage
+        var situacao = "";
+        var cliente_search = "";
+        var rep_search = "";
+        var transportadora_search = "";
+        var periodo_lancamento = "";
+        var periodo_entrega = "";
+        var id = "";
+
+        var filtroPedidos = JSON.parse(window.localStorage.getItem('f7form-form-filtro-pedidos')); 
+        if(filtroPedidos){              
+            var situacao = filtroPedidos.situacao_search;
+            var cliente_search = filtroPedidos.cliente_search;
+            var rep_search = filtroPedidos.representante_search;
+            var transportadora_search = filtroPedidos.transportadora_search;
+            var periodo_lancamento = filtroPedidos.data_search;
+            var periodo_entrega = filtroPedidos.data_entrega_search;  
+            var id = filtroPedidos.id_search;          
+        }
+
+        $$.ajax({
+            url: baseurl+'loads/loadPedidosAgrupado.php',
+            data: { "detalhado": detalhado, "tipousuario": tipousuario, "repres":repres, "cliente":cliente, "cliente_search": cliente_search, "situacao": situacao ,"rep_search": rep_search, "transportadora_search": transportadora_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
+            method: 'get',            
+            success: function(returnedData) {
+                $$("#results-pedidos").html(returnedData);
+                var i = 0;
+                $$("#results-pedidos").find(".tr-result").each(function(){
+                    i++;
+                });
+                $$(".totalregistros-ped").html("("+agp+"): <span style='font-size:18'>"+i+"</span>");
+                //totaisHome();
+
+            }
+        });        
+    }
+
+    function loadFiltroCachePed(){
+        // carrega filtro a partir do local storage
+        situacao = "";
+        cliente_search = "";
+        rep_search = "";
+        transportadora_search = "";
+        periodo_lancamento = "";
+        periodo_entrega = ""; 
+        id = "";
+
+        var filtroPed = JSON.parse(window.localStorage.getItem('f7form-form-filtro-pedidos')); 
+        if(filtroPed){    
+            situacao = filtroPed.situacao_search;
+            cliente_search = filtroPed.cliente_search;
+            rep_search = filtroPed.representante_search;
+            transportadora_search = filtroPed.transportadora_search;
+            periodo_lancamento = filtroPed.data_search;
+            periodo_entrega = filtroPed.data_entrega_search;
+            id = filtroPed.id_search;
+        }
+    }
+
+    $$('.print').click(function() {
+        
+        loadFiltroCachePed();
+
+        window.open(baseurl+"server/pdf/arquivos/print_pedidos.php?detalhado="+detalhado
+            +"&tipousuario="+tipousuario
+            +"&cliente="+cliente
+            +"&repres="+repres
+            +"&situacao="+situacao
+            +"&cliente_search="+cliente_search
+            +"&rep_search="+rep_search
+            +"&transportadora_search="+transportadora_search
+            +"&periodo_lancamento="+periodo_lancamento
+            +"&periodo_entrega="+periodo_entrega
+            +"&id="+id
+            );       
+    });
 })
 
 // COTACOES
 myApp.onPageInit('higienizacoes', function (page){ 
 
-    
-
-    var situacao = page.query.situacao;
-    var cliente_search = page.query.cliente_search;
-    var rep_search = page.query.rep_search;
-    var periodo_lancamento = page.query.periodo_lancamento;
-    var id = page.query.id;
     var detalhado = page.query.detalhado;
 
     var agp = "";
-    if (page.query.detalhado == undefined || page.query.detalhado == 'nao'){
+    if (detalhado == 'nao' || detalhado == undefined){
         agp = "agrupado";
     } else {
         agp = "detalhado";
@@ -3290,128 +4019,210 @@ myApp.onPageInit('higienizacoes', function (page){
     if (tipousuario == 2){
         var repres = rep;
     }
-    //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
 
-    if (cliente_search != undefined){
-        $$(".higienizacoes-detalhado").attr("href", "higienizacoes.html?detalhado=sim&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
-        $$(".higienizacoes-agrupado").attr("href", "higienizacoes.html?detalhado=nao&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
-    }
-
-    $$.ajax({
-        //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
-        url: baseurl+'loads/loadHigienizacoesAgrupado.php',             
-        data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
-        success: function(returnedData) {
-            $$("#results-higienizacoes").html(returnedData);
-
-            var i = 0;
-            $$("#results-higienizacoes").find("tr").each(function(){
-                i++;
-            });
-            $$(".totalregistros-hig").html("Registros agrupados encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
-        }
-    });
+    loadGridHigienizacoes();
 
     var ptrContent = $$(page.container).find('.pull-to-refresh-content');
         ptrContent.on('refresh', function (e) {
         // Emulate 2s loading
         setTimeout(function () {
-            $$.ajax({
-            url: baseurl+'loads/loadHigienizacoesAgrupado.php?cliente='+cliente+'&repres='+repres,
-            method: 'GET',
-            success: function (data) {
-                //ptrContent.find('#results-cotacoes').html(data);                                 
-                $$("#results-higienizacoes").html(data);
-            }
+            loadGridHigienizacoes();
         });
         myApp.pullToRefreshDone();
-        }, 2000);
-    }); 
+    }, 2000);
+    
+    
+    $$(".higienizacoes-detalhado").click(function(){
+        mainView.router.reloadPage('higienizacoes.html?detalhado=sim');
+    })
+    $$(".higienizacoes-agrupado").click(function(){
+        mainView.router.reloadPage('higienizacoes.html?detalhado=nao');
+    }) 
 
     $$(".remove-filtro-higienizacoes").click(function(){
-        mainView.router.reloadPage('higienizacoes.html');
+        localStorage.removeItem('f7form-form-filtro-higienizacoes');    
+        mainView.router.reloadPage('higienizacoes.html?detalhado='+detalhado);
     })
+
+    function loadGridHigienizacoes(){
+        
+        loadFiltroCacheHig();
+
+        $$.ajax({
+            url: baseurl+'loads/loadHigienizacoesAgrupado.php', 
+            method: 'GET',
+            data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
+            success: function(returnedData) {
+            $$("#results-higienizacoes").html(returnedData);
+
+            var i = 0;
+            $$("#results-higienizacoes").find(".tr-result").each(function(){
+                i++;
+            });
+            $$(".totalregistros-hig").html("Registros encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
+        }
+        });
+    }
+
+    function loadFiltroCacheHig(){
+        // carrega filtro a partir do local storage
+        situacao = "";
+        cliente_search = "";
+        rep_search = "";
+        periodo_lancamento = "";
+        id = "";
+
+        var filtroHigienizacoes = JSON.parse(window.localStorage.getItem('f7form-form-filtro-higienizacoes')); 
+        if(filtroHigienizacoes){    
+            situacao = filtroHigienizacoes.situacao_search;
+            cliente_search = filtroHigienizacoes.cliente_search;
+            rep_search = filtroHigienizacoes.representante_search;
+            periodo_lancamento = filtroHigienizacoes.data_search;
+            id = filtroHigienizacoes.id_search;
+        }
+    }
+
+    $$('.print').click(function() {
+        
+        loadFiltroCacheHig();
+
+        window.open(baseurl+"server/pdf/arquivos/print_higienizacoes.php?detalhado="+detalhado
+            +"&cliente="+cliente
+            +"&repres="+repres
+            +"&situacao="+situacao
+            +"&cliente_search="+cliente_search
+            +"&rep_search="+rep_search
+            +"&periodo_lancamento="+periodo_lancamento
+            +"&id="+id
+            );       
+    });
 })
 
 // AÇÕES CORRETIVAS
 myApp.onPageInit('acoescorretivas', function (page){ 
-    var sp = page.query.sp;
-    var situacao = page.query.situacao;
-    var cliente_search = page.query.cliente_search;
-    var rep_search = page.query.rep_search;
-    var produto_search = page.query.produto_search;
-    var periodo_lancamento = page.query.periodo_lancamento;
-    var id = page.query.id;
     var detalhado = page.query.detalhado;
 
     var agp = "";
-    if (page.query.detalhado == undefined || page.query.detalhado == 'nao'){
+    if (detalhado == 'nao' || detalhado == undefined){
         agp = "agrupado";
     } else {
         agp = "detalhado";
-    }
+    }    
     
     if (tipousuario == 3){
-        //var cliente = usuarioHagnos.hagnosUsuarioIdCli;
         var nomecliente = usuarioNome;
     }
     if (tipousuario == 2){
         var repres = rep;
-    }
-    //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
+    }  
 
-    if (cliente_search != undefined){
-        $$(".acoes-detalhado").attr("href", "acoescorretivas.html?detalhado=sim&sp="+sp+"&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&produto_search="+produto_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
-        $$(".acoes-agrupado").attr("href", "acoescorretivas.html?detalhado=nao&sp="+sp+"&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&produto_search="+produto_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
-    }
-    
-
-    $$.ajax({
-        //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
-        url: baseurl+'loads/loadAcoesCorretivasAgrupado.php',             
-        data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "sp": sp, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "produto_search": produto_search, "periodo_lancamento": periodo_lancamento, "id": id  },
-        success: function(returnedData) {
-            $$("#results-acoescorretivas").html(returnedData);
-            var i = 0;
-            $$("#results-acoescorretivas").find("tr").each(function(){
-                i++;
-            });
-            $$(".totalregistros-acoes").html("Registros agrupados encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
-        }
-    });
+    loadGridAcoes();
 
     var ptrContent = $$(page.container).find('.pull-to-refresh-content');
         ptrContent.on('refresh', function (e) {
         // Emulate 2s loading
         setTimeout(function () {
-            $$.ajax({
-            url: baseurl+'loads/loadAcoesCorretivasAgrupado.php?cliente='+cliente+'&repres='+repres,
-            method: 'GET',
-            success: function (data) {
-                //ptrContent.find('#results-cotacoes').html(data);                                 
-                $$("#results-acoescorretivas").html(data);
-            }
+            loadGridAcoes();
         });
         myApp.pullToRefreshDone();
         }, 2000);
-    }); 
 
-    $$(".remove-filtro-acoescorretivas").click(function(){
-        mainView.router.reloadPage('acoescorretivas.html');
+
+    $$(".acoescorretivas-detalhado").click(function(){                
+        mainView.router.reloadPage('acoescorretivas.html?detalhado=sim');
     })
+
+    $$(".acoescorretivas-agrupado").click(function(){
+        mainView.router.reloadPage('acoescorretivas.html?detalhado=nao');
+    }) 
+
+    $$(".remove-filtro-acoescorretivas").click(function(){ 
+        localStorage.removeItem('f7form-form-filtro-acoescorretivas');       
+        mainView.router.reloadPage('acoescorretivas.html?detalhado='+detalhado);
+    })
+
+    function loadGridAcoes(){
+        // carrega filtro a partir do local storage
+        var situacao = "";
+        var cliente_search = "";
+        var rep_search = "";
+        var produto_search = "";
+        var periodo_lancamento = "";
+        var id = "";
+
+        var filtroAcoes = JSON.parse(window.localStorage.getItem('f7form-form-filtro-acoescorretivas')); 
+        if(filtroAcoes){    
+            var situacao = filtroAcoes.situacao_search;
+            var cliente_search = filtroAcoes.cliente_search;
+            var rep_search = filtroAcoes.representante_search;
+            var produto_search = filtroAcoes.produto_search;
+            var periodo_lancamento = filtroAcoes.data_search;
+            var id = filtroAcoes.id_search;
+        }
+
+        $$.ajax({
+            url: baseurl+'loads/loadAcoesCorretivasAgrupado.php', 
+            method: 'GET',
+            data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "produto_search": produto_search, "periodo_lancamento": periodo_lancamento, "id": id  },
+            success: function(returnedData) {
+                $$("#results-acoescorretivas").html(returnedData);
+                var i = 0;
+                $$("#results-acoescorretivas").find(".tr-result").each(function(){
+                    i++;
+                });
+                $$(".totalregistros-acoes").html("Registros encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
+            }
+        });
+    }
+
+    function loadFiltroCacheAcoes(){
+        // carrega filtro a partir do local storage
+        situacao = "";
+        cliente_search = "";
+        rep_search = "";
+        produto_search = "";
+        periodo_lancamento = "";
+        id = "";
+
+
+
+        var filtroAcoes = JSON.parse(window.localStorage.getItem('f7form-form-filtro-acoescorretivas')); 
+        if(filtroAcoes){    
+            situacao = filtroAcoes.situacao_search;
+            cliente_search = filtroAcoes.cliente_search;
+            rep_search = filtroAcoes.representante_search;
+            produto_search = filtroAcoes.produto_search;
+            periodo_lancamento = filtroAcoes.data_search;
+            id = filtroAcoes.id_search;
+        }
+
+
+    }
+
+    $$('.print').click(function() {
+        
+        loadFiltroCacheAcoes();
+
+        window.open(baseurl+"server/pdf/arquivos/print_acoes.php?detalhado="+detalhado
+            +"&cliente="+cliente
+            +"&repres="+repres
+            +"&situacao="+situacao
+            +"&cliente_search="+cliente_search
+            +"&rep_search="+rep_search
+            +"&produto_search="+produto_search
+            +"&periodo_lancamento="+periodo_lancamento
+            +"&id="+id
+            );
+    });
 })
 
-// COTACOES
+
+// TESTES
 myApp.onPageInit('testes', function (page){ 
-    var situacao = page.query.situacao;
-    var cliente_search = page.query.cliente_search;
-    var rep_search = page.query.rep_search;
-    var periodo_lancamento = page.query.periodo_lancamento;
-    var id = page.query.id;
     var detalhado = page.query.detalhado;
 
     var agp = "";
-    if (page.query.detalhado == undefined || page.query.detalhado == 'nao'){
+    if (detalhado == 'nao' || detalhado == undefined){
         agp = "agrupado";
     } else {
         agp = "detalhado";
@@ -3424,32 +4235,100 @@ myApp.onPageInit('testes', function (page){
     if (tipousuario == 2){
         var repres = rep;
     }
-    //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
-    
-    if (cliente_search != undefined){
-        $$(".testes-detalhado").attr("href", "testes.html?detalhado=sim&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
-        $$(".testes-agrupado").attr("href", "testes.html?detalhado=nao&cliente_search="+cliente_search+"&situacao="+situacao+"&rep_search="+rep_search+"&periodo_lancamento="+periodo_lancamento+"&id="+id);
-    }
 
-    $$.ajax({
-        url: baseurl+'loads/loadTestesAgrupado.php',   
-        async: false,  
-        dataType: "html",        
-        data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
-        success: function(returnedData) {
+    loadGridTestes();
+
+    var ptrContent = $$(page.container).find('.pull-to-refresh-content');
+        ptrContent.on('refresh', function (e) {
+        // Emulate 2s loading
+        setTimeout(function () {
+            loadGridTestes();
+        });
+        myApp.pullToRefreshDone();
+    }, 2000);    
+
+   
+    $$(".testes-detalhado").click(function(){
+        mainView.router.reloadPage('testes.html?detalhado=sim');
+    })
+    $$(".testes-agrupado").click(function(){
+        mainView.router.reloadPage('testes.html?detalhado=nao');
+    }) 
+    $$(".remove-filtro-testes").click(function(){
+        localStorage.removeItem('f7form-form-filtro-testes'); 
+        mainView.router.reloadPage('testes.html?detalhado='+detalhado);
+    })
+
+    function loadGridTestes(){
+        // carrega filtro a partir do local storage
+        var situacao = "";
+        var cliente_search = "";
+        var rep_search = "";
+        var periodo_lancamento = "";
+        var id = "";
+
+        var filtroTestes = JSON.parse(window.localStorage.getItem('f7form-form-filtro-testes')); 
+        if(filtroTestes){    
+            var situacao = filtroTestes.situacao_search;
+            var cliente_search = filtroTestes.cliente_search;
+            var rep_search = filtroTestes.representante_search;
+            var periodo_lancamento = filtroTestes.data_search;
+            var id = filtroTestes.id_search;
+        }
+
+        $$.ajax({
+            url: baseurl+'loads/loadTestesAgrupado.php', 
+            method: 'GET',
+            data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
+            success: function(returnedData) {
             $$("#results-testes").html(returnedData);
             var i = 0;
-            $$("#results-testes").find("tr").each(function(){
+            $$("#results-testes").find(".tr-result").each(function(){
                 i++;
             });
-            $$(".totalregistros-testes").html("Registros agrupados encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
+            $$(".totalregistros-testes").html("Registros encontrados ("+agp+"): <span style='font-size:18'>"+i+"</span>");
             
         }
-    });   
+        });
+    }
 
-    $$(".remove-filtro-testes").click(function(){
-        mainView.router.reloadPage('testes.html');
-    })
+    function loadFiltroCacheTestes(){
+        // carrega filtro a partir do local storage
+        situacao = "";
+        cliente_search = "";
+        rep_search = "";
+        periodo_lancamento = "";
+        id = "";
+
+
+
+        var filtroTestes = JSON.parse(window.localStorage.getItem('f7form-form-filtro-testes')); 
+        if(filtroTestes){    
+            situacao = filtroTestes.situacao_search;
+            cliente_search = filtroTestes.cliente_search;
+            rep_search = filtroTestes.representante_search;
+            periodo_lancamento = filtroTestes.data_search;
+            id = filtroTestes.id_search;
+        }
+
+
+    }
+
+    $$('.print').click(function() {
+        
+        loadFiltroCacheTestes();
+
+        window.open(baseurl+"server/pdf/arquivos/print_testes.php?detalhado="+detalhado
+            +"&cliente="+cliente
+            +"&repres="+repres
+            +"&situacao="+situacao
+            +"&cliente_search="+cliente_search
+            +"&rep_search="+rep_search
+            +"&periodo_lancamento="+periodo_lancamento
+            +"&id="+id
+            );
+    });
+
 })
 
 // NOTIFICAÇÕES GRID
@@ -3638,8 +4517,6 @@ myApp.onPageInit('filtro-notificacoes', function (page){
     });
 })
 
-
-
 // PAINEL DE FILTRO DE CLIENTES
 myApp.onPageInit('filtro-clientes', function (page){  
 
@@ -3745,7 +4622,6 @@ myApp.onPageInit('filtro-pedidos', function (page){
     });
 })
 
-
 // PAINEL DE FILTRO DE LANCAMENTOS
 myApp.onPageInit('filtro-cotacoes', function (page){
     var calendarRange = myApp.calendar({
@@ -3806,21 +4682,25 @@ myApp.onPageInit('filtro-cotacoes', function (page){
     });
 })
 
-
-
-
-
-// PAINEL DE FILTRO DE LANCAMENTOS
+// PAINEL DE FILTRO PREVISAO DE VENDAS
 myApp.onPageInit('filtro-previsao-vendas', function (page){
     var calendarRange = myApp.calendar({
         input: '#data_search',
         dateFormat: 'dd/mm/yyyy',
         rangePicker: true
     });
-   
+    var calendarRange2 = myApp.calendar({
+        input: '#data_search_prev',
+        dateFormat: 'dd/mm/yyyy',
+        rangePicker: true
+    });   
 
     $$(".limparPV").click(function(){
         calendarRange.setValue("");
+    })
+
+    $$(".limparPV2").click(function(){
+        calendarRange2.setValue("");
     })
     
 
@@ -3852,12 +4732,141 @@ myApp.onPageInit('filtro-previsao-vendas', function (page){
         var cliente_search = $$("#cliente_search").val();
         var rep_search = $$("#representante_search").val();
         var periodo_lancamento = $$("#data_search").val();
+        var periodo_previsao = $$("#data_search_prev").val();
         var produto = $$("#produto_search").val();
         //var id = $$("#id_search").val();
-        mainView.router.loadPage('previsaovendas.html?cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&produto_search='+produto);
+        mainView.router.loadPage('previsaovendas.html?cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&periodo_previsao='+periodo_previsao+'&produto_search='+produto);
     });
 })
 
+
+// PAINEL DE FILTRO OPORTUNIDADES
+myApp.onPageInit('filtro-oportunidades', function (page){
+    var calendarRange = myApp.calendar({
+        input: '#data_search',
+        dateFormat: 'dd/mm/yyyy',
+        rangePicker: true
+    });
+
+    if (tipousuario == 2){
+        var repres = rep;
+        $$(".lirep").hide();
+    }
+   
+
+    $$(".limparOP").click(function(){
+        calendarRange.setValue("");
+    })
+
+    var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+        var calendarInline = myApp.calendar({
+            container: '#ks-calendar-inline-container',
+            value: [new Date()],
+            weekHeader: false,
+            header: false,
+            footer: false,
+            toolbarTemplate: '<div class="toolbar calendar-custom-toolbar">' + '<div class="toolbar-inner">' + '<div class="left">' + '<a href="#" class="link icon-only"><i class="icon icon-back"></i></a>' + '</div>' + '<div class="center"></div>' + '<div class="right">' + '<a href="#" class="link icon-only"><i class="icon icon-forward"></i></a>' + '</div>' + '</div>' + '</div>',
+            onOpen: function(p) {
+                $$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] + ', ' + p.currentYear);
+                $$('.calendar-custom-toolbar .left .link').on('click', function() {
+                    calendarInline.prevMonth();
+                });
+                $$('.calendar-custom-toolbar .right .link').on('click', function() {
+                    calendarInline.nextMonth();
+                });
+            },
+            onMonthYearChangeStart: function(p) {
+                $$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] + ', ' + p.currentYear);
+            }
+    });
+
+    // SALVANDO CADASTRO DE CLIENTE
+    $$(".filtra-oportunidades").click(function(){        
+        var cliente_search = $$("#cliente_search").val();
+        var rep_search = $$("#representante_search").val();
+        var periodo_lancamento = $$("#data_search").val();
+        var produto = $$("#produto_search").val();
+
+        var concorrente_search = $$("#concorrente_search").val();
+        var media_search = $$("#media_search").val();
+        var segmento_search = $$("#segmento_search").val();
+        var situacao = new Array();
+        $$("input[name='situacao_search']:checked").each(function (){          
+           situacao.push( $(this).val());
+        });
+
+        //var id = $$("#id_search").val();
+        mainView.router.loadPage('oportunidades.html?situacao='+situacao+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&produto_search='+produto+'&concorrente_search='+concorrente_search+'&media_search='+media_search+'&segmento_search='+segmento_search);
+    });
+})
+
+// PAINEL DE FILTRO NEGOCIOS
+myApp.onPageInit('filtro-negocios', function (page){
+    var calendarRange = myApp.calendar({
+        input: '#data_search',
+        dateFormat: 'dd/mm/yyyy',
+        rangePicker: true
+    });
+
+    var calendarRange2 = myApp.calendar({
+        input: '#data_ultima_compra',
+        dateFormat: 'dd/mm/yyyy',
+        rangePicker: true
+    });
+
+    if (tipousuario == 2){
+        var repres = rep;
+        $$(".lirep").hide();
+    }
+   
+
+    $$(".limparNE").click(function(){
+        calendarRange.setValue("");
+    })
+    $$(".limparNE2").click(function(){
+        calendarRange2.setValue("");
+    })
+
+    var monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+        var calendarInline = myApp.calendar({
+            container: '#ks-calendar-inline-container',
+            value: [new Date()],
+            weekHeader: false,
+            header: false,
+            footer: false,
+            toolbarTemplate: '<div class="toolbar calendar-custom-toolbar">' + '<div class="toolbar-inner">' + '<div class="left">' + '<a href="#" class="link icon-only"><i class="icon icon-back"></i></a>' + '</div>' + '<div class="center"></div>' + '<div class="right">' + '<a href="#" class="link icon-only"><i class="icon icon-forward"></i></a>' + '</div>' + '</div>' + '</div>',
+            onOpen: function(p) {
+                $$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] + ', ' + p.currentYear);
+                $$('.calendar-custom-toolbar .left .link').on('click', function() {
+                    calendarInline.prevMonth();
+                });
+                $$('.calendar-custom-toolbar .right .link').on('click', function() {
+                    calendarInline.nextMonth();
+                });
+            },
+            onMonthYearChangeStart: function(p) {
+                $$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] + ', ' + p.currentYear);
+            }
+    });
+
+    // SALVANDO CADASTRO DE CLIENTE
+    $$(".filtra-negocios").click(function(){        
+        var cliente_search = $$("#cliente_search").val();
+        var rep_search = $$("#representante_search").val();
+        var periodo_lancamento = $$("#data_search").val();
+        var produto = $$("#produto_search").val();
+
+        var periodo_ultima_compra = $$("#data_ultima_compra").val();
+        var media_search = $$("#media_search").val();
+        var segmento_search = $$("#segmento_search").val();
+        //var id = $$("#id_search").val();
+        var situacao = new Array();
+        $$("input[name='situacao_search']:checked").each(function (){          
+           situacao.push( $(this).val());
+        });
+        mainView.router.loadPage('negocios.html?situacao='+situacao+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&produto_search='+produto+'&periodo_ultima_compra='+periodo_ultima_compra+'&media_search='+media_search+'&segmento_search='+segmento_search);
+    });
+})
 
 // PAINEL DE FILTRO DE HIGIENIZACOES
 myApp.onPageInit('filtro-higienizacoes', function (page){
@@ -3908,7 +4917,6 @@ myApp.onPageInit('filtro-higienizacoes', function (page){
     });
 })
 
-
 // PAINEL DE FILTRO DE AÇÕES CORRETIVAS
 myApp.onPageInit('filtro-acoescorretivas', function (page){
     var calendarRange = myApp.calendar({
@@ -3953,16 +4961,29 @@ myApp.onPageInit('filtro-acoescorretivas', function (page){
         $$("input[name='situacao_search']:checked").each(function (){          
            situacao.push( $(this).val());
         });
+
         var cliente_search = $$("#cliente_search").val();
         var rep_search = $$("#representante_search").val();
         var produto_search = $$("#produto_search").val();
         var periodo_lancamento = $$("#data_search").val();
         var id = $$("#id_search").val();
 
-        mainView.router.loadPage('acoescorretivas.html?situacao='+situacao+'&sp='+sp+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&produto_search='+produto_search+'&periodo_lancamento='+periodo_lancamento+'&id='+id);
+        //var filtroAcoes = {
+        //filtroAcoes_sp: sp,
+        //filtroAcoes_situacao: situacao,
+        //filtroAcoes_cliente: cliente_search,
+        //filtroAcoes_rep: rep_search,
+        //filtroAcoes_produto: produto_search,
+        //filtroAcoes_periodo_lancamento: periodo_lancamento,
+        //filtroAcoes_id: id
+        //};
+
+        //window.localStorage.setItem('filtroAcoes', JSON.stringify(filtroAcoes));
+        //var filtroAcoes = JSON.parse(window.localStorage.getItem('filtroAcoes'));
+
+         mainView.router.loadPage('acoescorretivas.html?situacao='+situacao+'&sp='+sp+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&produto_search='+produto_search+'&periodo_lancamento='+periodo_lancamento+'&id='+id);
     });
 })
-
 
 // PAINEL DE FILTRO DE TESTES
 myApp.onPageInit('filtro-testes', function (page){
@@ -4478,8 +5499,18 @@ myApp.onPageInit('form-teste', function (page){
 
     $$("#produto-teste").change(function(){
         if ($$("#produto-teste").val() != ""){
-            $$(".addprodutoteste").removeClass("disabled");
+            if ($$("#lote-obs").val() != "" && $$("#qtd-obs").val() != "" && $$("#equip-obs").val() != ""){
+               $$(".addprodutoteste").removeClass("disabled"); 
+           }            
         } else {$$(".addprodutoteste").addClass("disabled");}
+    })
+
+    $$("#lote-obs, #qtd-obs, #equip-obs").keyup(function(){
+        if ($$("#lote-obs").val() != "" && $$("#qtd-obs").val() != "" && $$("#equip-obs").val() != "" && $$("#produto-teste").val() != ""){
+            $$(".addprodutoteste").removeClass("disabled"); 
+        } else {
+            $$(".addprodutoteste").addClass("disabled");
+        }          
     })
 
     $$(".addprodutoteste").click(function(){
@@ -4558,7 +5589,7 @@ myApp.onPageInit('form-teste', function (page){
         
         if ($('#form-teste').parsley().isValid()) {
         $$.ajax({
-            url: baseurl+'saves/saveTeste.php?cliente='+cliente+'&nomecliente='+nomecliente,           
+            url: baseurl+'saves/saveTeste.php?cliente='+cliente+'&nomecliente='+nomecliente+'&user='+usuarioNome,           
             data: new FormData(form[0]),
             type: 'post',
             success: function( response ) {
@@ -4823,7 +5854,7 @@ myApp.onPageInit('form-acaocorretiva', function (page){
         
         if ($('#form-acaocorretiva').parsley().isValid()) {
             $$.ajax({
-                url: baseurl+'saves/saveAcao.php?cliente='+cliente+'&nomecliente='+nomecliente,           
+                url: baseurl+'saves/saveAcao.php?cliente='+cliente+'&nomecliente='+nomecliente+'&user='+usuarioNome,           
                 data: new FormData(form[0]),
                 type: 'post',
                 success: function( response ) {
@@ -4955,12 +5986,52 @@ myApp.onPageInit('email-cotacao', function (page){
     $$(".e-cliente").html(ncli+"<br>Cotação: "+idcot);
     $$("input[name=email_cliente]").val(emailcli);
 
+    $$("#emails_adicionais").keyup(function(){
+        if ($$("#emails_adicionais").val() == ""){
+            $$("#enviar-cotacao").addClass("disabled");
+        } else {
+            $$("#enviar-cotacao").removeClass("disabled");
+        }
+    })
+
     $$.ajax({
         url: baseurl+'loads/loadCheckboxContatos.php?idcot='+idcot,
         type: 'get',        
         success: function(returnedData) {
-            $$(".list-contatos-cliente").append(returnedData);
+            $$(".list-contatos-cliente-cot").append(returnedData);
+            
+            $$(".chk").click(function(){
+
+                var checado=false;
+                $$(".list-contatos-cliente-cot").find(".chk").each(function(){
+                    if($$(this).prop("checked"))
+                        checado=true;
+                });
+                if(!checado){
+                    $$("#enviar-cotacao").addClass("disabled");
+                    if ($$("#emails_adicionais").val() != ""){
+                        $$("#enviar-cotacao").removeClass("disabled");
+                    }
+                    return false;
+                } else {
+                    $$("#enviar-cotacao").removeClass("disabled");
+                    return false;
+                }
+
+                //var listaChkArray = new Array(); 
+                //$$("input[name='chk-email']:checked").each(function(){
+                //    listaChkArray.push(this.value);
+                //});
+                //var listaEmail = listaChkArray.join(";");
+                //if (listaEmail.length > 0){
+                //    $$("#enviar-cotacao").removeClass("disabled");
+                //} else {
+                //    $$("#enviar-cotacao").addClass("disabled");
+                //}      
+            })
         }
+
+
     });
 
     
@@ -4975,11 +6046,12 @@ myApp.onPageInit('email-cotacao', function (page){
         }
     });
 
+    
      // ATUALIZANDO COTAÇÃO
     $$(".enviar-cotacao").click(function(){
         var form = $$('#form-envio-cotacao');
         $$.ajax({
-            url: baseurl+'server/enviaCotacao.php?idcot='+idcot,           
+            url: baseurl+'server/enviaCotacao.php?idcot='+idcot+'&resposta='+usuarioEmail+'&idu='+usuarioID,           
             data: new FormData(form[0]),
             type: 'post',
             success: function( response ) {
@@ -4996,6 +6068,33 @@ myApp.onPageInit('email-cotacao', function (page){
     });
 })
 
+// ENVIO DE EMAIL DE COTAÇÃO AO CLIENTE
+myApp.onPageInit('resumo_ats', function (page){
+    var idcli = page.query.idcli;
+    var nomecliente = page.query.nomecliente;
+    $$.ajax({
+        url: baseurl+'loads/loadResumoAts.php?idcli='+idcli+'&nomecliente='+nomecliente,
+        success: function(returnedData) {
+            $$("#resumo-ats").append(returnedData);
+        }
+    });   
+})
+
+// DETALHAMENTO DE RELATÓRIO
+myApp.onPageInit('rel_detalhamento', function (page){
+    var r = page.query.r;
+    var codrep = page.query.rep;
+    var dataini = page.query.dataIni;
+    var datafim = page.query.dataFim;
+    $$(".indicador-titulo").html("Detalhamento de "+r);
+    $$.ajax({
+        url: baseurl+'relatorios/rel_detalhes_indicador.php?r='+r+'&codrep='+codrep+'&dataIni='+dataini+'&dataFim='+datafim,
+        success: function(returnedData) {
+            $$("#detalhes-rel").append(returnedData);
+        }
+    });   
+})
+
 
 // ENVIO DE EMAIL FISPQ
 myApp.onPageInit('email-apresentacao', function (page){
@@ -5007,7 +6106,7 @@ myApp.onPageInit('email-apresentacao', function (page){
     $$(".enviar-apresentacao").click(function(){
         var form = $$('#form-envio-apresentacao');
         $$.ajax({
-            url: baseurl+'server/enviaApresentacao.php',           
+            url: baseurl+'server/enviaApresentacao.php?remetente='+usuarioEmail+'&idu='+usuarioID,           
             data: new FormData(form[0]),
             type: 'post',
             success: function( response ) {
@@ -5139,9 +6238,10 @@ function pesquisar_representante(){
             // Add item text value to item-after
             $$('#ajax-representantes-list').find('.item-after').text(value.nome);
             // Add item value to input value
-            $$('#ajax-representantes-list').val(value.nome);
+            $$('#ajax-representantes-list, input[name=nomerep]').val(value.nome);
             $$("input[name=codrep]").val(value.id);
-            $$("#gera-rel-desempenho").removeClass("disabled");
+            $$("input[name=email_relatorio]").val(value.email);
+            $$("#gera-rel-desempenho, .enviaRel").removeClass("disabled");
             
 
             //ao_empreendimento = $$('#ajax-clientes-list').val();
@@ -5249,9 +6349,10 @@ myApp.onPageInit('form-pedido', function (page){
                 $$("select[name=frete-ped]").val(returnedData[0].frete);                         
                 $$("input[name=total-ped-v]").val(returnedData[0].valor_total);
                 $$("input[name=nf]").val(returnedData[0].nf);
-                $$("input[name=email-producao]").val(returnedData[0].email_cli);
+                //$$("input[name=email-producao]").val(returnedData[0].email_cli);
                 $$("input[name=transportadora]").val(returnedData[0].transportadora);
-                $$("textarea[name=comentarios_finalizacao]").val(returnedData[0].comentarios_finalizacao);
+                $$("textarea[name=comentarios_finalizacao]").val(returnedData[0].comentarios_finalizacao);                
+                $$("input[name=email-producao]").val(returnedData[0].emailCliente);
 
                 if ($$("#nf").val() != '' && $$("#transportadora").val() != ''){
                     if (tipousuario != 1){
@@ -5433,7 +6534,28 @@ myApp.onPageInit('form-pedido', function (page){
             success: function(returnedData) {
                 $$(".list-products-ped").prepend(returnedData);
                 totalizaCot();
+                $$(".calculo-pedido").keyup(function(){
+
+                    var qtdCot = $$('input[name^="qtd-ped-v"]');
+                    var precoCot = $$('input[name^="preco-ped-v"]');
+                    var subtotalCot = $$('input[name^="subtotal-ped-v"]');
+                    var totalCot = $$('input[name="total-ped-v"]');
+                    var obsCot = $$('textarea[name="obs-ped-v"]');
+                    var subtotal = 0;
+                    var total = 0;
+                    var values = [];
+                    for(var i = 0; i < qtdCot.length; i++){
+                       subtotal = $$(qtdCot[i]).val() * $$(precoCot[i]).val();
+                       total += subtotal;
+                       subtotal = subtotal.toFixed(2);                   
+                       $$(subtotalCot[i]).val(subtotal);
+                       $$(totalCot.val(total.toFixed(2)));
+                    }
+                    toggleAddProd(subtotal);
+                })
             }
+
+
         });
 
 
@@ -5459,6 +6581,7 @@ myApp.onPageInit('form-pedido', function (page){
                                                 '<select name="produto-ped" class="produto-ped prod" required></select>'+
                                                 '</div>'+
                                             '</div>'+
+                                            '<div class="prod-values"></div>'+
                             
                                             '<div class="item-inner" style="width:20%">'+
                                                 '<div class="item-title label" style="text-alicn:right">QTDE</div>'+              
@@ -5470,7 +6593,7 @@ myApp.onPageInit('form-pedido', function (page){
                                             '<div class="item-inner" style="width:20%">'+
                                                 '<div class="item-title label" style="text-alicn:right">PREÇO UNIT.</div>'+
                                                 '<div class="item-input subtotaliza">'+
-                                                '<input type="text" class="calculo-pedido preco_aplicado" name="preco-ped-v[]" value="" placeholder="0.00" style="color:green" required/>'+
+                                                '<input type="text" class="calculo-pedido preco_aplicado" name="preco-ped-v[]" value="" placeholder="0.00" style="color:green"/>'+
                                                 '</div>'+
                                             '</div>'+
 
@@ -5510,7 +6633,7 @@ myApp.onPageInit('form-pedido', function (page){
                 $$(".produto-ped").change(function(e){
                     var produto = this.value;
                     var prod = produto.split(";");
-                    $$(".list-products-ped li:last-child").append(
+                    $$(".list-products-ped li:last-child .prod-values").html(
                                                     '<input type="hidden" name="cod-produto-ped-v[]" value="'+prod[0]+'">'+
                                                     '<input type="hidden" name="produto-ped-v[]" value="'+prod[1]+'"/>');
                     
@@ -5556,7 +6679,8 @@ myApp.onPageInit('form-pedido', function (page){
     })    
 
     function toggleAddProd(sub){
-        if (sub == '0.00' || $$(".list-products-ped li:last-child").find(".produto-ped").val() == ""){
+        //if (sub == '0.00' || $$(".list-products-ped li:last-child").find(".produto-ped").val() == ""){
+        if ($$(".list-products-ped li:last-child").find(".produto-ped").val() == ""){
             $$(".addprodutopedido").addClass("disabled");
         } else {
             $$(".addprodutopedido").removeClass("disabled");
@@ -5583,6 +6707,7 @@ myApp.onPageInit('form-pedido', function (page){
             $$(totalCot.val(total.toFixed(2)));
         }
     }
+
 
 
     // SALVANDO PEDIDO
@@ -6195,7 +7320,7 @@ myApp.onPageInit('form-teste-visualizar', function (page){
         
         if ($('#form-teste-visualizar').parsley().isValid()) {
         $$.ajax({
-            url: baseurl+'saves/saveTeste.php?cliente='+cliente+'&nomecliente='+nomecliente,           
+            url: baseurl+'saves/saveTeste.php?cliente='+cliente+'&nomecliente='+nomecliente+'&user='+usuarioNome,           
             data: new FormData(form[0]),
             type: 'post',
             success: function( response ) {
@@ -6283,6 +7408,9 @@ myApp.onPageInit('form-produto', function (page){
 
    if (tipousuario != 1){
       $$(".formulacao").hide();
+      $$(".salva-produto, .deleta-prod").hide();
+      $$("#prod_descricao, #prod_obs, #prod_formulacao").addClass("disabled");
+      $$(".esconder").hide();
    }
 
    // se existe um parametro "representante" faz a edição e salvamento do registro
@@ -6383,7 +7511,7 @@ myApp.onPageInit('form-comercial', function (page){
             $$("input[name='prazo_pagamento']").val(returnedData[0].prazo_pagamento);
             $$("input[name='concorrente']").val(returnedData[0].concorrente);
             $$("input[name='data_ultima_compra']").val(returnedData[0].data_ultima_compra);
-            $$("textarea[name='obs_prod']").val(returnedData[0].obs);
+            $$("textarea[name='obs_prod']").val(returnedData[0].obs);        
 
             $$(".e-cliente").html(returnedData[0].ncli+"<br>"+nprod);
         }
@@ -6415,8 +7543,9 @@ myApp.onPageInit('form-comercial', function (page){
                     },
                 });
                 //mainView.router.reloadPage('forms/clientes_form.html');
-                mainView.router.loadPage('forms/clientes_form.html?cliente='+ncli);
-                myApp.showTab('#tab3');
+                mainView.router.loadPage('forms/clientes_form.html?cliente='+ncli+'&tab=tab3-c');
+                //myApp.showTab('#tab3');
+
               }
             })   
         }         
@@ -6725,21 +7854,7 @@ $$('.popover a').on('click', function () {
 /* ===== Swiper Two Way Control Gallery ===== */
 myApp.onPageInit('clientes', function (page) {
     
-    // pega o ID do representante para filtrar somente os clientes dele
-
-    //var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-    //var rep = usuarioHagnos.hagnosUsuarioIdRep;
-    //var tipousuario = usuarioHagnos.hagnosUsuarioTipo;
-
-    //TOTALIZA CLIENTES
-    //$$.ajax({
-    //    url: 'loads/totalizaClientes.php',
-    //    data: { "rep": rep, "tipoUsuario": tipousuario },
-    //    type: 'get',
-    //    success: function(returnedData) {
-    //        $$(".totalclientes").html(returnedData);
-    //    }
-    //    });
+    
 
     // CASO SEJA ACIONADO O FILTRO DE BUSCA DE CLIENTES
     var sCidade = page.query.sCidade;
@@ -6770,12 +7885,47 @@ myApp.onPageInit('clientes', function (page) {
         success: function(returnedData) {
             $$(".lista-clientes").html(returnedData);
             var i = 0;
-            $$(".lista-clientes").find(".item-content").each(function(){
+            $$(".lista-clientes").find(".tr-clientes").each(function(){
             i++;
             });
             $$(".totalregistros").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");
         }
     }); 
+
+    function loadFiltroCacheCli(){
+        // carrega filtro a partir do local storage
+        cidade_s = "";
+        situacao_s = "";
+        interacao_s = "";
+        rep_s = "";
+        prod_s = "";
+        id = "";        
+
+        var filtroCli = JSON.parse(window.localStorage.getItem('f7form-form-filtro-clientes')); 
+        if(filtroCli){
+            cidade_s = filtroCli.cidade_search;    
+            situacao_s = filtroCli.situacao_search;
+            interacao_s = filtroCli.interacao_search;
+            rep_s = filtroCli.representante_search;
+            prod_s = filtroCli.produto_search;            
+            id = filtroCli.id_search;
+        }
+    }
+
+    $$('.print').click(function() {
+        
+        loadFiltroCacheCli();
+
+        window.open(baseurl+"server/pdf/arquivos/print_clientes.php?tipoUsuario="+tipousuario
+            +"&rep="+rep
+            +"&sCidade="+cidade_s
+            +"&sRep="+rep_s
+            +"&sSituacao="+situacao_s
+            +"&sInteracao="+interacao_s
+            +"&sProd="+prod_s
+            +"&id="+id
+            );       
+    });
 
     
 
@@ -6812,6 +7962,24 @@ myApp.onPageInit('usuarios', function (page) {
             $$(".lista-usuarios").html(returnedData);
             var i = 0;
             $$(".lista-usuarios").find(".item-content").each(function(){
+            i++;
+            });
+            $$(".totalregistros").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");
+        }
+    });   
+});
+
+// LOAD LISTA DE RELATÓRIOS DE DESEMPENHO
+/* ===== Swiper Two Way Control Gallery ===== */
+myApp.onPageInit('grid_relatorios_desempenho', function (page) {
+
+    $$.ajax({
+        url: baseurl+'loads/loadRelDesempenho.php',
+        type: 'get',        
+        success: function(returnedData) {
+            $$(".lista-rel-desempenho").html(returnedData);
+            var i = 0;
+            $$(".lista-rel-desempenho").find(".item-content").each(function(){
             i++;
             });
             $$(".totalregistros").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");
