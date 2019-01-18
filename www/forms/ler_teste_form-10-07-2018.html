@@ -1,0 +1,163 @@
+<div data-page="form-teste-visualizar" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left">
+	<a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a>
+	<a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
+</div>
+<div class="center teste" class="nomeperfil">Teste</div>
+<div class="right">
+	<a href="#" id="atualizar-teste" class="button link salva-teste">salvar</a>
+	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+ 
+
+<div class="page-content">
+
+
+<div class="content-block">
+<h3 class="e-cliente"></h3>
+</div>
+
+
+
+<form id="form-teste-visualizar" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+
+	
+	<ul>
+
+		<li class="respondida">
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Situação</div>
+		<div class="item-input">
+		<select name="situacao-teste">
+			<option value="PENDENTE">PENDENTE</option>
+			<option value="APROVADO">APROVADO</option>
+			<option value="REPROVADO">REPROVADO</option>
+		</select>
+		</div>
+		</div>
+		</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Data da solicitação</div>
+		<div class="item-input">
+		<input type="hidden" name="id-teste">
+		<input type="text" name="data-teste" readonly>
+		</div>
+		</div>
+		</div>
+		</li>
+		
+	</ul>
+
+	<div class="content-block">
+	<h3>Produtos</h3>
+	</div>
+
+	<ul>
+		<li>
+		<div class="item-content">
+			
+			<div class="item-inner">
+				<div class="item-title label">&nbsp;</div>
+				<div class="item-input">
+					<select name='produto-teste' id='produto-teste' class='prod'>
+						<option value="">Adicione um produto</option>
+					</select>
+					<input type="hidden" name="codcliente" value="">
+				</div>
+			</div>
+			<div class="item-inner">
+				
+				<div class="row">
+					<div class="item-title floating-label">LOTE</div>
+					<div class="item-input">
+						<input type="text" name="lote-obs" id="lote-obs">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="item-title floating-label">QTDE</div>
+					<div class="item-input">
+						<input type="text" name="qtd-obs" id="qtd-obs">
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="item-title floating-label">EQUIPAMENTO</div>
+					<div class="item-input">
+						<input type="text" name="equip-obs" id="equip-obs">
+					</div>
+				</div>
+			</div>
+		</div>
+		</li>
+
+		
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-input">
+				<button type='button' class='button button-fill color-teal addprodutoteste disabled' style="float:right">adicionar à lista</button>
+				</div>
+			</div>
+		</div>
+		</li>
+	</ul>
+
+	
+
+	<ul class="list-products-teste">
+    	
+	</ul>
+
+	<ul style="display:none">
+		<li>
+    		<div class="item-inner">
+				<div class="item-input">
+				<button type='button' class='button button-fill color-teal minusprodutoteste' style="margin-top:16px;float:right;margin-left:8px"><i class='material-icons' style='margin-top:5px'>delete</i></button>
+				<button type='button' class='button button-fill color-teal addprodutoteste' style="margin-top:16px;float:right"><i class='icon icon-plus'></i></button>
+				</div>
+			</div>
+    	</li>	
+	</ul>
+
+
+	<ul>
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Desempenho do teste (será adicionado ao histórico abaixo)</div>
+				<div class="item-input">
+					<textarea class="resizable" name="desempenho-input" id="desempenho-input" rows=2 style="min-height:80px"></textarea>
+				</div>				
+			</div>
+		</div>
+		</li>
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Histórico de desempenho do teste</div>
+				<div class="item-input">
+					<textarea class="resizable" name="info-teste" id="info-teste" rows=8 style="min-height:180px" readonly></textarea>
+				</div>				
+			</div>
+		</div>
+		</li>
+	</ul>
+
+
+
+</form>
+
+
+
+</div>

@@ -33,6 +33,8 @@
 			<div class="tabs">
 				
 				<div id="tab1l" class="page-content tab active ">
+
+						<span style="color:red">Atenção: As funcionalidades desta seção estão em manutenção para atualizações e ajustes necessários.<br></span>
 						
 						<form id="form-lancamento-1" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
 		
@@ -50,47 +52,42 @@
 							</div>
 							</div>
 							</li>
-						</ul>
 
-						<div class="content-block">
-							<h5>CONTATOS</h5>
-							
-							<div class="list-contatos">
-								<div class="row">
-									<div class="col-50 tablet-20">
-										<label>Nome</label>
-										<input type="text" name="responsavel-nome[]" placeholder="RESPONSÁVEL">
-									</div>
-									<div class="col-50 tablet-20">
-										<label>Setor</label>
-										<input type="text" name="responsavel-setor[]" placeholder="SETOR">
-									</div>
-									<div class="col-50 tablet-20">
-										<label>Telefone</label>
-										<input type="text" name="responsavel-telefone[]" placeholder="TELEFONE">
-									</div>
-									<div class="col-50 tablet-20">
-										<label>Email</label>
-										<input type="text" name="responsavel-email[]" placeholder="EMAIL">
-									</div>
-									<div class="col-50 tablet-20">										
-									</div>
-								</div>								
+							<li>
+							<div class="item-content">
+							<div class="item-inner">
+							<div class="item-title label">RESPONSÁVEL / SETOR</div>
+							<div class="resp-setores" style="text-transform: uppercase;">	
+							</div>							
+							<div class="item-input">
+							<input type="hidden" name="cliente-contato" id="cliente-contato" readonly>
 							</div>
-
-							<div class="row addct" style="margin-top:15px">
-								<div class="col-100">
-									<a href="#" class="button button-raised color-teal addContato">ADICIONAR CONTATO</a>
-								</div>
 							</div>
+							</div>
+							</li>
 
-						</div>
+							<li>
+							<div class="item-content">
+							<div class="item-inner">
+							<div class="item-title label">TELEFONE</div>
+							<div class="item-input">
+							<input type="text" name="cliente-telefone" id="cliente-telefone" readonly>
+							</div>
+							</div>
+							</div>
+							</li>
 
+							<li>
+							<div class="item-content">
+							<div class="item-inner">
+							<div class="item-title label">EMAIL</div>
+							<div class="item-input">
+							<input type="text" name="cliente-email" id="cliente-email" readonly>
+							</div>
+							</div>
+							</div>
+							</li>
 
-
-						<ul>
-
-							
 							<li>
 							<div class="item-content">
 							<div class="item-inner">
@@ -108,7 +105,7 @@
 							<div class="item-inner">
 							<div class="item-title label">OBSERVAÇÃO CADASTRAL</div>
 							<div class="item-input">
-								<textarea name="obs-cliente" rows=6 id="obs-cliente"></textarea>							
+								<textarea name="obs-cliente" rows=6></textarea>							
 							</div>
 							</div>
 							</div>
@@ -118,10 +115,10 @@
 								<div class="item-content">
 								<div class="item-inner">
 								<div class="item-title label" style='font-size:20px;color:red;font-weight:bold'>SITUAÇÃO</div>
+								<div class="s-situacao" style="color:red;font-size:20px;font-weight:bold;text-transform:uppercase"></div>
 								<div class="item-input">
-								<input type="text" name="status_padrao_view" value="" style="display:none;font-size:18px!important;font-weight:bold;color:red">
 								<select name="status_padrao" id="status_padrao" required>
-								<option value="">-- Selecione a situação --</option>
+								<option value="">-- Mudar situação --</option>
 								<option value="ativo">ATIVO</option>
 								<option value="inativo">INATIVO</option>
 								<option value="prospectado">PROSPECTADO</option>									
@@ -143,56 +140,9 @@
 					<div class="content-block" style="padding:0px">
 
 						<form id="form-lancamento-2" class="list-block ajax-submit" data-parsley-validate="true">
-
-							<div class="content-block-title">DATA DA VISITA:</div>
-
-							<div class="list-block">
-								<ul>
-							        <li>
-									<div class="item-content">
-									<div class="item-inner">
-									<div class="item-input">
-									<input type="date" name="data_visita" id="data_visita" value="" required/>
-									</div>
-									</div>
-									</div>
-									</li>	
-								</ul>
-							</div>
-
-							<div class="content-block-title">DATA PRÓXIMO CONTATO:</div>
-
-							<div class="list-block">
-								<ul>
-							        <li>
-									<div class="item-content">
-									<div class="item-inner">
-									<div class="item-input">
-									<input type="date" name="data_proximo_contato" id="data_proximo_contato" value="" required/>
-									</div>
-									</div>
-									</div>
-									</li>	
-								</ul>
-							</div>
 							
-							
-
-							<div class="dados_visita_visualizar" style="display:none">
-								<div class="content-block-title">TIPO DE VISITA:<BR>
-								<span class="span_tipo_visita" style="font-size:16px; color:#000; font-weight:normal;line-height:2"></span>
-								</div>
-								
-
-								<div class="content-block-title">INTERAÇÕES:<BR>
-								<span class="span_interacoes" style="font-size:16px; color:#000; font-weight:normal;line-height:2"></span>
-								</div>								
-
-							</div>
-
-							<div class="list-block dados-visita">
-
-								<div class="content-block-title">TIPO DE VISITA:</div>
+							<div class="content-block-title">TIPO:</div>
+							<div class="list-block">
 						        
 						        <ul>
 							        <li>
@@ -206,7 +156,7 @@
 							        </li>
 							        <li>
 							          <label class="label-radio item-content">
-							            <input type="radio" name="tipo_visita" value="PRESENCIAL"/>
+							            <input type="radio" name="tipo_visita" value="PRESENCIAL" checked="checked"/>
 							            <div class="item-media"><i class="icon icon-form-radio"></i></div>
 							            <div class="item-inner">
 							              <div class="item-title">PRESENCIAL</div>
@@ -218,84 +168,82 @@
 						        <div class="content-block-title">INTERAÇÕES:</div>
 
 						        <ul>
-						        	
-
 							        <li>
-							          <label class="label-checkbox item-content">
-							            <input type="checkbox" name="interacao_visita" id="int1" value="1&ordm; CONTATO"/>
-							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+							          <label class="label-radio item-content">
+							            <input type="radio" name="interacao_visita" value="1&ordm; CONTATO" checked="checked"/>
+							            <div class="item-media"><i class="icon icon-form-radio"></i></div>
 							            <div class="item-inner">
 							              <div class="item-title">1&ordm; CONTATO</div>
 							            </div>
 							          </label>
 							        </li>
 							        <li>
-							          <label class="label-checkbox item-content">
-							            <input type="checkbox" name="interacao_visita" id="int2" value="APRESENTAÇÃO"/>
-							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+							          <label class="label-radio item-content">
+							            <input type="radio" name="interacao_visita" value="APRESENTAÇÃO"/>
+							            <div class="item-media"><i class="icon icon-form-radio"></i></div>
 							            <div class="item-inner">
 							              <div class="item-title">APRESENTAÇÃO</div>
 							            </div>
 							          </label>
 							        </li>
 							        <li>
-							          <label class="label-checkbox item-content">
-							            <input type="checkbox" name="interacao_visita" id="int3" value="COTAÇÃO"/>
-							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+							          <label class="label-radio item-content">
+							            <input type="radio" name="interacao_visita" value="COTAÇÃO"/>
+							            <div class="item-media"><i class="icon icon-form-radio"></i></div>
 							            <div class="item-inner">
 							              <div class="item-title">COTAÇÃO</div>
 							            </div>
 							          </label>
 							        </li>
 							        <li>
-							          <label class="label-checkbox item-content">
-							            <input type="checkbox" name="interacao_visita" id="int4" value="HIGIENIZAÇÃO"/>
-							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+							          <label class="label-radio item-content">
+							            <input type="radio" name="interacao_visita" value="HIGIENIZAÇÃO"/>
+							            <div class="item-media"><i class="icon icon-form-radio"></i></div>
 							            <div class="item-inner">
 							              <div class="item-title">HIGIENIZAÇÃO</div>
 							            </div>
 							          </label>
 							        </li>
 							        <li>
-							          <label class="label-checkbox item-content">
-							            <input type="checkbox" name="interacao_visita" id="int5" value="TESTE"/>
-							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+							          <label class="label-radio item-content">
+							            <input type="radio" name="interacao_visita" value="TESTE"/>
+							            <div class="item-media"><i class="icon icon-form-radio"></i></div>
 							            <div class="item-inner">
 							              <div class="item-title">TESTE</div>
 							            </div>
 							          </label>
 							        </li>
 							        <li>
-							          <label class="label-checkbox item-content">
-							            <input type="checkbox" name="interacao_visita" id="int6" value="AÇÃO CORRETIVA"/>
-							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+							          <label class="label-radio item-content">
+							            <input type="radio" name="interacao_visita" value="AÇÃO CORRETIVA"/>
+							            <div class="item-media"><i class="icon icon-form-radio"></i></div>
 							            <div class="item-inner">
 							              <div class="item-title">AÇÃO CORRETIVA</div>
 							            </div>
 							          </label>
 							        </li>
 							        <li>
-							          <label class="label-checkbox item-content">
-							            <input type="checkbox" name="interacao_visita" id="int7" value="PEDIDO"/>
-							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+							          <label class="label-radio item-content">
+							            <input type="radio" name="interacao_visita" value="PEDIDO"/>
+							            <div class="item-media"><i class="icon icon-form-radio"></i></div>
 							            <div class="item-inner">
 							              <div class="item-title">PEDIDO</div>
 							            </div>
 							          </label>
 							        </li>
 							        <li>
-							          <label class="label-checkbox item-content">
-							            <input type="checkbox" name="interacao_visita" id="int8" value="ENTREGA"/>
-							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+							          <label class="label-radio item-content">
+							            <input type="radio" name="interacao_visita" value="ENTREGA"/>
+							            <div class="item-media"><i class="icon icon-form-radio"></i></div>
 							            <div class="item-inner">
 							              <div class="item-title">ENTREGA</div>
 							            </div>
 							          </label>
 							        </li>
 							        <li>
-							          <label class="label-checkbox item-content">
-							            <input type="checkbox" name="interacao_visita" id="int9" value="SEM INTERAÇÃO"/>
-							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+							          <label class="label-radio item-content">
+							            <input type="radio" name="interacao_visita" value="SEM INTERAÇÃO"/>
+							            <div class="item-media"><i class="icon icon-form-radio"></i></div>
 							            <div class="item-inner">
 							              <div class="item-title">SEM INTERAÇÃO</div>
 							            </div>
@@ -314,7 +262,7 @@
 										<div class="item-content">
 										<div class="item-inner">
 										<div class="item-input">
-											<textarea class="resizable" name="lancamento-descricao" id="lancamento-descricao" placeholder="Descreva aqui informações relativas à esta visita" rows=20 style="height:250px;overflow-y: scroll;" required></textarea>					
+											<textarea class="resizable" name="lancamento-descricao" id="lancamento-descricao" placeholder="Descreva aqui informações relativas à esta visita" rows=20 style="height:250px;overflow-y: scroll;"></textarea>					
 										</div>
 										</div>
 										</div>
@@ -322,14 +270,17 @@
 						        </ul>
 						    </div>
 
-							<a href="#" class="bt-tb4 button button-fill color-teal disabled">Avançar</a>
+						    
+
+							<a href="#" class="bt-tb4 button button-fill color-teal">Avançar</a>
 
 						</form>
 
 					</div>
 				</div>
 
-				<div id="tab2l" class="page-content tab tab-descricao-visita">				
+				<div id="tab2l" class="page-content tab tab-descricao-visita">
+					<span style="color:red">Atenção: As funcionalidades desta seção estão em manutenção para atualizações e ajustes necessários.</span>				
 					<div class="content-block" style="padding:0px">
 						
 						<form id="form-lancamento-4" class="list-block inputs-list ajax-submit" data-parsley-validate="true" enctype="multipart/form-data">
@@ -360,48 +311,44 @@
 
 						<div class="content-block" style="">
 
-							<table class="oportunidade-view" style="white-space:nowrap;padding:0px!important;width:100%;margin-bottom:40px">
+							<table style="white-space:nowrap;padding:0px!important;width:100%;margin-bottom:40px">
 								<tr>
-									<td colspan=4>
-									<div class="item-title label">OPORTUNIDADE</div>
+									<td>
+									<div class="item-title label">Adicionar um produto</div>
 									<select name='prod-lanc' id='prod-lanc' class='prod'>
 										<option value="">Selecione um produto</option>
 									</select>	
 									</td>
-								</tr>
-								<tr class="produto-fields" style="display:none;background:#eee;padding-bottom:6px">
-								<td><label>Média de consumo mensal</label>
-									<input type="text" name="p-media-consumo" style="border:1px solid #ddd;text-align:center;text-transform:uppercase;background:#fff">
-								</td>
-								<td>Preço aplicado<BR>
-									<input type="text" name="p-preco-aplicado" style="border:1px solid #ddd;text-align:center;text-transform:uppercase;background:#fff">
-								</td>
-								<td>Prazo de pagamento<BR>
-									<input type="text" name="p-prazo-pagamento"  style="border:1px solid #ddd;text-align:center;text-transform:uppercase;background:#fff">
-								</td>
-								<td>Concorrente<BR>
-									<input type="text" name="p-concorrente" style="border:1px solid #ddd;text-align:center;text-transform:uppercase;background:#fff">
-								</td>
-								</tr>
-								<tr style="background:#eee;padding-bottom:6px">
-									<td colspan=4>
-										<button type='button' class='button button-fill color-teal addproduto-l disabled '>confirmar adição de oportunidade</button>
+									<td>
+									<div class="item-title label">Finalidade</div>
+									<select name="finalidade-lanc" id="finalidade-lanc">
+											<option value="">Selecione a finalidade</option>
+											<option value="NEGOCIO">NEGÓCIO</option>
+											<option value="OPORTUNIDADE">OPORTUNIDADE</option>
+										</select>
+									</td>
+									<td>
+									<button type='button' class='button button-fill color-teal addproduto-l disabled' style="float:right">adicionar</button>	
 									</td>
 								</tr>
 							</table>
 
-							<table id="prod-lanc-rows" style="white-space:nowrap;padding:0px!important;width:100%">
-							</table>
-								
-							<table style="white-space:nowrap;padding:0px!important;background-color:#84C44C;width:100%">
+							<table style="white-space:nowrap;padding:0px!important;width:100%">
 								<thead>
 								</thead>
-								<tbody id="previsaovenda">										
+								<tbody id="prod-lanc-rows">										
 								</tbody>
 							</table>
-						</div>
+								
+								<table style="white-space:nowrap;padding:0px!important;background-color:#84C44C;width:100%">
+									<thead>
+									</thead>
+									<tbody id="previsaovenda">										
+									</tbody>
+								</table>
+							</div>
 
-						<a href="#" id="bt-tb2" class="bt-tb2 button button-fill color-teal disabled">Avançar</a>					
+						<a href="#" class="bt-tb2 button button-fill color-teal">Avançar</a>					
 
 					</form>
 
@@ -409,36 +356,14 @@
 				</div>
 
 				<div id="tab3l" class="page-content tab tab-equips">
-					<div class="content-block"">	
+					<span style="color:red">Atenção: As funcionalidades desta seção estão em manutenção para atualizações e ajustes necessários.</span>
+					<div class="content-block" style="padding:0px">	
 
-						<H3 class="nCliente" style="text-transform:uppercase"></H3>
-						<h3 style="padding-left:15px">CONCENTRAÇÕES ATUAIS</h3>
-
-						<a href="#" class="addEquipamento button button-fill color-teal oportunidade-view">ADICIONAR EQUIPAMENTO AO CLIENTE</a>	
-
-						<div class="equipamento-fields" style="display:none;margin-top:15px">
-							<div class="row">
-								<div class="col-50 tablet-25">
-									<input type="text" name="eq-nome" placeholder="NOME DO EQUIPAMENTO">
-								</div>
-								<div class="col-50 tablet-25">
-									<input type="text" name="eq-capacidade" placeholder="CAPACIDADE">
-								</div>
-								<div class="col-50 tablet-25">
-									<input type="text" name="eq-pressao" placeholder="PRESSAO">
-								</div>
-								<div class="col-50 tablet-25">
-									<button type='button' class='button button-fill color-teal addproduto-e disabled' style="width:100%">confirmar adição de equipamento</button>
-								</div>
-							</div>
-						</div>								
+						<H3 class="nCliente">CONCENTRAÇÕES ATUAIS</H3>
 						
 						<form id="form-lancamento-3" class="list-block inputs-list ajax-submit" data-parsley-validate="true" enctype="multipart/form-data">		
 							<input type="hidden" name="tpcontato" value="PRESENCIAL">
-							<input type="hidden" name="statusi" value="">
-							<input type="hidden" name="dtvisita" id="dtvisita" value="">
-							<input type="hidden" name="dtproxcontato" id="dtproxcontato" value="">
-							<textarea name="lancamento-descricao2" id="lancamento-descricao2" style='display:none'></textarea>				
+							<input type="hidden" name="statusi" value="1&ordm; CONTATO">					
 
 							<div id="resultado"></div>														
 

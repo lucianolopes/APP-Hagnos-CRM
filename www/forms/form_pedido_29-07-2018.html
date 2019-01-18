@@ -1,0 +1,200 @@
+<div data-page="form-pedido" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left">
+	<a href="#" class="back link icon-only p-voltar"><i class="icon icon-back"></i></a>
+	<a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
+</div>
+<div class="center hg" class="nomeperfil">Novo pedido</div>
+<div class="right">
+	<a href="#" id="salvar-pedido" class="button link salva-pedido disabled">salvar</a>
+	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+ 
+
+<div class="page-content">
+
+
+<div class="content-block" style="display:none">
+<h3 class="e-cliente"></h3>
+</div>
+
+
+
+<form id="form-pedido" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+
+	<ul>
+        <li class="item-content">
+          <div class="item-inner">
+            <div class="item-title label-cliente">Selecione o cliente</div>
+            <div class="item-input">
+              <input type="text" name="nomecliente" id="ajax-clientes-list" autocomplete="off" />              
+            </div>
+          </div>
+        </li>
+    </ul>
+	
+	<h4 style="padding-left:15px">Situação</h4>
+	
+	<div class="toolbar tabbar tabbar-scrollable" style="background:#FFF;margin-top:-60px">
+    	<div class="toolbar-inner">
+    		<a href="#tab-1" class="tab-link active pendente pendente-active modal-pendente">PENDENTE</a>
+    		<a href="#tab-2" class="tab-link producao">PRODUÇÃO</a>
+    		<a href="#tab-3" class="tab-link expedicao">EXPEDIÇÃO</a>
+    		<a href="#tab-4" class="tab-link entrega">ENTREGA</a>
+    		<a href="#tab-5" class="tab-link finalizado">FINALIZADO</a>
+    	</div>
+    </div>
+    <div class="page-content" style="padding-top:30px!important">
+    	<div class="tabs" style="background:#eee;padding-top:20px!important;padding-bottom:5px">
+      		<div id="tab-1" class="tab active">
+        		<div class="content-block">
+		            <div class="item-content">
+						<div class="item-inner">
+							<div class="item-title label">Data entrega</div>
+							<div class="item-input">
+								<input type="date" name="data-entrega-ped" required>
+							</div>
+						</div>
+					</div>
+		        </div>
+      		</div>
+      		<div id="tab-2" class="tab">
+        		<div class="content-block">
+          			<p>This is tab 2 content</p>
+        		</div>
+        	</div>
+    	</div>
+    </div>
+
+    
+    <div class="ks-demo-progressbar-inline timeline-pedido" style="display:none">          
+          <div class="row">
+	          <a href='#' class="col-20 pendente pendente-active modal-pendente">PENDENTE</a>
+	          <a href='#' class="col-20 producao">PRODUÇÃO</a>
+	          <a href='#' class="col-20 expedicao">EXPEDIÇÃO</a>
+	          <a href='#' class="col-20 entrega">ENTREGA</a>
+	          <a href='#' class="col-20 finalizado">FINALIZADO</a>
+          </div>
+    </div>
+
+    <input type="hidden" name="codcliente">
+	<input type="hidden" name="codrep">
+	<input type="hidden" name="nomerep">
+	<input type="hidden" name="situacao-ped" value="">		
+	<input type="hidden" name="idped" value="">	
+	
+	<ul style="margin-top:70px">
+
+
+		<li class="dtlanc" style="display:none">
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Data/hora lancamento</div>
+		<div class="item-input">
+		<input type="datetime-local" name="data-lancamento-ped" readonly>
+		</div>
+		</div>
+		</div>
+		</li>	
+
+		<li>
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Data entrega</div>
+		<div class="item-input">
+		<input type="date" name="data-entrega-ped" required>
+		</div>
+		</div>
+		</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Condição</div>
+		<div class="item-input">
+		<input type="text" name="condicao-ped" required>
+		</div>
+		</div>
+		</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Frete</div>
+		<div class="item-input">
+		<select name="frete-ped">
+			<option value="CIF" selected=selected>CIF</option>
+			<option value="FOB">FOB</option>
+		</select>
+		</div>
+		</div>
+		</div>
+		</li>
+
+		
+
+	</ul>
+
+	<div class="content-block">
+	<h3>Produtos</h3>
+	</div>
+
+	<ul class="pedido-rows-visualizar"></ul>	
+
+	<ul class="list-products-ped">
+    	
+	</ul>
+
+	<ul>
+		<li>
+    		<div class="item-inner">
+				<div class="item-input">
+				<button type='button' class='button button-fill color-teal minusprodutopedido' style="margin-top:16px;float:right;margin-left:8px"><i class='material-icons' style='margin-top:5px'>delete</i></button>
+				<button type='button' class='button button-fill color-teal addprodutopedido' style="margin-top:16px;float:right"><i class='icon icon-plus'></i></button>
+				</div>
+			</div>
+    	</li>	
+	</ul>
+
+	<ul>
+	   <li style="text-align:right"> 
+       <div class="content-block">
+        <div class="item-inner right">
+            <div class="item-title label">VALOR TOTAL DO PEDIDO</div>
+            <div class="item-input">
+                <input type="text" name="total-ped-v" value="0.00" style="text-align:right;font-size:22px!important" readonly=readonly/>
+            </div>
+        </div>
+	    </div>
+	    </li>
+	</ul>
+
+	<div class="content-block">
+	<h3>Informações complementares</h3>
+	</div>
+
+	<ul>
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-input">
+					<textarea name="info-ped" id="info-ped" rows=20 style=></textarea>
+				</div>
+			</div>
+		</div>
+		</li>
+	</ul>
+
+
+
+</form>
+
+
+
+</div>
