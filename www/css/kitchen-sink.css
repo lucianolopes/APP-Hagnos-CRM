@@ -575,3 +575,29 @@ input {font-size:16px!important;}
 .e-cliente {text-transform:uppercase!important;}
 .list-contatos input, .equipamento-fields input {width:100%!important;border:1px solid #ddd!important;padding:8px 6px!important;}
 .list-contatos label, .equipamento-fields label {font-size:12px!important;}
+
+.tr-list-prod {border-bottom:1px solid #e2e2e2!important;}
+.p-produtos-list {font-size:13px;padding-bottom:10px}
+.p-produtos -list input, .p-produtos-list textarea {padding:5px!important;border:1px solid #e2e2e2!important;width:160px!important;display:inline-block!important;text-align:center;font-size:12px!important}
+.p-produtos-list span {display:inline-block!important; width:220px!important;padding-right:10px!important;}
+.p-produtos-list textarea {max-height:50px!important;}
+
+.card-header .searchbar-input input::-webkit-input-placeholder {
+   color: black;
+}
+
+.card-header .searchbar-input input:-moz-placeholder { /* Firefox 18- */
+   color: black;  
+} 
+
+.card-header .searchbar-input input::-moz-placeholder {  /* Firefox 19+ */
+   color: black;  
+}
+
+.card-header .searchbar-input input:-ms-input-placeholder {  
+   color: black;  
+}
+.card-header .searchbar-clear {color:black!important;}
+
+.btn {width:auto!important;padding:20px!important;}
+

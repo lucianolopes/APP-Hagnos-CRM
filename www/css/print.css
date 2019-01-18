@@ -1,0 +1,36 @@
+@media print {
+  * {
+    background:transparent !important;
+    color:#000 !important;
+    text-shadow:none !important;
+    filter:none !important;
+    -ms-filter:none !important;
+    overflow:hidden!important;font-size: 12px!important;
+  }
+
+  .navbar {display:none!important;}
+
+.label-cell, .numeric-cell {font-size: 11px!important}
+
+  table td, .tr-result {border:1px solid #ddd!important; font-size: 12px!important}
+  .card-content {border:none!important;}
+
+     
+  
+
+  nav, footer, video, audio, object, embed { 
+    display:none; 
+  }
+  a:link:after, a:visited:after {
+    content: " (" attr(href) ") ";
+  }
+  p a {
+    word-wrap: break-word;
+  }
+  .page-break { 
+    page-break-before: always; 
+  }
+.hide-print {display:none!important};
+#results-higienizacoes {display:block!important;}
+
+}
