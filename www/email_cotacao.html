@@ -4,7 +4,7 @@
 <div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
 <div class="center">Enviar cotação</div>
 <div class="right">
-<a href="#" class="button link enviar-cotacao">Enviar</a>
+<a href="#" class="button link enviar-cotacao disabled" id="enviar-cotacao">Enviar</a>
 <a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
 </div>
 </div>
@@ -17,14 +17,13 @@
 	<h3 class="e-cliente"></h3>
 	</div>
 
-	<form action="" method="GET" id="form-envio-cotacao" class="list-block inputs-list ajax-submit">
+	<form action="" method="GET" id="form-envio-cotacao" class="list-block inputs-list ajax-submit" enctype="multipart/form-data">
 	<div class="content-block-title ul-filtro">Marque os emails de destino</div>
-	<ul class="ul-filtro list-contatos-cliente">
+	<ul class="ul-filtro list-contatos-cliente-cot">
 			
 	</ul>
 
-	<ul>
-          
+	<ul>          
           	
 
 			<li style="display:none">
@@ -47,6 +46,37 @@
 				</div>
 				</div>
 				</div>
+			</li>
+
+			<li>
+				<div class="item-content">
+				<div class="item-inner">
+				<div class="item-input">
+				<textarea class="resizable" name="corpo_email_cotacao" id="corpo_email_cotacao" placeholder="digite aqui o texto desejado para o corpo do email" rows=8 style="min-height:150px"></textarea>
+				</div>
+				</div>
+				</div>
+			</li>
+
+			<li>	
+
+		    <div class="item-content">    	
+				<div class="item-inner">
+				  	<div class="item-title label">Imagem da assinatura</div>		
+						   
+				    <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="padding-top:15px">
+					    <div data-trigger="fileinput">
+					    	<i class="fileinput-exists"></i> 
+					    	<span class="fileinput-filename"></span>
+					   	</div>
+					    <span class="input-group-addon btn btn-default btn-file">
+						    <span class="fileinput-new button button-fill color-teal" style="padding-top:6px"><i class="material-icons">attach_file</i></span>
+						    <input type="file" name="assinatura_cotacao" accept="image/*">			    
+						</span>
+					    <a href="#" class="button button-fill color-red fileinput-exists" data-dismiss="fileinput">Remover</a>
+				    </div>		    
+				</div>			
+			</div>
 			</li>
 			
     </ul>

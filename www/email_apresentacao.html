@@ -12,8 +12,7 @@
 
 
 <div class="page-content">	
-
-	<form action="" method="POST" id="form-envio-apresentacao" class="list-block inputs-list ajax-submit" enctype="multipart/form-data">
+	<form id="form-envio-apresentacao" class="list-block inputs-list ajax-submit" enctype="multipart/form-data">
 	<ul>
 
 			<li>
@@ -32,13 +31,24 @@
 				<div class="item-content">
 				<div class="item-inner">
 				<div class="item-input">
-				<textarea class="resizable" name="emails_adicionais" id="emails_adicionais_a" placeholder="adicione mais emails aqui (separar os endereços com ;)" rows=8 style="min-height:150px"></textarea>
+				<textarea class="resizable" name="corpo_email_apresentacao" id="corpo_email_apresentacao" placeholder="digite aqui o texto desejado para o corpo do email" rows=8 style="min-height:150px"></textarea>
 				</div>
 				</div>
 				</div>
 			</li>
 
 			<li>
+				<div class="item-content">
+				<div class="item-inner">
+				<div class="item-input">
+				<textarea class="resizable" name="emails_adicionais" id="emails_adicionais_a" placeholder="adicione mais emails aqui (separar os endereços com ;)" rows=8 style="min-height:150px"></textarea>
+				</div>
+				</div>
+				</div>
+			</li>
+
+			<li>	
+
 		    <div class="item-content">    	
 				<div class="item-inner">
 				  	<div class="item-title label">Imagem da assinatura</div>		
@@ -50,8 +60,7 @@
 					   	</div>
 					    <span class="input-group-addon btn btn-default btn-file">
 						    <span class="fileinput-new button button-fill color-teal" style="padding-top:6px"><i class="material-icons">attach_file</i></span>
-						    <input type="file" name="assinatura">
-						    <input type="hidden" name="MAX_FILE_SIZE" value="30000" />			    
+						    <input type="file" name="assinatura">			    
 						</span>
 					    <a href="#" class="button button-fill color-red fileinput-exists" data-dismiss="fileinput">Remover</a>
 				    </div>		    

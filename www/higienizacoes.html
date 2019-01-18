@@ -1,5 +1,5 @@
 <div data-page="higienizacoes" class="page">
-<div class="navbar">
+<div class="navbar hide-print">
 <div class="navbar-inner">
 <div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
 <div class="center">Higienizações</div>
@@ -10,7 +10,47 @@
 </div>
 </div>
 
-<div class="page-content pull-to-refresh-content">
+<style type="text/css">
+@media print {
+  * {
+    background:transparent !important;
+    color:#000 !important;
+    text-shadow:none !important;
+    filter:none !important;
+    -ms-filter:none !important;
+    overflow:hidden!important;font-size: 12px!important
+  }
+
+
+
+  table td {border:1px solid #ddd!important; }
+  .card-content {border:none!important;}
+
+     
+  
+
+  nav, footer, video, audio, object, embed { 
+    display:none; 
+  }
+  a:link:after, a:visited:after {
+    content: " (" attr(href) ") ";
+  }
+  p a {
+    word-wrap: break-word;
+  }
+  .page-break { 
+    page-break-before: always; 
+  }
+.hide-print {display:none!important};
+img {display:none!important};
+#results-higienizacoes {font-size:20px!important;}
+
+}
+
+</style>
+
+<div class="page-content pull-to-refresh-content print-higienizacoes">
+	
 	<div class="pull-to-refresh-layer">
 	    <div class="preloader"></div>
 	    <div class="pull-to-refresh-arrow"></div>
@@ -24,9 +64,10 @@
 		<div class="data-table-title">
 			<h4 class="totalregistros-hig" style="font-size:18px!important"></h4>
 		</div>
-		<div class="data-table-actions">
-			<a href="higienizacoes.html?detalhado=sim" class="link icon-only higienizacoes-detalhado"><i class="icon material-icons">format_line_spacing</i></a>
-			<a href="higienizacoes.html?detalhado=nao" class="link icon-only higienizacoes-agrupado"><i class="icon material-icons">vertical_align_center</i></a>
+		<div class="data-table-actions hide-print">
+			<a href="#" class="link icon-only print"><i class="icon material-icons">print</i></a>
+			<a href="#" class="link icon-only higienizacoes-detalhado"><i class="icon material-icons">format_line_spacing</i></a>
+			<a href="#" class="link icon-only higienizacoes-agrupado"><i class="icon material-icons">vertical_align_center</i></a>
 			<a href="#" class="link icon-only remove-filtro-higienizacoes"><i class="icon material-icons">youtube_searched_for</i></a>
 			<a href="filtro_higienizacoes.html" class="link icon-only"><i class="icon material-icons">search</i></a>
 		</div>
@@ -36,7 +77,7 @@
 			<table style="white-space:nowrap;">
 			<thead>
 				<tr>
-				<th class="numeric-cell" style="text-align:center">VER/EDITAR</th>
+				<th class="numeric-cell hide-print" style="text-align:center">VER/EDITAR</th>
 				<th class="numeric-cell">ID</th>					
 				<th class="label-cell">CLIENTE</th>
 				<th class="label-cell">CIDADE</th>

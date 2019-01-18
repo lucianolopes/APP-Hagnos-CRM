@@ -17,9 +17,21 @@
 	<form action="pdf_desempenho_representante.html" method="GET" id="form-desempenho_representante" class="store-data list-block inputs-list ajax-submit">
 
 	<ul>
+        <li  class="item-content li-rel">
+			<div class="item-inner">
+				<div class="item-title label">Selecione o relatório</div>
+				<div class="item-input">
+					<select name="reldesemp" id="reldesemp" required style="width:100%">
+					</select>
+				</div>
+			</div>
+		</li>
+    </ul>
+
+	<ul>
         <li class="item-content">
           <div class="item-inner">
-            <div class="item-title label-cliente">Selecione o representante</div>
+            <div class="item-title label-cliente">Selecione o representante (deixe em branco para todos)</div>
             <div class="item-input">
               <input type="text" name="nomerep" id="ajax-representantes-list" autocomplete="off" required/>              
             </div>
@@ -41,11 +53,37 @@
 		</li>
     </ul>
 
-    <input type="hidden" name="codrep">
+    <input type="hidden" name="codrep" value="">
+
+    <ul>
+
+			<li>
+				<div class="item-content">
+				<div class="item-inner">
+				<div class="item-title label">Enviar relatório para o email abaixo</div>
+				<div class="item-input">
+				<input type="text" name="email_relatorio"/>
+				<input type="hidden" name="idrep" value="">
+				<input type="hidden" name="nomerep" value="">
+				</div>
+				</div>
+				</div>
+			</li>
+				
+    </ul>
+
+    <div class="item-content">
+		<div class="item-inner">
+			<a href="#" class="enviaRel button button-raised color-teal disabled">Enviar por email</a>			
+		</div>
+	</div>
+
+    
 
     </form>
 
     <div class="content-block">
+    	<iframe width="100%" src="" frameborder="0" allowfullscreen id="relFrame"></iframe>
     	
     	<div class="relatorio-content"></div>
 
