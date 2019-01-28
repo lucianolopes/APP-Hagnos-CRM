@@ -1653,6 +1653,7 @@ $$('#submit-login').click(function() {
                 rep = usuarioHagnos.hagnosUsuarioIdRep;
                 tipousuario = usuarioHagnos.hagnosUsuarioTipo;
                 usuarioEmail = usuarioHagnos.usuarioEmail;
+                usuarioID = usuarioHagnos.hagnosUsuarioId;
                 cliente = "";
                 if (usuarioHagnos.hagnosUsuarioTipo == 3){
                     cliente = usuarioHagnos.hagnosUsuarioIdCli;
@@ -3108,9 +3109,9 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             var statusPadrao = $$("#status_padrao").val();
             //var statusInterativo = $$("#status_interativo").val();
             var statusInterativo = $$("#statusi").val();
-            var obslanc = encodeURIComponent($$("#lancamento-descricao").val());
+            //var obslanc = encodeURIComponent($$("#lancamento-descricao").val());
             //var prodlanc = $$("#prod-lanc").val();
-            var finalidadelanc = $$("#finalidade-lanc").val();
+            //var finalidadelanc = $$("#finalidade-lanc").val();
             $$("#lancamento-descricao-bd").val($$("#lancamento-descricao").val());
 
             $("#form-lancamento-3").parsley().validate();        
@@ -3120,9 +3121,11 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                   //url: baseurl+'saves/saveLancamento.php?codCliente='+cliente+'&nomeCliente='+nomecliente+'&codRep='+codrep+'&nomeRep='+nomerep+'&statusPadrao='+statusPadrao+'&statusInterativo='+statusInterativo+'&obslanc='+obslanc,           
                   url: baseurl+'saves/saveLancamento.php?codCliente='+cliente+'&nomeCliente='+nomecliente+'&codRep='+codrep+'&nomeRep='+nomerep+'&statusPadrao='+statusPadrao,                             
                   data: new FormData(form[0]),
-                  type: 'post',      
+                  type: 'post',
+                  processData: false,  // Important!
+                  contentType: false,
+                  cache: false,           
                   success: function( response ) {
-                    //$$("#resultado").html(response);
                     myApp.addNotification({
                         message: response,
                         button: {
@@ -5805,9 +5808,13 @@ myApp.onPageInit('form-acaocorretiva', function (page){
                 $$("input[type=datetime-local][name=data_acao]").val(returnedData[0].data);                
                 $$("input[name=acao-lote]").val(returnedData[0].lote);
                 $$("input[name=acao-equip]").val(returnedData[0].equipamento);
+
+                $$("input[name=acao-brix]").val(returnedData[0].brix);
+
                 $$("select[name=situacao-acao]").val(returnedData[0].situacao);
                 $$("textarea[name=descricao-acao]").val(returnedData[0].descricao);
                 $$("textarea[name=parecer-acao]").val(returnedData[0].parecer);
+                $$("textarea[name=parecer-acao-quimico]").val(returnedData[0].parecer_quimico);
                 $$("textarea[name=descricao2-acao]").val(returnedData[0].acaocorretiva);
                 var produto = returnedData[0].produto;
                 //$$("#produto-acao").val(returnedData[0].produto+';'+returnedData[0].nomeproduto);
@@ -5849,13 +5856,20 @@ myApp.onPageInit('form-acaocorretiva', function (page){
     
     // SALVANDO CADASTRO DE USUARIO
     $$("#salva-acaocorretiva").click(function(){        
-        var form = $$('#form-acaocorretiva');        
+        //var form = $$('#form-acaocorretiva'); 
+        var formData = new FormData($$("#form-acaocorretiva")[0]);
+        //if($$("#aspecto")[0].files.length>0){
+        //    formData.append("file",$$("#aspecto")[0].files[0]); 
+       // }
         $('#form-acaocorretiva').parsley().validate();
         
         if ($('#form-acaocorretiva').parsley().isValid()) {
             $$.ajax({
                 url: baseurl+'saves/saveAcao.php?cliente='+cliente+'&nomecliente='+nomecliente+'&user='+usuarioNome,           
-                data: new FormData(form[0]),
+                //data: new FormData(form[0]),
+                data: formData,
+                contentType: false,
+                processData: false,
                 type: 'post',
                 success: function( response ) {
                   myApp.addNotification({
@@ -7943,6 +7957,8 @@ myApp.onPageInit('clientes', function (page) {
     //})
 });
 
+
+
 // LOAD LISTA DE USUARIOS
 /* ===== Swiper Two Way Control Gallery ===== */
 myApp.onPageInit('usuarios', function (page) {
@@ -7985,6 +8001,95 @@ myApp.onPageInit('grid_relatorios_desempenho', function (page) {
             $$(".totalregistros").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");
         }
     });   
+});
+
+// LOAD LISTA DE RELATÓRIOS DE DESEMPENHO
+/* ===== Swiper Two Way Control Gallery ===== */
+myApp.onPageInit('rel_desempenho_form', function (page) {
+
+    var idrel = page.query.id;
+
+    // se existe um parametro "representante" faz a edição e salvamento do registro
+    if (idrel != null ){
+        
+            // AÇÃO SE FOR EDITAR O CLIENTE
+            $$.ajax({
+                url: baseurl+'loads/loadDadosRelDesempenho.php',
+                data: { "id": idrel },
+                type: 'get',
+                dataType: 'json',
+                
+                success: function(returnedData) { 
+                    $$("#idrel").val(returnedData[0].id);
+                    $$("#nomerel").val(returnedData[0].nome);
+
+                    $$("#peso_faturamento").val(returnedData[0].peso_faturamento);
+                    $$("#peso_total_atendimentos").val(returnedData[0].peso_at);
+                    $$("#peso_atendimentos_clientes_ativos").val(returnedData[0].peso_at_at);
+                    $$("#peso_atendimentos_clientes_inativos").val(returnedData[0].peso_at_inat);
+                    $$("#peso_atendimentos_clientes_prospectados").val(returnedData[0].peso_at_prospec);
+                    $$("#peso_descricao_visita").val(returnedData[0].peso_n_caracteres_desc);
+                    $$("#peso_oportunidades").val(returnedData[0].peso_oportunidades);
+                    $$("#peso_negocios").val(returnedData[0].peso_negocios);
+                    $$("#peso_cotacoes_enviadas").val(returnedData[0].peso_cot_enviadas);
+                    $$("#peso_novos_testes").val(returnedData[0].peso_novos_testes);
+                    $$("#peso_higienizacoes").val(returnedData[0].peso_higienizacoes);
+                    $$("#peso_acoes_corretivas_finalizadas").val(returnedData[0].peso_feed_acoes);
+                    $$("#peso_acoes_corretivas_periodo").val(returnedData[0].peso_acoes_corretivas);
+                    $$("#peso_interacoes_pendentes_15").val(returnedData[0].peso_interacoes_pendentes);
+                    $$("#peso_clientes_sem_2").val(returnedData[0].peso_clientes_menos2_ats);
+                    $$("#peso_clientes_inativados").val(returnedData[0].peso_clientes_inativados);
+                    $$("#peso_notificacoes").val(returnedData[0].peso_notificacoes);
+
+                    $$("#ref_faturamento").val(returnedData[0].ref_faturamento);
+                    $$("#ref_total_atendimentos").val(returnedData[0].ref_at);
+                    $$("#ref_atendimentos_clientes_ativos").val(returnedData[0].ref_at_at);
+                    $$("#ref_atendimentos_clientes_inativos").val(returnedData[0].ref_at_inat);
+                    $$("#ref_atendimentos_clientes_prospectados").val(returnedData[0].ref_at_prospec);
+                    $$("#ref_descricao_visita").val(returnedData[0].ref_n_caracteres_desc);
+                    $$("#ref_oportunidades").val(returnedData[0].ref_oportunidades);
+                    $$("#ref_negocios").val(returnedData[0].ref_negocios);
+                    $$("#ref_cotacoes_enviadas").val(returnedData[0].ref_cot_enviadas);
+                    $$("#ref_novos_testes").val(returnedData[0].ref_novos_testes);
+                    $$("#ref_higienizacoes").val(returnedData[0].ref_higienizacoes);
+                    $$("#ref_acoes_corretivas_finalizadas").val(returnedData[0].ref_feed_acoes);
+                    $$("#ref_acoes_corretivas_periodo").val(returnedData[0].ref_acoes_corretivas);
+                    $$("#ref_interacoes_pendentes_15").val(returnedData[0].ref_interacoes_pendentes);
+                    $$("#ref_clientes_sem_2").val(returnedData[0].ref_clientes_menos2_ats);
+                    $$("#ref_clientes_inativados").val(returnedData[0].ref_clientes_inativados);
+                    $$("#ref_notificacoes").val(returnedData[0].ref_notificacoes);
+                }
+            });
+       } else {
+          $$(".deleta-relatorio").hide();
+       }
+
+        // SALVANDO CADASTRO DE PRODUTO
+        $$(".salva-relatorio").click(function(){
+            var form = $$('#form-relatorio');
+            $('#form-relatorio').parsley().validate();
+            
+            if ($('#form-relatorio').parsley().isValid()) {
+              $$.ajax({
+                  url: baseurl+'saves/saveRelatorio.php',           
+                  data: new FormData(form[0]),
+                  type: 'post',
+                  success: function( response ) {
+                    myApp.addNotification({
+                        message: response,
+                        button: { text: 'Fechar', color: 'lightgreen'
+                        },
+                    });
+                    mainView.router.reloadPage('grid_relatorios.html');
+                  }
+                })   
+            }         
+       });
+
+
+
+    $(".tb-form-rel input").maskMoney({decimal:".",thousands:""});
+    
 });
 
 
