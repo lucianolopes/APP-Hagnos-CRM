@@ -601,3 +601,16 @@ input {font-size:16px!important;}
 
 .btn {width:auto!important;padding:20px!important;}
 
+
+.tb th {background:#eee; padding:5px 5px!important;}
+.tb th, .tb td {border:1px solid #ddd;padding:10px!important;height:22px!important;}
+.tb-form-rel input {text-align:center}
+.tb-form-rel td {text-align:center;}
+.tb-form-rel .td-label {text-align:left;font-size:14px!important;}
+.ord {float:left;padding:8px;text-align:center; border-radius:50%; color:#000; background:#eee;width:20px;height:20px;margin-right:10px;}
+
+
+.center {text-align:center;}
+.right {text-align:right;}
+.left {text-align:left;}
+
