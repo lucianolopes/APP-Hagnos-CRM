@@ -22,7 +22,7 @@
 
 
 
-<form id="form-acaocorretiva" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+<form id="form-acaocorretiva" class="list-block inputs-list ajax-submit" data-parsley-validate="true" enctype="multipart/form-data">
 	
 	<ul>
 
@@ -80,6 +80,18 @@
 		<li>
 			<div class="item-content">
 			<div class="item-inner">
+				<div class="item-title label">BRIX</div>
+				<div class="item-input">
+					<input type="text" name="acao-brix" id="acao-brix" value="" required>
+				</div>
+			</div>
+			</div>
+		</li>
+
+		
+		<li>
+			<div class="item-content">
+			<div class="item-inner">
 				<div class="item-title label">Equipamento</div>
 				<div class="item-input">
 					<input type="text" name="acao-equip" id="acao-equip" value="" required>
@@ -104,7 +116,7 @@
 		<li>
 		<div class="item-content">
 			<div class="item-inner">
-				<div class="item-title label">Parecer técnico</div>
+				<div class="item-title label">Parecer técnico do REPRESENTANTE</div>
 				<div class="item-input">
 					<textarea class="resizable" name="parecer-acao" id="parecer-acao" rows=8 style="min-height:140px" required></textarea>
 				</div>
@@ -115,7 +127,18 @@
 		<li>
 		<div class="item-content">
 			<div class="item-inner">
-				<div class="item-title label">Ação corretiva (será adicionado ao histórico abaixo)</div>
+				<div class="item-title label">Parecer técnico do QUÌMICO</div>
+				<div class="item-input">
+					<textarea class="resizable" name="parecer-acao-quimico" id="parecer-acao-quimico" rows=8 style="min-height:140px"></textarea>
+				</div>
+			</div>
+		</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Procedimento da ação corretiva (será adicionado ao histórico abaixo)</div>
 				<div class="item-input">
 					<textarea class="resizable" name="acao-input" id="acao-input" rows=2 style="min-height:80px" required></textarea>
 				</div>				
@@ -126,7 +149,7 @@
 		<li>
 		<div class="item-content">
 			<div class="item-inner">
-				<div class="item-title label">Histórico de ação corretiva</div>
+				<div class="item-title label">Histórico de procedimento da ação corretiva</div>
 				<div class="item-input">
 					<textarea class="resizable" name="descricao2-acao" id="descricao2-acao" rows=8 style="min-height:140px;color:#bbb" readonly></textarea>
 				</div>

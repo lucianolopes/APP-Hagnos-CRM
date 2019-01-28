@@ -1,0 +1,451 @@
+<div data-page="rel_desempenho_form" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
+<div class="center" class="nomeperfil">Novo relatório de desempenho</div>
+<div class="right">
+	<a href="#" class="link salva-relatorio">salvar</a>	
+	<a href="#" class="link deleta-relatorio"><i class="material-icons">delete</i></a>
+	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+ 
+
+<div class="page-content">
+	<div class="content-block">
+
+		<form id="form-relatorio" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+
+			<div class="item-content">
+			<div class="item-inner">
+			<div class="item-title label">Nome do relatório</div>
+			<div class="item-input">
+			<input type="hidden" name="idrel" id="idrel"/>
+			<input type="text" name="nomerel" id="nomerel" required/>
+			</div>
+			</div>
+			</div>
+
+			<table class="tb tb-form-rel" style="border-collapse: collapse; border:1px solid #ddd; border-collapse: collapse;">
+				<th>INDICADOR</th>
+				<th>META</th>
+				<th>PESO</th>
+				<tbody>
+					<tr>
+						<td class='td-label'><span class="ord">1</span> FATURAMENTO</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_faturamento" id="ref_faturamento"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_faturamento" id="peso_faturamento"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">2</span> TOTAL DE ATENDIMENTOS</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_total_atendimentos" id="ref_total_atendimentos"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_total_atendimentos" id="peso_total_atendimentos"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">3</span> ATENDIMENTOS CLIENTES ATIVOS</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_atendimentos_clientes_ativos" id="ref_atendimentos_clientes_ativos"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_atendimentos_clientes_ativos" id="peso_atendimentos_clientes_ativos"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">4</span> ATENDIMENTOS CLIENTES INATIVOS</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_atendimentos_clientes_inativos" id="ref_atendimentos_clientes_inativos"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_atendimentos_clientes_inativos" id="peso_atendimentos_clientes_inativos"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">5</span> ATENDIMENTOS CLIENTES PROSPECTADOS</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_atendimentos_clientes_prospectados" id="ref_atendimentos_clientes_prospectados"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_atendimentos_clientes_prospectados" id="peso_atendimentos_clientes_prospectados"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class='td-label'><span class="ord">6</span> DESCRIÇÃO DA VISITA</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_descricao_visita" id="ref_descricao_visita"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_descricao_visita" id="peso_descricao_visita"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">7</span> OPORTUNIDADES</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_oportunidades" id="ref_oportunidades"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_oportunidades" id="peso_oportunidades"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">8</span> NEGÓCIOS</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_negocios" id="ref_negocios"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_negocios" id="peso_negocios"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">9</span> COTAÇÕES ENVIADAS</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_cotacoes_enviadas" id="ref_cotacoes_enviadas"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_cotacoes_enviadas" id="peso_cotacoes_enviadas"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">10</span> NOVOS TESTES</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_novos_testes" id="ref_novos_testes"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_novos_testes" id="peso_novos_testes"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">11</span> HIGIENIZAÇÕES</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_higienizacoes" id="ref_higienizacoes"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_higienizacoes" id="peso_higienizacoes"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">12</span> AÇÕES CORRETIVAS FINALIZADAS</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_acoes_corretivas_finalizadas" id="ref_acoes_corretivas_finalizadas"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_acoes_corretivas_finalizadas" id="peso_acoes_corretivas_finalizadas"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">13</span> AÇÕES CORRETIVAS NO PERÍODO</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_acoes_corretivas_periodo" id="ref_acoes_corretivas_periodo"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_acoes_corretivas_periodo" id="peso_acoes_corretivas_periodo"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">14</span> INTERAÇÕES PENDENTES (MAIS DE 15 DIAS)</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_interacoes_pendentes_15" id="ref_interacoes_pendentes_15"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_interacoes_pendentes_15" id="peso_interacoes_pendentes_15"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">15</span> CLIENTES ATIVOS SEM 2 RAT NO PERÍODO</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_clientes_sem_2" id="ref_clientes_sem_2"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_clientes_sem_2" id="peso_clientes_sem_2"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">16</span> CLIENTES INATIVADOS</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_clientes_inativados" id="ref_clientes_inativados"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_clientes_inativados" id="peso_clientes_inativados"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+					<tr>
+						<td class='td-label'><span class="ord">17</span> NOTIFICAÇÕES</td>
+						<td>
+						<div class="item-content">	
+							<div class="item-inner">		
+								<div class="item-title label">
+								Referência</div>
+								<div class="item-input">
+									<input type="text" name="ref_notificacoes" id="ref_notificacoes"/>
+								</div>
+							</div>
+						</td>				
+						<td>
+						<div class="item-content">
+							<div class="item-inner">		
+								<div class="item-title label">Peso</div>
+								<div class="item-input">
+									<input type="text" name="peso_notificacoes" id="peso_notificacoes"/>
+								</div>
+							</div>
+						</div>
+						</td>
+					</tr>
+
+
+				</tbody>
+			</table>
+			
+
+		</form>
+	</div>
+</div>
