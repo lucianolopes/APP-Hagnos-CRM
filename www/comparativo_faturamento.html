@@ -1,0 +1,125 @@
+<div data-page="comparativo_faturamento" class="page">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
+			</div>
+			<div class="center">Comparativo de faturamento</div>
+		<div class="right">
+			<a href="#" id="gera-rel" class="button link gera-relatorio">Gerar completo</a>
+			<a href="#" id="gera-rel-sv" class="button link">Gerar sem venda</a>
+			<a href="#" id="gera-rel-cv" class="link icon-only" style="display:none"><i class="icon material-icons">vertical_align_center</i></a>
+			<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+		</div>
+	</div>
+</div>
+
+
+<div class="page-content">	
+
+	<form action="pdf_desempenho_representante.html" method="GET" id="form-desempenho_representante" class="store-data list-block inputs-list ajax-submit">
+
+	<ul>
+        <li class="item-content">
+          <div class="item-inner">
+            <div class="item-title label-cliente">Selecione o representante</div>
+            <div class="item-input">
+              <input type="text" name="nomerep" id="ajax-representantes-list" autocomplete="off" required/>              
+            </div>
+          </div>
+        </li>
+    </ul>
+
+	<ul>
+		<li>
+		<div class="item-content">
+			
+			<div class="item-inner">
+				<div class="item-title label">Mês de referência	</div>		
+				<div class="item-input">
+					<select name="mes_search" id="mes_search" placeholder="mês">
+						<option value="01">JANEIRO</option>
+						<option value="02">FEVEREIRO</option>
+						<option value="03">MARÇO</option>
+						<option value="04">ABRIL</option>
+						<option value="05">MAIO</option>
+						<option value="06">JUNHO</option>
+						<option value="07">JULHO</option>
+						<option value="08">AGOSTO</option>
+						<option value="09">SETEMBRO</option>
+						<option value="10">OUTUBRO</option>
+						<option value="11">NOVEMBRO</option>
+						<option value="12">DEZEMBRO</option>
+					</select>
+				</div>
+			</div>
+			<div class="item-inner">
+				<div class="item-title label">Ano de referência	</div>		
+				<div class="item-input">
+					<select name="ano_search" id="ano_search" placeholder="ano">
+						<option value="2017">2017</option>
+						<option value="2018">2018</option>
+						<option value="2019">2019</option>
+						<option value="2020">2020</option>
+						<option value="2021">2021</option>
+						<option value="2022">2022</option>
+						<option value="2023">2023</option>
+						<option value="2024">2024</option>
+						<option value="2025">2025</option>
+						<option value="2026">2026</option>
+						<option value="2027">2027</option>
+						<option value="2028">2028</option>
+					</select>
+				</div>
+			</div>
+			<div class="item-inner">
+				<div class="item-title label">Tipo de comparativo</div>		
+				<div class="item-input">
+					<select name="tipo_search" id="tipo_search">
+						<option value="MENSAL" selected=selected>MENSAL</option>
+						<option value="TRIMESTRAL">TRIMESTRAL</option>
+						<option value="SEMESTRAL">SEMESTRAL</option>
+						<option value="ANUAL">ANUAL</option>
+					</select>
+				</div>
+			</div>
+
+		</div>
+		</li>
+    </ul>
+
+    <input type="hidden" name="codrep" value="">
+
+    <ul style="display:none">
+
+			<li>
+				<div class="item-content">
+				<div class="item-inner">
+				<div class="item-title label">Enviar relatório para o email abaixo</div>
+				<div class="item-input">
+				<input type="text" name="email_relatorio"/>
+				<input type="hidden" name="idrep" value="">
+				<input type="hidden" name="nomerep" value="">
+				</div>
+				</div>
+				</div>
+			</li>
+				
+    </ul>
+
+    <div class="item-content" style="display:none">
+		<div class="item-inner">
+			<a href="#" class="enviaRel button button-raised color-teal disabled">Enviar por email</a>			
+		</div>
+	</div>    
+
+    </form>
+
+    <div class="content-block" >
+    	
+    	<div class="relatorio-content"></div>
+
+    </div>
+
+    
+
+</div>
