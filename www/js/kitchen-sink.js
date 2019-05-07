@@ -1,5 +1,5 @@
 var myApp = new Framework7({
-    modalTitle: 'Framework7',
+    modalTitle: 'Hagnos CRM',
     // Enable Material theme
     material: true
     //swipePanel: 'left'
@@ -33,6 +33,29 @@ function gotPic(event) {
         $$('#avatar').attr('src', URL.createObjectURL(event.target.files[0]));
     }
 }
+
+/* Valida se a data passada como parâmetro está dentro do período informado */
+function isDataValida(data, periodo){
+    var arrayData = data.split('/');
+    var campoDia = parseInt(arrayData[0]); 
+    var campoMes = parseInt(arrayData[1]); 
+    var campAno = parseInt(arrayData[2]);
+ 
+    var dataUsuario = new Date();
+    dataUsuario.setDate(campoDia);
+    dataUsuario.setMonth(campoMes -1);
+    dataUsuario.setFullYear(campAno);
+ 
+    var dataLimite = new Date();
+    dataLimite.setDate(dataLimite.getDate() + periodo);
+ 
+    if(dataUsuario.getTime() <= dataLimite.getTime()){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 
 function marcaPrevisao(v){
     var confPrev = v;
@@ -227,11 +250,7 @@ function totaisHome(){
             url: baseurl+'loads/verificaTotais.php?rep='+rp, 
             dataType: 'json',
             success: function(returnedData) {
-                $$(".totalAc").html("<strong style='font-size:16px'>Registros encontrados: "+returnedData[0].aTotalAc+"</strong>");   
-                //$$(".totalHig").html("<strong style='font-size:16px'>("+returnedData[0].aTotalHig+")</strong>"); 
-                //$$(".totalTestes").html("<strong style='font-size:16px'>("+returnedData[0].aTotalTestes+")</strong>");   
-                //$$(".totalAcoes").html("<strong style='font-size:16px'>("+returnedData[0].aTotalAcoes+")</strong>");
-                //$$(".totalCotacoes").html("<strong style='font-size:16px'>("+returnedData[0].aTotalCotacoes+")</strong>");          
+                $$(".totalAc").html("<strong style='font-size:16px'>Registros encontrados: "+returnedData[0].aTotalAc+"</strong>");
             }
         });
 }
@@ -244,10 +263,16 @@ function nl2br (str, is_xhtml) {
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 }
 
-
+function ocultar_tr(linha) {
+  $$(".ocultar_tr_"+linha).hide();
+}
+function mostrar_tr(linha) {
+  $$(".ocultar_tr_"+linha).show();
+}
 
 var usuarioHagnos = JSON.parse(window.localStorage.getItem('usuarioHagnos'));
-if(!usuarioHagnos){
+
+if(!usuarioHagnos){    
   mainView.router.load({ url: 'login-screen-embedded.html', ignoreCache: true })          
 } else {
 
@@ -255,11 +280,14 @@ if(!usuarioHagnos){
     //tipousuario = usuarioHagnos.hagnosUsuarioTipo;
 
     var rp = "";
-    if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2 || usuarioHagnos.hagnosUsuarioTipo == 4){
+    if (usuarioHagnos.hagnosUsuarioTipo == 1 || usuarioHagnos.hagnosUsuarioTipo == 2 || usuarioHagnos.hagnosUsuarioTipo == 4 || usuarioHagnos.hagnosUsuarioTipo == 5 || usuarioHagnos.hagnosUsuarioTipo == 6){
 
 
         cliente = "";
         rep = usuarioHagnos.hagnosUsuarioIdRep;
+        nrep = usuarioHagnos.hagnosUsuarioNomeRep;
+        tec = usuarioHagnos.hagnosUsuarioIdTec;
+        ntec = usuarioHagnos.hagnosUsuarioNomeTec;
         tipousuario = usuarioHagnos.hagnosUsuarioTipo;
         usuarioNomeTipo = usuarioHagnos.hagnosUsuarioNomeTipo;
         usuarioNome = usuarioHagnos.hagnosUsuarioNome;
@@ -267,15 +295,23 @@ if(!usuarioHagnos){
         usuarioID = usuarioHagnos.hagnosUsuarioId;
 
 
-        
 
         if (usuarioHagnos.hagnosUsuarioTipo == 1){
             $$(".esconde-admin").hide();
         }
 
-        if (usuarioHagnos.hagnosUsuarioTipo == 2){
+        //esconde se usuario for representante ou técnico
+        if (usuarioHagnos.hagnosUsuarioTipo == 2 || usuarioHagnos.hagnosUsuarioTipo == 6){
             $$(".esconde-rep").hide(); 
             var rp = usuarioHagnos.hagnosUsuarioIdRep;
+            var nrep = usuarioHagnos.hagnosUsuarioNomeRep;
+            var t_rp = usuarioHagnos.hagnosUsuarioIdTec;
+            var t_nrep = usuarioHagnos.hagnosUsuarioNomeTec;
+        }
+        if (usuarioHagnos.hagnosUsuarioTipo == 5){
+            $$(".esconde-rep2").hide(); 
+            var rp = usuarioHagnos.hagnosUsuarioIdRep;
+            var nrep= usuarioHagnos.hagnosUsuarioNomeRep;
         }
 
         if (tipousuario == 4){
@@ -288,7 +324,7 @@ if(!usuarioHagnos){
 
          //VEFIFICA TOTAIS PEDIDOS
         $$.ajax({
-            url: baseurl+'loads/verificaTotaisPedidos.php?rep='+rp, 
+            url: baseurl+'loads/verificaTotaisPedidos.php?rep='+rp+'&tec='+tec, 
             dataType: 'json',
             success: function(returnedData) {
                 $$(".notificacao-pendente").show();
@@ -304,43 +340,23 @@ if(!usuarioHagnos){
         });
 
 
-         //VEFIFICA TOTAIS DE ACOMPANHAMENTO
-        //$$.ajax({
-        //    url: baseurl+'loads/verificaTotaisAcompanhamento.php?rep='+rp, 
-        //    dataType: 'json',
-        //    success: function(returnedData) {
-        //        var aTotalAc = returnedData[0].aTotalAc;
-        //        var aTotalAc2 = returnedData[0].aTotalAc2;
-        //        if (aTotalAc > 0){
-        //           $$(".notificacao-acomp").show();
-        //           $$(".notificacao-acomp span,  .notificacao-span-acomp").html(returnedData[0].aTotalAc); 
-        //        }
-        //        if (aTotalAc2 > 0){
-        //           $$(".notificacao-acomp2").show();
-        //           $$(".notificacao-acomp2 span,  .notificacao-span-acomp2").html(returnedData[0].aTotalAc2); 
-        //        }
-        //        
-        //    }
-        //});
-
-        
         //VEFIFICA SE EXISTEM COTAÇÕES NÃAO LIDAS
         $$.ajax({
-            url: baseurl+'loads/verificaNovasCotacoes.php?rep='+rp, 
+            url: baseurl+'loads/verificaNovasCotacoes.php?rep='+rp+'&tec='+tec, 
             dataType: 'json',
             success: function(returnedData) {
                 var cotLidas = returnedData[0].cotacoesLidas;
                 if (cotLidas > 0){
                    $$(".notificacao-c").show();
                    $$(".notificacao-c span,  .notificacao-span-c").html(returnedData[0].cotacoesLidas); 
-                }
-                
+                }               
             }
+
         });
 
         //VEFIFICA SE EXISTEM cotacoes enviadas
         $$.ajax({
-            url: baseurl+'loads/verificaNovasCotacoes.php?f=enviadas&rep='+rp, 
+            url: baseurl+'loads/verificaNovasCotacoes.php?f=enviadas&rep='+rp+'&tec='+tec, 
             dataType: 'json',
             success: function(returnedData) {
                 var cotLidas2 = returnedData[0].cotacoesEnviadas;
@@ -355,7 +371,7 @@ if(!usuarioHagnos){
 
         //VEFIFICA SE EXISTEM HIGIENIZAÇÕES PENDENTES
         $$.ajax({
-            url: baseurl+'loads/verificaNovasHigienizacoes.php?f=pendentes&rep='+rp, 
+            url: baseurl+'loads/verificaNovasHigienizacoes.php?f=pendentes&rep='+rp+'&tec='+tec, 
             dataType: 'json',
             success: function(returnedData) {
                 var hLidas = returnedData[0].hLidas;
@@ -369,7 +385,7 @@ if(!usuarioHagnos){
 
         //VEFIFICA SE EXISTEM HIGIENIZAÇÕES AGENDADAS
         $$.ajax({
-            url: baseurl+'loads/verificaNovasHigienizacoes.php?f=agendadas&rep='+rp, 
+            url: baseurl+'loads/verificaNovasHigienizacoes.php?f=agendadas&rep='+rp+'&tec='+tec, 
             dataType: 'json',
             success: function(returnedData) {
                 var hLidas2 = returnedData[0].hLidas2;
@@ -383,7 +399,7 @@ if(!usuarioHagnos){
 
         //VEFIFICA SE EXISTEM ACOES CORRETIVAS PENDENTES
         $$.ajax({
-            url: baseurl+'loads/verificaNovasAcoes.php?f=pendente&rep='+rp, 
+            url: baseurl+'loads/verificaNovasAcoes.php?f=pendente&rep='+rp+'&tec='+tec, 
             dataType: 'json',
             success: function(returnedData) {
                 var aPend = returnedData[0].aPend;
@@ -396,7 +412,7 @@ if(!usuarioHagnos){
 
         //VEFIFICA SE EXISTEM TESTES PENDENTES
         $$.ajax({
-            url: baseurl+'loads/verificaNovosTestes.php?f=pendente&rep='+rp, 
+            url: baseurl+'loads/verificaNovosTestes.php?f=pendente&rep='+rp+'&tec='+tec, 
             dataType: 'json',
             success: function(returnedData) {
                 var tPend = returnedData[0].tPend;
@@ -558,6 +574,38 @@ function deletaRep(id){
                     method: 'GET',
                     success: function (data) {
                         $$(".lista-representantes").html(data); 
+                    }
+                })
+            }
+        });
+    });
+}
+
+function clonarTabela(id){
+    // deleta um produto do equipamento
+    myApp.confirm('Confirma clonagem desta tabela?', 'Clonar tabela de preços', function () {
+        $$.ajax({
+            url: baseurl+'saves/clonarTabelaPrecos.php?id='+id,            
+            method: 'GET',
+            success: function (data) {                                      
+                mainView.router.reloadPage('forms/tabelaprecos_form.html?idtab='+data);                
+            }
+        });
+    });
+}
+
+function deletaTabela(id){
+    // deleta um produto do equipamento
+    myApp.confirm('Confirma exclusão da tabela de preços?', 'Exclusão', function () {
+        $$.ajax({
+            url: baseurl+'saves/deleta.php?tb=tabela_precos&id='+id,
+            method: 'GET',
+            success: function (data) {  
+                $$.ajax({
+                    url: baseurl+'loads/loadTabelasPreco.php',
+                    method: 'GET',
+                    success: function (data) {
+                        $$(".lista-tabelas-preco").html(data); 
                     }
                 })
             }
@@ -832,7 +880,7 @@ function deletaBanner(id){
     });    
 }
 
-      
+   
 
 
 // Show/hide preloader for remote ajax loaded pages
@@ -855,6 +903,27 @@ $$(document).on('ajaxComplete', function (e) {
 });
 
 
+$$.ajax({
+    url: baseurl+'saves/atualizaStatusPadrao.php',
+    type: "GET",
+    beforeSend: function(){
+      myApp.showPreloader('Aguarde, atualizando status dos clientes...');
+    },
+    success: function (data) {  
+        myApp.hidePreloader();        
+        if (data.trim() != ""){
+            myApp.addNotification({
+                message: data,
+                button: {
+                    text: 'Fechar',
+                    color: 'lightgreen'
+                },
+            });
+        }
+    }
+});
+
+
 
 //ROTINAS INICIAIS
 
@@ -867,13 +936,11 @@ myApp.onPageInit('index', function (page) {
         $$(".nomeusuario").html(usuarioNome); 
         $$(".tipousuario").html(usuarioNomeTipo); 
 
-
-
         $$('.swiperTab').on('show', function(){
             $$(this).find('.swiper-container')[0].swiper.update();
         });
         
-        if (tipousuario == 2){
+        if (tipousuario == 2 || tipousuario == 6){
             $$(".esconde-rep").hide();
         }
         if (tipousuario == 3){
@@ -883,13 +950,16 @@ myApp.onPageInit('index', function (page) {
         if (tipousuario == 4){
             $$(".esconde-producao").hide();
         }
+        if (tipousuario == 5){
+            $$(".esconde-rep2").hide();
+        }
 
         $$('.ks-pb-standalone').on('click', function () {
             photoBrowserStandalone.open();
         });
 
         var rp = "";
-        if (tipousuario == 1 || tipousuario == 2 || tipousuario == 4){
+        if (tipousuario == 1 || tipousuario == 2 || tipousuario == 4 || tipousuario == 5 || tipousuario == 6){
             
 
             if (tipousuario == 1){
@@ -899,7 +969,17 @@ myApp.onPageInit('index', function (page) {
             if (tipousuario == 2){
             $$(".esconde-rep").hide(); 
             var rp = rep;
-            }        
+            }
+
+            if (tipousuario == 5){
+            $$(".esconde-rep2").hide(); 
+            var rp = rep;
+            }    
+
+            if (tipousuario == 6){
+            $$(".esconde-rep").hide(); 
+            var rp = tec;
+            }      
 
               //VEFIFICA TOTAIS DE ACOMPANHAMENTO
             $$.ajax({
@@ -920,23 +1000,7 @@ myApp.onPageInit('index', function (page) {
                 }
             });
 
-            //VEFIFICA TOTAIS PEDIDOS
-            //$$.ajax({
-            //    url: baseurl+'loads/verificaTotaisPedidos.php?rep='+rp, 
-            //    dataType: 'json',
-            //    success: function(returnedData) {
-            //        $$(".notificacao-pendente").show();
-            //        $$(".notificacao-pendente span").html(returnedData[0].pendente); 
-            //        $$(".notificacao-producao").show();
-            //        $$(".notificacao-producao span").html(returnedData[0].producao); 
-            //        $$(".notificacao-expedicao").show();
-            //        $$(".notificacao-expedicao span").html(returnedData[0].expedicao); 
-            //        $$(".notificacao-enviado").show();
-            //        $$(".notificacao-enviado span").html(returnedData[0].enviado); 
-            //        
-            //    }
-            //});
-
+           
             //VEFIFICA NOTIFICAÇÕES NÃO LIDAS
             $$.ajax({
                 url: baseurl+'loads/verificaNotificacoes.php?rep='+rp+'&tipousuario='+tipousuario, 
@@ -1005,8 +1069,12 @@ myApp.onPageInit('menu-acompanhamento', function (page) {
         $$(".esconde-cliente").hide();   
     }
 
+    if (tipousuario == 5){
+        $$(".esconde-rep2").hide();   
+    }
+
     var rp = "";
-    if (tipousuario == 1 || tipousuario == 2){
+    if (tipousuario == 1 || tipousuario == 2 || tipousuario == 5){
         
 
         if (tipousuario == 1){
@@ -1014,6 +1082,11 @@ myApp.onPageInit('menu-acompanhamento', function (page) {
         }
 
         if (tipousuario == 2){
+        $$(".esconde-rep").hide(); 
+        var rp = rep;
+        }
+
+        if (tipousuario == 5){
         $$(".esconde-rep").hide(); 
         var rp = rep;
         }
@@ -1166,6 +1239,237 @@ myApp.onPageInit('desempenho-representante', function (page){
     });
 })
 
+myApp.onPageInit('comissoes-representante', function (page){
+
+        
+    // seleciona o cliente
+    pesquisar_representante();
+
+    
+    var calendarRange = myApp.calendar({
+        input: '#data_search',
+        dateFormat: 'dd/mm/yyyy',
+        rangePicker: true
+    });
+    $$(".limparRD").click(function(){
+        calendarRange.setValue("");
+        $$("#gera-rel").addClass("disabled");
+    })
+
+    $$("input[name='codrep']").val("");
+    $$("#ajax-representantes-list").val("");
+
+    //if ($$("#ajax-representantes-list").val() != ""){
+    //    $$("#gera-rel, .enviaRel").removeClass("disabled");
+    //}
+
+    $$("#ajax-representantes-list").keyup(function(){
+        //if ($$("#ajax-representantes-list").val() != "" && $$("input[name='codrep']").val() != ""){
+        if ($$("#ajax-representantes-list").val() != ""){
+            $$("#gera-rel, .enviaRel").removeClass("disabled");
+        } else {
+            $$("#gera-rel, .enviaRel").addClass("disabled");
+            $$("input[name='codrep']").val("");
+        }
+    })
+
+ 
+   
+    // GERANDO RELATÓRIO
+    $$(".gera-relatorio").click(function(){
+        var codrep = $$("input[name='codrep']").val();
+        var data_search = $$("#data_search").val();
+
+        $$.ajax({
+            url: baseurl+'relatorios/rel_comissoes_representante.php?rep='+codrep+'&data_search='+data_search,
+            method: 'GET',
+            success: function (data) {
+                $$(".relatorio-content").html(data);
+            }
+        });
+    });
+
+    // ENVIANDO POR EMAIL
+    $$(".enviaRel").click(function(){
+        var codrep = $$("input[name='codrep']").val();
+        var data_search = $$("#data_search").val();
+        var nomerep = $$("input[name=nomerep]").val();
+        var emailDestino = $$("input[name=email_relatorio]").val();
+
+        //$$("#relFrame").attr("src", baseurl+'server/envia_rel_desempenho_representante.php?rep='+codrep+'&data_search='+data_search+'&nomerep='+nomerep);
+
+        //$$.get(baseurl+'server/pdf/arquivos/res/rel_desempenho_representante.php?rep='+codrep+'&data_search='+data_search+'&nomerep='+nomerep, {}, function (data) {        
+        //    $$('#PAGEPlaceHolder').html(data);          
+        //}); 
+       
+        $$.ajax({
+            url: baseurl+'server/envia_rel_desempenho_representante.php?rep='+codrep+'&data_search='+data_search+'&nomerep='+nomerep+'&emailDestino='+emailDestino+'&codrel='+codrel,
+            method: 'GET',
+            success: function (data) {
+                myApp.addNotification({
+                    message: data,
+                    button: {
+                        text: 'Fechar',
+                        color: 'lightgreen'
+                    },
+                });
+            }
+        });
+    });
+})
+
+
+function getMonth(date) {
+  var month = date.getMonth() + 1;
+  return month < 10 ? '0' + month : '' + month; // ('' + month) for string result
+}
+
+myApp.onPageInit('media_consumo_produto_cliente', function (page){
+
+        
+    // seleciona o cliente
+    pesquisar_cliente("rel");
+
+    $$("input[name='codcliente']").val("");
+    $$("#ajax-clientes-list").val("");
+
+    $$("#ajax-clientes-list").keyup(function(){
+        if ($$("#ajax-clientes-list").val() != ""){
+            $$("#gera-rel").removeClass("disabled");
+        } else {
+            $$("#gera-rel").addClass("disabled");
+            $$("input[name='codcliente']").val("");
+        }
+    })
+
+ 
+   
+    // GERANDO RELATÓRIO
+    $$(".gera-relatorio").click(function(){
+        var codcli = $$("input[name='codcliente']").val();
+
+        $$.ajax({
+            url: baseurl+'relatorios/rel_media_consumo_produto_cliente.php?cli='+codcli,
+            method: 'GET',
+            success: function (data) {
+                $$(".relatorio-content").html(data);
+            }
+        });
+    });
+
+  
+}) 
+
+myApp.onPageInit('comparativo_faturamento', function (page){
+
+        
+    // seleciona o cliente
+    pesquisar_representante();
+
+    var data = new Date();
+    var mes  = getMonth(data);
+    var ano  = data.getFullYear();
+
+
+
+
+    $$("#mes_search").val(mes);
+    $$("#ano_search").val(ano);
+
+    $$("input[name='codrep']").val("");
+    $$("#ajax-representantes-list").val("");
+
+    $$("#ajax-representantes-list").keyup(function(){
+        if ($$("#ajax-representantes-list").val() != ""){
+            $$("#gera-rel, .enviaRel, #gera-rel-cv, #gera-rel-sv").removeClass("disabled");
+        } else {
+            $$("#gera-rel, .enviaRel, #gera-rel-cv, #gera-rel-sv").addClass("disabled");
+            $$("input[name='codrep']").val("");
+        }
+    })
+
+    
+     
+    // GERANDO RELATÓRIO
+    $$(".gera-relatorio").click(function(){
+        var codrep = $$("input[name='codrep']").val();
+        var mes_search = $$("#mes_search").val();
+        var ano_search = $$("#ano_search").val();
+        var tipo_search = $$("#tipo_search").val();
+
+        $$.ajax({
+            url: baseurl+'relatorios/rel_comparativo_faturamento.php?rep='+codrep+'&mes_search='+mes_search+'&ano_search='+ano_search+'&tipo_search='+tipo_search+'&tiporel=todos',
+            method: 'GET',
+            success: function (data) {
+                $$(".relatorio-content").html(data);
+            }
+        });
+    });
+
+
+
+    // GERANDO RELATÓRIO COM VENDAS EFETUADAS
+    $$("#gera-rel-cv").click(function(){
+        var codrep = $$("input[name='codrep']").val();
+        var mes_search = $$("#mes_search").val();
+        var ano_search = $$("#ano_search").val();
+        var tipo_search = $$("#tipo_search").val();
+
+        $$.ajax({
+            url: baseurl+'relatorios/rel_comparativo_faturamento.php?rep='+codrep+'&mes_search='+mes_search+'&ano_search='+ano_search+'&tipo_search='+tipo_search+'&tiporel=cv',
+            method: 'GET',
+            success: function (data) {
+                $$(".relatorio-content").html(data);
+            }
+        });
+    });
+
+    // GERANDO RELATÓRIO COM VENDAS EFETUADAS
+    $$("#gera-rel-sv").click(function(){
+        var codrep = $$("input[name='codrep']").val();
+        var mes_search = $$("#mes_search").val();
+        var ano_search = $$("#ano_search").val();
+        var tipo_search = $$("#tipo_search").val();
+
+        $$.ajax({
+            url: baseurl+'relatorios/rel_comparativo_faturamento.php?rep='+codrep+'&mes_search='+mes_search+'&ano_search='+ano_search+'&tipo_search='+tipo_search+'&tiporel=sv',
+            method: 'GET',
+            success: function (data) {
+                $$(".relatorio-content").html(data);
+            }
+        });
+    });
+
+
+    // ENVIANDO POR EMAIL
+    $$(".enviaRel").click(function(){
+        var codrep = $$("input[name='codrep']").val();
+        var data_search = $$("#data_search").val();
+        var nomerep = $$("input[name=nomerep]").val();
+        var emailDestino = $$("input[name=email_relatorio]").val();
+
+        //$$("#relFrame").attr("src", baseurl+'server/envia_rel_desempenho_representante.php?rep='+codrep+'&data_search='+data_search+'&nomerep='+nomerep);
+
+        //$$.get(baseurl+'server/pdf/arquivos/res/rel_desempenho_representante.php?rep='+codrep+'&data_search='+data_search+'&nomerep='+nomerep, {}, function (data) {        
+        //    $$('#PAGEPlaceHolder').html(data);          
+        //}); 
+       
+        $$.ajax({
+            url: baseurl+'server/envia_rel_comparativo_faturamento.php?rep='+codrep+'&mes_search='+mes_search+'&ano_search='+ano_search+'&nomerep='+nomerep+'&emailDestino='+emailDestino+'&codrel='+codrel,
+            method: 'GET',
+            success: function (data) {
+                myApp.addNotification({
+                    message: data,
+                    button: {
+                        text: 'Fechar',
+                        color: 'lightgreen'
+                    },
+                });
+            }
+        });
+    });
+})
+
 myApp.onPageInit('menu-relatorios', function (page) {   
 
     $$(".nomeusuario").html(usuarioNome); 
@@ -1178,12 +1482,15 @@ myApp.onPageInit('menu-relatorios', function (page) {
     if (tipousuario == 2){
         $$(".esconde-rep").hide();
     }
+    if (tipousuario == 5){
+        $$(".esconde-rep2").hide();
+    }
     if (tipousuario == 3){
         $$(".esconde-cliente").hide();   
     }
 
     var rp = "";
-    if (tipousuario == 1 || tipousuario == 2){
+    if (tipousuario == 1 || tipousuario == 2 || tipousuario == 5){
         
 
         if (tipousuario == 1){
@@ -1192,6 +1499,10 @@ myApp.onPageInit('menu-relatorios', function (page) {
 
         if (tipousuario == 2){
         $$(".esconde-rep").hide(); 
+        var rp = rep;
+        }  
+         if (tipousuario == 5){
+        $$(".esconde-rep2").hide(); 
         var rp = rep;
         }        
     } 
@@ -1207,16 +1518,19 @@ myApp.onPageInit('menu-comercial', function (page) {
         $$(this).find('.swiper-container')[0].swiper.update();
     });
     
-    if (tipousuario == 2){
+    if (tipousuario == 2 || tipousuario == 6){
         $$(".esconde-rep").hide();
+    }
+    if (tipousuario == 5){
+        $$(".esconde-rep2").hide();
     }
     if (tipousuario == 3){
         $$(".esconde-cliente").hide();   
     }
 
     var rp = "";
-    if (tipousuario == 1 || tipousuario == 2){
-        
+    var tc = "";
+    if (tipousuario == 1 || tipousuario == 2 || tipousuario == 5 || tipousuario == 6){        
 
         if (tipousuario == 1){
         $$(".esconde-admin").hide(); 
@@ -1226,10 +1540,19 @@ myApp.onPageInit('menu-comercial', function (page) {
         $$(".esconde-rep").hide(); 
         var rp = rep;
         }
+        if (tipousuario == 5){
+        $$(".esconde-rep2").hide(); 
+        var rp = rep;
+        }
+        if (tipousuario == 6){
+        $$(".esconde-rep").hide(); 
+        var rp = tec;
+        var tc = tec;
+        }
 
         //VEFIFICA SE EXISTEM COTAÇÕES NÃAO LIDAS
         $$.ajax({
-            url: baseurl+'loads/verificaNovasCotacoes.php?rep='+rp, 
+            url: baseurl+'loads/verificaNovasCotacoes.php?rep='+rp+'&tc='+tc, 
             dataType: 'json',
             success: function(returnedData) {
                 var cotLidas = returnedData[0].cotacoesLidas;
@@ -1243,7 +1566,7 @@ myApp.onPageInit('menu-comercial', function (page) {
 
         //VEFIFICA SE EXISTEM cotacoes enviadas
         $$.ajax({
-            url: baseurl+'loads/verificaNovasCotacoes.php?f=enviadas&rep='+rp, 
+            url: baseurl+'loads/verificaNovasCotacoes.php?f=enviadas&rep='+rp+'&tc='+tc, 
             dataType: 'json',
             success: function(returnedData) {
                 var cotLidas2 = returnedData[0].cotacoesEnviadas;
@@ -1257,7 +1580,7 @@ myApp.onPageInit('menu-comercial', function (page) {
 
         //VEFIFICA SE EXISTEM HIGIENIZAÇÕES AGENDADAS
         $$.ajax({
-            url: baseurl+'loads/verificaNovasCotacoes.php?f=enviadas&rep='+rp, 
+            url: baseurl+'loads/verificaNovasCotacoes.php?f=enviadas&rep='+rp+'&tc='+tc, 
             dataType: 'json',
             success: function(returnedData) {
                 var hLidas2 = returnedData[0].cotacoesEnviadas;
@@ -1271,7 +1594,7 @@ myApp.onPageInit('menu-comercial', function (page) {
 
         //VEFIFICA TOTAIS PEDIDOS
             $$.ajax({
-                url: baseurl+'loads/verificaTotaisPedidos.php?rep='+rp, 
+                url: baseurl+'loads/verificaTotaisPedidos.php?rep='+rp+'&tc='+tc, 
                 dataType: 'json',
                 success: function(returnedData) {
                     $$(".notificacao-pendente").show();
@@ -1325,12 +1648,15 @@ myApp.onPageInit('menu2', function (page) {
     if (tipousuario == 2){
         $$(".esconde-rep").hide();
     }
+    if (tipousuario == 5){
+        $$(".esconde-rep2").hide();
+    }
     if (tipousuario == 3){
         $$(".esconde-cliente").hide();   
     }
 
     var rp = "";
-    if (tipousuario == 1 || tipousuario == 2){
+    if (tipousuario == 1 || tipousuario == 2 || tipousuario == 5){
         
 
         if (tipousuario == 1){
@@ -1339,6 +1665,11 @@ myApp.onPageInit('menu2', function (page) {
 
         if (tipousuario == 2){
         $$(".esconde-rep").hide(); 
+        var rp = rep;
+        }
+
+        if (tipousuario == 5){
+        $$(".esconde-rep2").hide(); 
         var rp = rep;
         }
         
@@ -1638,6 +1969,9 @@ $$('#submit-login').click(function() {
                 usuarioSenha: fpass,
                 hagnosUsuarioId: returnedData[0].id,
                 hagnosUsuarioIdRep: returnedData[0].rep,
+                hagnosUsuarioNomeRep: returnedData[0].nomerep,
+                hagnosUsuarioIdTec: returnedData[0].tec,
+                hagnosUsuarioNomeTec: returnedData[0].nometec,
                 hagnosUsuarioIdCli: returnedData[0].cli,
                 hagnosUsuarioNome: returnedData[0].nome,
                 hagnosUsuarioApelido: returnedData[0].apelido,
@@ -1651,6 +1985,9 @@ $$('#submit-login').click(function() {
                 // fim armazenamento local storage
 
                 rep = usuarioHagnos.hagnosUsuarioIdRep;
+                nrep = usuarioHagnos.hagnosUsuarioNomeRep;
+                tec = usuarioHagnos.hagnosUsuarioIdTec;
+                ntec = usuarioHagnos.hagnosUsuarioNomeTec;
                 tipousuario = usuarioHagnos.hagnosUsuarioTipo;
                 usuarioEmail = usuarioHagnos.usuarioEmail;
                 usuarioID = usuarioHagnos.hagnosUsuarioId;
@@ -1659,8 +1996,13 @@ $$('#submit-login').click(function() {
                     cliente = usuarioHagnos.hagnosUsuarioIdCli;
                     nomecliente = usuarioHagnos.hagnosusuarioNome;
                 }
-                if (usuarioHagnos.hagnosUsuarioTipo == 2){
+                if (usuarioHagnos.hagnosUsuarioTipo == 2 || usuarioHagnos.hagnosUsuarioTipo == 5){
                     repres = usuarioHagnos.hagnosUsuarioIdRep;
+                    nomerepres = usuarioHagnos.hagnosUsuarioNomeRep;
+                }
+                if (usuarioHagnos.hagnosUsuarioTipo == 6){
+                    tecnico = usuarioHagnos.hagnosUsuarioIdTec;
+                    nometecnico = usuarioHagnos.hagnosUsuarioNomeTec;
                 }
 
                 usuarioNome = usuarioHagnos.hagnosUsuarioNome;
@@ -1768,18 +2110,32 @@ myApp.onPageInit('form-usuario', function (page){
                     }
                 });
 
+                $$.ajax({
+                    url: baseurl+'loads/loadTecSelect.php?idt='+returnedData[0].codtec,
+                    method: 'GET',
+                    success: function (data) {
+                        $$("#usuario_nometec").html(data);
+                    }
+                });
+
                 if (returnedData[0].tipo == 3){
                     $$(".li-representante").hide();
+                    $$(".li-tecnico").hide();
                     $$(".li-cliente").show();
-                    //$$(".li-email-usuario").hide();
                     $$("#usuario_email").removeAttr("required");
-                } else if (returnedData[0].tipo == 2){
+                } else if (returnedData[0].tipo == 1 || returnedData[0].tipo == 2 || returnedData[0].tipo == 5){
                     $$(".li-representante").show();
+                    $$(".li-tecnico").hide();
                     $$(".li-cliente").hide();
-                    //$$(".li-email-usuario").hide();
+                    $$("#usuario_email").removeAttr("required");
+                } else if (returnedData[0].tipo == 6){
+                    $$(".li-tecnico").show();
+                    $$(".li-representante").hide();
+                    $$(".li-cliente").hide();
                     $$("#usuario_email").removeAttr("required");
                 } else {
                     $$(".li-representante").hide();
+                    $$(".li-tecnico").hide();
                     $$(".li-cliente").hide();
                     $$(".li-email-usuario").show();
                     $$("#usuario_email").attr("required");
@@ -1809,6 +2165,13 @@ myApp.onPageInit('form-usuario', function (page){
             method: 'GET',
             success: function (data) {
                 $$("#usuario_nomerep").html(data);
+            }
+        });
+        $$.ajax({
+            url: baseurl+'loads/loadTecSelect.php',
+            method: 'GET',
+            success: function (data) {
+                $$("#usuario_nometec").html(data);
             }
         });
 
@@ -1897,13 +2260,20 @@ myApp.onPageInit('form-usuario', function (page){
      $$("#usuario_tipo").change(function (){
      if ($$("#usuario_tipo").val() == "3;cliente"){
         $$(".li-representante").hide();
+        $$(".li-tecnico").hide();
         $$(".li-cliente").show();
         //$$(".li-email-usuario").hide();
-     } else if ($$("#usuario_tipo").val() == "2;representante") {
+     } else if ($$("#usuario_tipo").val() == "1;hagnos" || $$("#usuario_tipo").val() == "2;representante" || $$("#usuario_tipo").val() == "5;representante 2") {
         $$(".li-representante").show();
+        $$(".li-tecnico").hide();
         $$(".li-cliente").hide();
         //$$(".li-email-usuario").hide();
+     } else if ($$("#usuario_tipo").val() == "6;tecnico"){
+        $$(".li-representante").hide();
+        $$(".li-tecnico").show();
+        $$(".li-cliente").hide();
      } else {
+        $$(".li-tecnico").hide();
         $$(".li-representante").hide();
         $$(".li-cliente").hide();
         $$(".li-email-usuario").show();
@@ -1927,6 +2297,69 @@ myApp.onPageInit('form-cliente', function (page){
         });
 
     })
+
+    $$("#cliente_razao").blur(function(){
+        var valor = $$("#cliente_razao").val();
+        var campo = "razao";
+        $$.ajax({
+            url: baseurl+'loads/verificaClienteExiste.php',
+            data: { "valor": valor, "campo": campo },
+            type: 'get',
+            success: function (data) {
+                if (data == 1){
+                    $$(".f-cli .erro").html("cliente '"+$$("#cliente_razao").val()+"' já cadastrado");
+                    $$(".f-cli .erro").show();
+                    $$("#cliente_razao").val("");
+                } else {
+                    $$(".f-cli .erro").html("");
+                    $$(".f-cli .erro").hide();
+                }
+            }
+        })
+    })
+
+    $$("#cliente_fantasia").blur(function(){
+        var valor = $$("#cliente_fantasia").val();
+        var campo = "fantasia";
+        var inputErro = $$(".f-cli-fantasia .erro");
+        $$.ajax({
+            url: baseurl+'loads/verificaClienteExiste.php',
+            data: { "valor": valor, "campo": campo },
+            type: 'get',
+            success: function (data) {
+                if (data == 1){
+                    inputErro.html("Nome fantasia '"+$$("#cliente_fantasia").val()+"' já cadastrado");
+                    inputErro.show();
+                    $$("#cliente_fantasia").val("");
+                } else {
+                    inputErro.html("");
+                    inputErro.hide();
+                }
+            }
+        })
+    })
+
+    $$("#cliente_cnpj").blur(function(){
+        var valor = $$("#cliente_cnpj").val();
+        var campo = "cnpj";
+        var inputErro = $$(".f-cli-cnpj .erro");
+        $$.ajax({
+            url: baseurl+'loads/verificaClienteExiste.php',
+            data: { "valor": valor, "campo": campo },
+            type: 'get',
+            success: function (data) {
+                if (data == 1){
+                    inputErro.html("CNPJ '"+$$("#cliente_cnpj").val()+"' já cadastrado");
+                    inputErro.show();
+                    $$("#cliente_cnpj").val("");
+                } else {
+                    inputErro.html("");
+                    inputErro.hide();
+                }
+            }
+        })
+    })
+
 
    
     // SALVANDO CADASTRO DE CLIENTE
@@ -1956,6 +2389,9 @@ myApp.onPageInit('form-cliente', function (page){
 
     if (tipousuario == 4){
         $$(".addTab, .tabNegociacoes").hide();
+    }
+    if (tipousuario == 5){
+        $$(".esconde-rep2").hide();
     }
     
    
@@ -2017,12 +2453,19 @@ myApp.onPageInit('form-cliente', function (page){
                 //$$("input[type=text][name=cliente_telefone]").val(returnedData[0].telefone);
                 $$("input[type=text][name=cliente_endereco]").val(returnedData[0].endereco);
                 $$("input[type=text][name=cliente_bairro]").val(returnedData[0].bairro);
-                $$("input[type=text][name=status_i]").val(returnedData[0].status_interativo);
+                var st_i = returnedData[0].status_interativo;
+                if (returnedData[0].status_interativo == ""){
+                    st_i = "SEM INTERAÇÃO";
+                }
+                $$("input[type=text][name=status_i]").val(st_i);
                 $$("input[type=text][name=cliente_representante]").val(returnedData[0].nomerep);
+                $$("input[type=text][name=cliente_tecnico]").val(returnedData[0].nometec);
                 $$("textarea[name=cliente_obs]").val(returnedData[0].obs);
                 //$$("input[type=text][name=cliente_codrep]").val(returnedData[0].codrep);
 
                 //myApp.alert(returnedData[0].totalInteracoes);
+
+                $$("#cliente_situacao").addClass("disabled");
 
                 if (returnedData[0].totalInteracoes == "" || returnedData[0].totalInteracoes == 0){
                     $$(".deleta-cliente").show();
@@ -2039,8 +2482,10 @@ myApp.onPageInit('form-cliente', function (page){
                 if (returnedData[0].fonec != "" && returnedData[0].fonec != null ){
                     fonec = ' - '+returnedData[0].fonec;
                 }
+
                 emailc = returnedData[0].emailc;
                 nomer = returnedData[0].nomerep;
+                nomet = returnedData[0].nometec;
 
                 resumoCliente = $$("#cliente_id").val()+" - "+$$("#cliente_razao").val()+"<br>Contato: "+nomec+fonec+"<br>Representante: "+nomer;
 
@@ -2049,6 +2494,14 @@ myApp.onPageInit('form-cliente', function (page){
                     method: 'GET',
                     success: function (data) {
                         $$("#cliente_representante").html(data);
+                    }
+                });
+
+                $$.ajax({
+                    url: baseurl+'loads/loadTecSelect.php?tec='+returnedData[0].codtec,
+                    method: 'GET',
+                    success: function (data) {
+                        $$("#cliente_tecnico").html(data);
                     }
                 });
 
@@ -2065,6 +2518,7 @@ myApp.onPageInit('form-cliente', function (page){
                 //$$(".link-add-lanc").attr("href", "forms/clientes_form_lancamento.html?cliente="+cliente+"&nomecliente="+$$("#cliente_razao").val()+"&contato="+returnedData[0].responsavel+"&telefone="+returnedData[0].telefone);
 
                 //carrega estados e cidades no select
+                $$("#cliente_cidade, #cliente_estado").removeAttr("required");
                 $$.getJSON('js/cidadesEstados.json', function (data) {
                  
                     var estado = returnedData[0].estado;
@@ -2469,6 +2923,7 @@ myApp.onPageInit('form-cliente', function (page){
         //carrega estados e cidades no select
         myApp.closeModal($$(".popover-contacts"));
         //$$(".floating-button").hide();
+        $$(".status-hide").hide();
 
         $$(".deleta-cliente").hide();
         $$.getJSON('js/cidadesEstados.json', function (data) {
@@ -2503,14 +2958,26 @@ myApp.onPageInit('form-cliente', function (page){
 
         // Carrega select de representantes
         $$.ajax({
-                url: baseurl+'loads/loadRepsSelect.php',
+                url: baseurl+'loads/loadRepsSelect.php?idr='+rep,
                 method: 'GET',
                 success: function (data) {
                     $$("#cliente_representante").append(data);
                 }
-        });       
+        }); 
+        $$.ajax({
+            url: baseurl+'loads/loadTecSelect.php',
+            method: 'GET',
+            success: function (data) {
+                $$("#cliente_tecnico").html(data);
+            }
+        }); 
 
     } 
+
+    if (tipousuario == 1){
+         $$("#cliente_representante").removeClass("disabled");
+    }  
+
     $$(".novo-cliente").click(function(){
         mainView.router.reloadPage('forms/clientes_form.html');
     })
@@ -2582,18 +3049,80 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
    var createdDateTo = currentDate.getFullYear() + "-" + twoDigitMonth + "-" + twoDigitDate;
 
    $$("#data_visita, #dtvisita").val(createdDateTo);
-
-   Date.prototype.addDias = function(dias){
+   $$("input[name=data_visita]").keyup(function(){
+     $$("#data_visita, #dtvisita").val(createdDateTo);
+     Date.prototype.addDias = function(dias){
    this.setDate(this.getDate() + dias)
-   };
+   };   
    var dt = new Date();
    dt.addDias(15);
    var twoDigitMonth=((dt.getMonth()+1)>=10)? (dt.getMonth()+1) : '0' + (dt.getMonth()+1);  
    var twoDigitDate=((dt.getDate())>=10)? (dt.getDate()) : '0' + (dt.getDate());
    var dataProxVisita = dt.getFullYear() + "-" + twoDigitMonth + "-" + twoDigitDate;
+   $$("#data_proximo_contato, #dtproxcontato").val(dataProxVisita);
+   })
+
+   //$$("input[name=data_visita]").blur(function(){
+   //     //$$("#data_visita, #dtvisita").val(createdDateTo);
+   //     $$('#data_visita')[0].valueAsDate = new Date();
+   //
+   //     var date = this.valueAsDate;
+   //     date.setDate(date.getDate() + 15);
+   //     $$('#data_proximo_contato')[0].valueAsDate = date;
 
 
-   $$("#data_proximo_contato, #dtproxcontato").val(dataProxVisita);   
+   //})
+
+    var data = $$("input[name=data_visita]").val();
+        
+    var dNow = new Date();
+    var dia = dNow.getDay();
+    var semana = new Array(6);
+    //semana[0]='Domingo';
+    //semana[1]='Segunda-Feira';
+    //semana[2]='Terça-Feira';
+    //semana[3]='Quarta-Feira';
+    //semana[4]='Quinta-Feira';
+    //semana[5]='Sexta-Feira';
+    //semana[6]='Sábado';
+
+    var diasRet = dia;
+    if (diasRet == 1){
+        diasRet = 0;
+    }
+
+    var dataAtual = new Date(dNow.getTime());
+    var dataAtual2 = dataAtual.getFullYear() + "-" + ("0" + (dataAtual.getMonth() + 1)).slice(-2) + "-" + ("0" + (dataAtual.getDate())).slice(-2);
+
+    var dataRetMin = new Date(dNow.getTime() - (diasRet * 24 * 60 * 60 * 1000));
+    var dataRetMin2 = dataRetMin.getFullYear() + "-" + ("0" + (dataRetMin.getMonth() + 1)).slice(-2) + "-" + ("0" + (dataRetMin.getDate()+1)).slice(-2);
+
+    
+
+   $$("input[name=data_visita]").attr({"min" : dataRetMin2});
+   $$("input[name=data_visita]").attr({"max" : dataAtual2});
+
+   
+
+   Date.prototype.addDias = function(dias){
+   this.setDate(this.getDate() + dias)
+   };   
+   var dt = new Date();
+   dt.addDias(15);
+   var twoDigitMonth=((dt.getMonth()+1)>=10)? (dt.getMonth()+1) : '0' + (dt.getMonth()+1);  
+   var twoDigitDate=((dt.getDate())>=10)? (dt.getDate()) : '0' + (dt.getDate());
+   var dataProxVisita = dt.getFullYear() + "-" + twoDigitMonth + "-" + twoDigitDate;
+   $$("#data_proximo_contato, #dtproxcontato").val(dataProxVisita);
+
+   
+  
+   $$('#data_visita')[0].valueAsDate = new Date();
+   $$('#data_visita').change(function(){
+       var date = this.valueAsDate;
+       date.setDate(date.getDate() + 15);
+       $$('#data_proximo_contato')[0].valueAsDate = date;
+   });
+   
 
 
    $$("#status_padrao").change(function(){
@@ -2897,7 +3426,7 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
                 dataType: 'json',
                 
                 success: function(returnedData) {
-                    //$$("#status_padrao").val(returnedData[0].status);
+                    $$("#status_padrao").val(returnedData[0].status);
                     //$$("#status_interativo").val(returnedData[0].status_interativo);
                     if (returnedData[0].status_interativo == ""){
                         $$("#status_interativo").val('SEM INTERAÇÃO');
@@ -3093,14 +3622,14 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
 
             var form1 = $$('#form-lancamento-1');
             $$.ajax({
-                url: baseurl+'saves/saveLancamentoCadastroCliente.php?codCliente='+cliente,           
+                url: baseurl+'saves/saveLancamentoCadastroCliente.php?codCliente='+cliente+'&idusuario='+usuarioID+'&nomeusuario='+usuarioNome,           
                 data: new FormData(form1[0]),
                 type: 'post',
                 processData: false,  // Important!
                 contentType: false,
                 cache: false,                  
                 success: function( response ) {
-                    
+                    //myApp.alert(usuarioID);
                 }
             })
 
@@ -3119,7 +3648,7 @@ myApp.onPageInit('form-cliente-lancamento', function (page){
             if ($("#form-lancamento-3").parsley().isValid() && $("#form-lancamento-4").parsley().isValid()) {
               $$.ajax({
                   //url: baseurl+'saves/saveLancamento.php?codCliente='+cliente+'&nomeCliente='+nomecliente+'&codRep='+codrep+'&nomeRep='+nomerep+'&statusPadrao='+statusPadrao+'&statusInterativo='+statusInterativo+'&obslanc='+obslanc,           
-                  url: baseurl+'saves/saveLancamento.php?codCliente='+cliente+'&nomeCliente='+nomecliente+'&codRep='+codrep+'&nomeRep='+nomerep+'&statusPadrao='+statusPadrao,                             
+                  url: baseurl+'saves/saveLancamento.php?codCliente='+cliente+'&nomeCliente='+nomecliente+'&codRep='+codrep+'&nomeRep='+nomerep+'&statusPadrao='+statusPadrao+'&idusuario='+usuarioID+'&nomeusuario='+usuarioNome,                             
                   data: new FormData(form[0]),
                   type: 'post',
                   processData: false,  // Important!
@@ -3219,6 +3748,9 @@ myApp.onPageInit('lancamentos', function (page){
     if (tipousuario == 2){
         var repres = rep;
     }
+    if (tipousuario == 5){
+        var repres = rep;
+    }
 
     loadGridLancamentos();
 
@@ -3246,10 +3778,10 @@ myApp.onPageInit('lancamentos', function (page){
     function loadGridLancamentos(){
 
        loadFiltroCacheLanc();
-
+       
         $$.ajax({
         url: baseurl+'loads/loadLancamentosAgrupado.php',
-        data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "sp": sp, "si": si, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_prox_lancamento": periodo_prox_lancamento, "id": id  },
+        data: { "tec": tec, "detalhado": detalhado, "repres":repres, "cliente":cliente, "usuario_search": usuario_search, "sp": sp, "si": si, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_prox_lancamento": periodo_prox_lancamento, "id": id  },
         method: 'get',            
         success: function(returnedData) {
             $$("#results-lancamentos").html(returnedData);
@@ -3270,6 +3802,7 @@ myApp.onPageInit('lancamentos', function (page){
         si = "";
         cliente_search = "";
         rep_search = "";
+        usuario_search = "";
         periodo_lancamento = "";
         periodo_prox_lancamento = ""; 
         id = "";
@@ -3281,6 +3814,7 @@ myApp.onPageInit('lancamentos', function (page){
             si = filtroLancamentos.statusinterativo_search;
             cliente_search = filtroLancamentos.cliente_search;
             rep_search = filtroLancamentos.representante_search;
+            usuario_search = filtroLancamentos.usuario_search;
             periodo_lancamento = filtroLancamentos.data_search;
             periodo_prox_lancamento = filtroLancamentos.data_proximo_search;
             id = filtroLancamentos.id_search;
@@ -3324,6 +3858,9 @@ myApp.onPageInit('cotacoes', function (page){
     if (tipousuario == 2){
         var repres = rep;
     }
+    if (tipousuario == 5){
+        var repres = rep;
+    }
     //myApp.alert(usuarioHagnos.hagnosUsuarioIdCli);
 
     loadGridCotacoes();
@@ -3357,6 +3894,7 @@ myApp.onPageInit('cotacoes', function (page){
         // carrega filtro a partir do local storage
         var situacao = "";
         var cliente_search = "";
+        var embalagem_search = "";
         var rep_search = "";
         var periodo_lancamento = "";
         var periodo_entrega = ""; 
@@ -3366,6 +3904,7 @@ myApp.onPageInit('cotacoes', function (page){
         if(filtroCotacoes){              
             var situacao = filtroCotacoes.situacao_search;
             var cliente_search = filtroCotacoes.cliente_search;
+            var embalagem_search = filtroCotacoes.embalagem_search;
             var rep_search = filtroCotacoes.representante_search;
             var periodo_lancamento = filtroCotacoes.data_search;
             var periodo_entrega = filtroCotacoes.data_entrega_search;
@@ -3376,7 +3915,7 @@ myApp.onPageInit('cotacoes', function (page){
         //url: 'loads/loadCotacoes.php?cliente='+cliente+'&repres='+repres,
         //url: baseurl+'loads/loadCotacoesAgrupado.php',  
         url: baseurl+'loads/loadCotacoesAgrupado.php',           
-        data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
+        data: { "tec": tec, "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "embalagem_search": embalagem_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
         success: function(returnedData) {
             $$("#results-cotacoes").html(returnedData);
             var i = 0;
@@ -3392,6 +3931,7 @@ myApp.onPageInit('cotacoes', function (page){
         // carrega filtro a partir do local storage
         situacao = "";
         cliente_search = "";
+        embalagem_search = "";
         rep_search = "";
         periodo_lancamento = "";
         periodo_entrega = "";
@@ -3401,6 +3941,7 @@ myApp.onPageInit('cotacoes', function (page){
         if(filtroCot){    
             situacao = filtroCot.situacao_search;
             cliente_search = filtroCot.cliente_search;
+            embalagem_search = filtroCot.embalagem_search;
             rep_search = filtroCot.representante_search;
             periodo_lancamento = filtroCot.data_search;
             periodo_entrega = filtroCot.data_entrega_search;
@@ -3417,6 +3958,7 @@ myApp.onPageInit('cotacoes', function (page){
             +"&repres="+repres
             +"&situacao="+situacao
             +"&cliente_search="+cliente_search
+            +"&embalagem_search="+embalagem_search
             +"&rep_search="+rep_search
             +"&periodo_lancamento="+periodo_lancamento
             +"&periodo_entrega="+periodo_entrega
@@ -3442,6 +3984,9 @@ myApp.onPageInit('oportunidades', function (page){
         var nomecliente = usuarioNome;
     }
     if (tipousuario == 2){
+        var repres = rep;
+    }
+    if (tipousuario == 5){
         var repres = rep;
     }
 
@@ -3496,7 +4041,7 @@ myApp.onPageInit('oportunidades', function (page){
 
         $$.ajax({
             url: baseurl+'loads/loadOportunidadesAgrupado.php',             
-            data: { "detalhado": detalhado,"repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "produto_search": produto, "concorrente_search": concorrente_search, "media_search": media_search, "segmento_search": segmento_search  },
+            data: { "tec": tec, "detalhado": detalhado,"repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "produto_search": produto, "concorrente_search": concorrente_search, "media_search": media_search, "segmento_search": segmento_search  },
             success: function(returnedData) {
                 $$("#results-op").html(returnedData);
 
@@ -3574,6 +4119,9 @@ myApp.onPageInit('negocios', function (page){
         var nomecliente = usuarioNome;
     }
     if (tipousuario == 2){
+        var repres = rep;
+    }
+    if (tipousuario == 5){
         var repres = rep;
     }
 
@@ -3709,6 +4257,9 @@ myApp.onPageInit('previsaovendas', function (page){
     if (tipousuario == 2){
         var repres = rep;
     }
+    if (tipousuario == 5){
+        var repres = rep;
+    }
     
     loadGridPrevisaoVendas();
 
@@ -3755,7 +4306,7 @@ myApp.onPageInit('previsaovendas', function (page){
 
         $$.ajax({
             url: baseurl+'loads/loadPrevisaoVendasAgrupado.php',             
-            data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_previsao": periodo_previsao, "produto_search": produto  },
+            data: { "tec": tec, "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "periodo_previsao": periodo_previsao, "produto_search": produto  },
             success: function(returnedData) {
                 $$("#results-previsao").html(returnedData);
 
@@ -3828,6 +4379,9 @@ myApp.onPageInit('produtos_producao', function (page){
     if (tipousuario == 2){
         var repres = rep;
     }
+    if (tipousuario == 5){
+        var repres = rep;
+    }
 
     loadGridPP();
 
@@ -3886,6 +4440,9 @@ myApp.onPageInit('pedidos', function (page){
     if (tipousuario == 2){
         var repres = rep;
     }
+    if (tipousuario == 5){
+        var repres = rep;
+    }
 
     if (tipousuario == 1 || tipousuario == 4){
         $$(".prd").show();
@@ -3928,6 +4485,7 @@ myApp.onPageInit('pedidos', function (page){
         // carrega filtro a partir do local storage
         var situacao = "";
         var cliente_search = "";
+        var embalagem_search = "";
         var rep_search = "";
         var transportadora_search = "";
         var periodo_lancamento = "";
@@ -3938,6 +4496,7 @@ myApp.onPageInit('pedidos', function (page){
         if(filtroPedidos){              
             var situacao = filtroPedidos.situacao_search;
             var cliente_search = filtroPedidos.cliente_search;
+            var embalagem_search = filtroPedidos.embalagem_search;
             var rep_search = filtroPedidos.representante_search;
             var transportadora_search = filtroPedidos.transportadora_search;
             var periodo_lancamento = filtroPedidos.data_search;
@@ -3947,7 +4506,7 @@ myApp.onPageInit('pedidos', function (page){
 
         $$.ajax({
             url: baseurl+'loads/loadPedidosAgrupado.php',
-            data: { "detalhado": detalhado, "tipousuario": tipousuario, "repres":repres, "cliente":cliente, "cliente_search": cliente_search, "situacao": situacao ,"rep_search": rep_search, "transportadora_search": transportadora_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
+            data: { "tec": tec, "detalhado": detalhado, "tipousuario": tipousuario, "repres":repres, "cliente":cliente, "cliente_search": cliente_search, "embalagem_search": embalagem_search , "situacao": situacao ,"rep_search": rep_search, "transportadora_search": transportadora_search, "periodo_lancamento": periodo_lancamento, "periodo_entrega": periodo_entrega, "id": id  },
             method: 'get',            
             success: function(returnedData) {
                 $$("#results-pedidos").html(returnedData);
@@ -3966,6 +4525,7 @@ myApp.onPageInit('pedidos', function (page){
         // carrega filtro a partir do local storage
         situacao = "";
         cliente_search = "";
+        embalagem_search = "";
         rep_search = "";
         transportadora_search = "";
         periodo_lancamento = "";
@@ -3976,6 +4536,7 @@ myApp.onPageInit('pedidos', function (page){
         if(filtroPed){    
             situacao = filtroPed.situacao_search;
             cliente_search = filtroPed.cliente_search;
+            embalagem_search = filtroPed.embalagem_search;
             rep_search = filtroPed.representante_search;
             transportadora_search = filtroPed.transportadora_search;
             periodo_lancamento = filtroPed.data_search;
@@ -3994,6 +4555,7 @@ myApp.onPageInit('pedidos', function (page){
             +"&repres="+repres
             +"&situacao="+situacao
             +"&cliente_search="+cliente_search
+            +"&embalagem_search="+embalagem_search
             +"&rep_search="+rep_search
             +"&transportadora_search="+transportadora_search
             +"&periodo_lancamento="+periodo_lancamento
@@ -4020,6 +4582,9 @@ myApp.onPageInit('higienizacoes', function (page){
         var nomecliente = usuarioNome;
     }
     if (tipousuario == 2){
+        var repres = rep;
+    }
+    if (tipousuario == 5){
         var repres = rep;
     }
 
@@ -4054,7 +4619,7 @@ myApp.onPageInit('higienizacoes', function (page){
         $$.ajax({
             url: baseurl+'loads/loadHigienizacoesAgrupado.php', 
             method: 'GET',
-            data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
+            data: { "tec": tec, "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
             success: function(returnedData) {
             $$("#results-higienizacoes").html(returnedData);
 
@@ -4118,6 +4683,9 @@ myApp.onPageInit('acoescorretivas', function (page){
     if (tipousuario == 2){
         var repres = rep;
     }  
+    if (tipousuario == 5){
+        var repres = rep;
+    }
 
     loadGridAcoes();
 
@@ -4166,7 +4734,7 @@ myApp.onPageInit('acoescorretivas', function (page){
         $$.ajax({
             url: baseurl+'loads/loadAcoesCorretivasAgrupado.php', 
             method: 'GET',
-            data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "produto_search": produto_search, "periodo_lancamento": periodo_lancamento, "id": id  },
+            data: { "tec": tec, "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "produto_search": produto_search, "periodo_lancamento": periodo_lancamento, "id": id  },
             success: function(returnedData) {
                 $$("#results-acoescorretivas").html(returnedData);
                 var i = 0;
@@ -4238,6 +4806,9 @@ myApp.onPageInit('testes', function (page){
     if (tipousuario == 2){
         var repres = rep;
     }
+    if (tipousuario == 5){
+        var repres = rep;
+    }
 
     loadGridTestes();
 
@@ -4282,7 +4853,7 @@ myApp.onPageInit('testes', function (page){
         $$.ajax({
             url: baseurl+'loads/loadTestesAgrupado.php', 
             method: 'GET',
-            data: { "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
+            data: { "tec": tec, "detalhado": detalhado, "repres":repres, "cliente":cliente, "situacao": situacao, "cliente_search": cliente_search, "rep_search": rep_search, "periodo_lancamento": periodo_lancamento, "id": id  },
             success: function(returnedData) {
             $$("#results-testes").html(returnedData);
             var i = 0;
@@ -4352,6 +4923,9 @@ myApp.onPageInit('notificacoes-grid', function (page){
     if (tipousuario == 2){
         var repres = rep;
     }
+    if (tipousuario == 5){
+        var repres = rep;
+    }
 
 
     var usuarioTipo = tipousuario;
@@ -4397,6 +4971,10 @@ myApp.onPageInit('notificacoes-grid', function (page){
 
 // PAINEL DE FILTRO DE LANCAMENTOS
 myApp.onPageInit('filtro-lancamentos', function (page){ 
+    if (tipousuario != 1){        
+        $$(".lirep").hide();
+
+    }
 
     var calendarRange = myApp.calendar({
         input: '#data_search',
@@ -4465,6 +5043,9 @@ myApp.onPageInit('filtro-lancamentos', function (page){
 
 // PAINEL DE FILTRO DE LANCAMENTOS
 myApp.onPageInit('filtro-notificacoes', function (page){ 
+    if (tipousuario != 1){
+        $$(".lirep").hide();
+    }
 
     var calendarRange = myApp.calendar({
         input: '#data_search',
@@ -4523,6 +5104,10 @@ myApp.onPageInit('filtro-notificacoes', function (page){
 // PAINEL DE FILTRO DE CLIENTES
 myApp.onPageInit('filtro-clientes', function (page){  
 
+    if (tipousuario != 1){
+        $$(".lirep").hide();
+    }
+
     // filtrando dados
     $$(".filtra-clientes").click(function(){
         var sCidade = $$("#cidade_search").val();
@@ -4562,6 +5147,9 @@ myApp.onPageInit('filtro-clientes', function (page){
 
 // PAINEL DE FILTRO DE PEDIDOS
 myApp.onPageInit('filtro-pedidos', function (page){
+    if (tipousuario != 1){
+        $$(".lirep").hide();
+    }
     var calendarRange = myApp.calendar({
         input: '#data_search',
         dateFormat: 'dd/mm/yyyy',
@@ -4614,6 +5202,10 @@ myApp.onPageInit('filtro-pedidos', function (page){
         $$("input[name='situacao_search']:checked").each(function (){          
            situacao.push( $(this).val());
         });
+        var embalagem_search = new Array();
+        $$("input[name='embalagem_search']:checked").each(function (){          
+           embalagem_search.push( $(this).val());
+        });
         var cliente_search = $$("#cliente_search").val();
         var rep_search = $$("#representante_search").val();
         var transportadora_search = $$("#transportadora_search").val();
@@ -4621,12 +5213,15 @@ myApp.onPageInit('filtro-pedidos', function (page){
         var periodo_entrega = $$("#data_entrega_search").val();
         var id = $$("#id_search").val();
 
-        mainView.router.loadPage('pedidos.html?situacao='+situacao+'&cliente_search='+cliente_search+'&transportadora_search='+transportadora_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&periodo_entrega='+periodo_entrega+'&id='+id);
+        mainView.router.loadPage('pedidos.html?situacao='+situacao+'&cliente_search='+cliente_search+'&embalagem_search='+embalagem_search+'&transportadora_search='+transportadora_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&periodo_entrega='+periodo_entrega+'&id='+id);
     });
 })
 
 // PAINEL DE FILTRO DE LANCAMENTOS
 myApp.onPageInit('filtro-cotacoes', function (page){
+    if (tipousuario != 1){
+        $$(".lirep").hide();
+    }
     var calendarRange = myApp.calendar({
         input: '#data_search',
         dateFormat: 'dd/mm/yyyy',
@@ -4675,18 +5270,25 @@ myApp.onPageInit('filtro-cotacoes', function (page){
         $$("input[name='situacao_search']:checked").each(function (){          
            situacao.push( $(this).val());
         });
+        var embalagem_search = new Array();
+        $$("input[name='embalagem_search']:checked").each(function (){          
+           embalagem_search.push( $(this).val());
+        });
         var cliente_search = $$("#cliente_search").val();
         var rep_search = $$("#representante_search").val();
         var periodo_lancamento = $$("#data_search").val();
         var periodo_entrega = $$("#data_entrega_search").val();
         var id = $$("#id_search").val();
 
-        mainView.router.loadPage('cotacoes.html?situacao='+situacao+'&cliente_search='+cliente_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&periodo_entrega='+periodo_entrega+'&id='+id);
+        mainView.router.loadPage('cotacoes.html?situacao='+situacao+'&cliente_search='+cliente_search+'&embalagem_search='+embalagem_search+'&rep_search='+rep_search+'&periodo_lancamento='+periodo_lancamento+'&periodo_entrega='+periodo_entrega+'&id='+id);
     });
 })
 
 // PAINEL DE FILTRO PREVISAO DE VENDAS
 myApp.onPageInit('filtro-previsao-vendas', function (page){
+    if (tipousuario != 1){
+        $$(".lirep").hide();
+    }
     var calendarRange = myApp.calendar({
         input: '#data_search',
         dateFormat: 'dd/mm/yyyy',
@@ -4745,6 +5347,9 @@ myApp.onPageInit('filtro-previsao-vendas', function (page){
 
 // PAINEL DE FILTRO OPORTUNIDADES
 myApp.onPageInit('filtro-oportunidades', function (page){
+    if (tipousuario != 1){
+        $$(".lirep").hide();
+    }
     var calendarRange = myApp.calendar({
         input: '#data_search',
         dateFormat: 'dd/mm/yyyy',
@@ -4752,6 +5357,10 @@ myApp.onPageInit('filtro-oportunidades', function (page){
     });
 
     if (tipousuario == 2){
+        var repres = rep;
+        $$(".lirep").hide();
+    }
+    if (tipousuario == 5){
         var repres = rep;
         $$(".lirep").hide();
     }
@@ -4805,6 +5414,9 @@ myApp.onPageInit('filtro-oportunidades', function (page){
 
 // PAINEL DE FILTRO NEGOCIOS
 myApp.onPageInit('filtro-negocios', function (page){
+    if (tipousuario != 1){
+        $$(".lirep").hide();
+    }
     var calendarRange = myApp.calendar({
         input: '#data_search',
         dateFormat: 'dd/mm/yyyy',
@@ -4818,6 +5430,10 @@ myApp.onPageInit('filtro-negocios', function (page){
     });
 
     if (tipousuario == 2){
+        var repres = rep;
+        $$(".lirep").hide();
+    }
+    if (tipousuario == 5){
         var repres = rep;
         $$(".lirep").hide();
     }
@@ -4873,6 +5489,9 @@ myApp.onPageInit('filtro-negocios', function (page){
 
 // PAINEL DE FILTRO DE HIGIENIZACOES
 myApp.onPageInit('filtro-higienizacoes', function (page){
+    if (tipousuario != 1){
+        $$(".lirep").hide();
+    }
     var calendarRange = myApp.calendar({
         input: '#data_search',
         dateFormat: 'dd/mm/yyyy',
@@ -4922,6 +5541,10 @@ myApp.onPageInit('filtro-higienizacoes', function (page){
 
 // PAINEL DE FILTRO DE AÇÕES CORRETIVAS
 myApp.onPageInit('filtro-acoescorretivas', function (page){
+    if (tipousuario != 1){
+        $$(".lirep").hide();
+    }
+
     var calendarRange = myApp.calendar({
         input: '#data_search',
         dateFormat: 'dd/mm/yyyy',
@@ -4990,6 +5613,9 @@ myApp.onPageInit('filtro-acoescorretivas', function (page){
 
 // PAINEL DE FILTRO DE TESTES
 myApp.onPageInit('filtro-testes', function (page){
+    if (tipousuario != 1){
+        $$(".lirep").hide();
+    }
     var calendarRange = myApp.calendar({
         input: '#data_search',
         dateFormat: 'dd/mm/yyyy',
@@ -5071,6 +5697,8 @@ myApp.onPageInit('form-representante', function (page){
                 $$("input[type=text][name=rep_telefone]").val(returnedData[0].telefone);
                 $$("input[type=text][name=rep_endereco]").val(returnedData[0].endereco);
                 $$("input[type=text][name=rep_bairro]").val(returnedData[0].bairro);
+                $$("input[type=text][name=idtabela]").val(returnedData[0].idtabela);
+                $$("input[type=text][name=tabela-precos]").val(returnedData[0].nometabela);
                 
                 //carrega estados e cidades no select
                 $$.getJSON('js/cidadesEstados.json', function (data) {
@@ -5152,7 +5780,9 @@ myApp.onPageInit('form-representante', function (page){
                             
         }); 
 
-   }  
+   } 
+
+   pesquisar_tabela_precos(); 
      
 
     // SALVANDO CADASTRO DE REPRESENTANTE
@@ -5175,7 +5805,156 @@ myApp.onPageInit('form-representante', function (page){
                         color: 'lightgreen'
                     },
                 });
-                mainView.router.reloadPage('representantes');
+                mainView.router.reloadPage('representantes.html');
+              }
+            })           
+
+        } else {
+          //myApp.alert('O formulário não é válido');
+        } 
+        
+   });     
+})
+
+
+//FORMULÁRIO DE CADASTRO DE REPRESENTANTES
+myApp.onPageInit('form-tecnicos', function (page){
+  //pega o parametro get "cliente" que vem do link da lista de clientes
+   var tecnico = page.query.id; 
+
+   // se existe um parametro "representante" faz a edição e salvamento do registro
+   if (tecnico != null ){
+    
+        // AÇÃO SE FOR EDITAR O CLIENTE
+        $$.ajax({
+            url: baseurl+'loads/loadDadosTecnico.php',
+            data: { "id": tecnico },
+            type: 'get',
+            dataType: 'json',
+            
+            success: function(returnedData) {
+                $$("#tec_id").val(returnedData[0].id);
+                $$("#tec_nome").val(returnedData[0].nome);
+                $$("#tec_fantasia").val(returnedData[0].fantasia);
+                $$("#tec_cpf").val(returnedData[0].cpf);
+                $$("#tec_cnpj").val(returnedData[0].cnpj);
+                $$("#tec_inscricao").val(returnedData[0].inscricao);
+                $$("#tec_segmento").val(returnedData[0].segmento);
+                $$("#tec_email").val(returnedData[0].email);
+                $$("#tec_cep").val(returnedData[0].cep);
+                $$("#tec_estado").val(returnedData[0].estado);
+                $$("input[type=text][name=tec_telefone]").val(returnedData[0].telefone);
+                $$("input[type=text][name=tec_endereco]").val(returnedData[0].endereco);
+                $$("input[type=text][name=tec_bairro]").val(returnedData[0].bairro);
+                //$$("input[type=text][name=idtabela]").val(returnedData[0].idtabela);
+                //$$("input[type=text][name=tabela-precos]").val(returnedData[0].nometabela);
+                
+                //carrega estados e cidades no select
+                $$.getJSON('js/cidadesEstados.json', function (data) {
+                 
+                    var estado = returnedData[0].estado;
+                    var cidade = returnedData[0].cidade;
+                    var items = [];
+                    var options = '<option value="" selected=selected>'+estado+'</option>';
+                   
+                    $$.each(data, function (key, val) {
+                      options += '<option value="' + val.sigla + '">' + val.sigla + '</option>';
+                    });                 
+                    $$("#tec_estado").html(options);
+                    $$("#tec_estado").change(function () {                                           
+                    if (estado != ""){
+                        var options_cidades = '<option value="">'+cidade+'</option>';
+                        $$.each(data, function (key, val) {         
+                            if(val.sigla == estado) {                           
+                              $$.each(val.cidades, function (key_city, val_city) {
+                                options_cidades += '<option value="' + val_city + '">' + val_city + '</option>';
+                              });                         
+                            }
+                        });
+                        $$("#tec_cidade").html(options_cidades);
+                    } 
+                       
+
+                    $$("#tec_estado").change(function(){ 
+                        var options_cidades = '<option value="">-- Município --</option>';
+                        var str = ""; 
+                        str = $$(this).val();  
+                        $$.each(data, function (key, val) {         
+                            if(val.sigla == str) {                           
+                                $$.each(val.cidades, function (key_city, val_city) {
+                                  options_cidades += '<option value="' + val_city + '">' + val_city + '</option>';
+                                });                         
+                              }
+                            });
+                            $$("#tec_cidade").html(options_cidades);  
+                        })
+                                   
+                    }).change();        
+                            
+                }); 
+
+            }
+        });
+
+   } else {
+        // AÇÃO SE FOR CADASTRAR NOVO TÉCNICO
+        //carrega estados e cidades no select
+        $$.getJSON('js/cidadesEstados.json', function (data) {
+            
+            var items = [];
+            var options = '<option value="" selected=selected>-- Estado --</option>';
+                   
+            $$.each(data, function (key, val) {
+                options += '<option value="' + val.sigla + '">' + val.sigla + '</option>';
+            });                 
+            $$("#tec_estado").html(options);
+            $$("#tec_estado").change(function () {                                           
+                   
+
+                $$("#tec_estado").change(function(){ 
+                    var options_cidades = '<option value="">-- Município --</option>';
+                    var str = ""; 
+                    str = $$(this).val();  
+                    $$.each(data, function (key, val) {         
+                        if(val.sigla == str) {                           
+                            $$.each(val.cidades, function (key_city, val_city) {
+                                options_cidades += '<option value="' + val_city + '">' + val_city + '</option>';
+                            });                         
+                        }
+                    });
+                    $$("#tec_cidade").html(options_cidades);  
+                })
+                                       
+            }).change();        
+                            
+        }); 
+
+   } 
+
+   //pesquisar_tabela_precos(); 
+     
+
+    // SALVANDO CADASTRO DE REPRESENTANTE
+    $$(".salva-tecnico").click(function(){
+    //$$('#form-cliente').on('submit', function (e) { 
+        //e.preventDefault();
+        var form = $$('#form-tecnico');
+        $("#form-tecnico").parsley().validate();
+        
+        if ($("#form-tecnico").parsley().isValid()) {
+          $$.ajax({
+              url: baseurl+'saves/saveTecnico.php',           
+              data: new FormData(form[0]),
+              type: 'post',
+              success: function( response ) {
+                myApp.addNotification({
+                    message: response,
+                    button: {
+                        text: 'Fechar',
+                        color: 'lightgreen'
+                    },
+                });
+                mainView.router.reloadPage('tecnicos.html');
               }
             })           
 
@@ -6120,9 +6899,15 @@ myApp.onPageInit('email-apresentacao', function (page){
     $$(".enviar-apresentacao").click(function(){
         var form = $$('#form-envio-apresentacao');
         $$.ajax({
-            url: baseurl+'server/enviaApresentacao.php?remetente='+usuarioEmail+'&idu='+usuarioID,           
+            url: 'https://hagnossq.com.br/app/server/enviaApresentacao.php?remetente='+usuarioEmail+'&idu='+usuarioID,           
             data: new FormData(form[0]),
-            type: 'post',
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: true,
+            crossDomain: true, 
+            preloader: true,
+            method: 'post',
             success: function( response ) {
               myApp.addNotification({
                   message: response,
@@ -6133,12 +6918,138 @@ myApp.onPageInit('email-apresentacao', function (page){
               });
               mainView.router.back();
             }
+             
         }) 
     });
 
 })
 
-function pesquisar_cliente(){
+function pesquisar_produto(row){
+    var autocompleteDropdownAjax = myApp.autocomplete({
+        //input: '.ajax-produtos-list',
+        input: '.nome-produto-'+row,
+        openIn: 'dropdown',
+        preloader: true, //enable preloader
+        valueProperty: 'id', //object's "value" property name
+        textProperty: 'nome', //object's "text" property name
+        limit: 20, //limit to 20 results
+        //dropdownPlaceholderText: 'Try "JavaScript"',
+        
+        source: function (autocomplete, query, render) {
+            var results = [];
+            if (query.length === 0) {
+                render(results);
+                //$$("#libera").addClass("disabled");
+                return;
+            } else {
+                //$$("#libera").removeClass("disabled");
+            }
+
+            // Show Preloader
+            autocomplete.showPreloader();
+            // Do Ajax request to Autocomplete data
+            $$.ajax({
+                url: baseurl+'loads/ajax-produtos-list.php',
+                method: 'GET',
+                dataType: 'json',
+                //send "query" to server. Useful in case you generate response dynamically
+                data: {
+                    query: query
+                },
+
+                success: function (data) {
+                    
+                    // Find matched items
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].nome.toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(data[i]);
+                    }
+                    // Hide Preoloader
+                    autocomplete.hidePreloader();
+                    // Render items by passing array with result items
+                    render(results);
+                }
+            });
+        },
+        onChange: function (autocomplete, value) {
+            // Add item text value to item-after
+            $$('.nome-produto-'+row).find('.item-after').text(value.nome);
+            // Add item value to input value
+            $$('.nome-produto-'+row).val(value.nome);
+            $$('.cod-produto-'+row).val(value.id);
+            //$$("#libera").attr("href", "https://wdlopes.com.br/obras/resultC.php?c="+$$('#autocomplete-dropdown-ajax').val());
+            //$$("#libera").click();
+            //$$(".addprodutotabela").removeClass("disabled");
+            //$(".valor").maskMoney({decimal:".",thousands:""});
+            
+            $$("#salvar-tabela-precos").removeClass("disabled"); 
+            
+        }        
+    });
+}
+
+function pesquisar_tabela_precos(){
+    var autocompleteDropdownAjax = myApp.autocomplete({
+        //input: '.ajax-produtos-list',
+        input: '.ajax-tabela-precos-list',
+        openIn: 'dropdown',
+        preloader: true, //enable preloader
+        valueProperty: 'id', //object's "value" property name
+        textProperty: 'nome', //object's "text" property name
+        limit: 20, //limit to 20 results
+        //dropdownPlaceholderText: 'Try "JavaScript"',
+        
+        source: function (autocomplete, query, render) {
+            var results = [];
+            if (query.length === 0) {
+                render(results);
+                //$$("#libera").addClass("disabled");
+                return;
+            } else {
+                //$$("#libera").removeClass("disabled");
+            }
+
+            // Show Preloader
+            autocomplete.showPreloader();
+            // Do Ajax request to Autocomplete data
+            $$.ajax({
+                url: baseurl+'loads/ajax-tabela-precos-list.php',
+                method: 'GET',
+                dataType: 'json',
+                //send "query" to server. Useful in case you generate response dynamically
+                data: {
+                    query: query
+                },
+
+                success: function (data) {
+                    
+                    // Find matched items
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].nome.toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(data[i]);
+                    }
+                    // Hide Preoloader
+                    autocomplete.hidePreloader();
+                    // Render items by passing array with result items
+                    render(results);
+                }
+            });
+        },
+        onChange: function (autocomplete, value) {
+            // Add item text value to item-after
+            $$('.ajax-tabela-precos-list').find('.item-after').text(value.nome);
+            // Add item value to input value
+            $$('.ajax-tabela-precos-list').val(value.nome);
+            $$('.idtabela').val(value.id);
+            //$$("#libera").attr("href", "https://wdlopes.com.br/obras/resultC.php?c="+$$('#autocomplete-dropdown-ajax').val());
+            //$$("#libera").click();
+            //$$(".addprodutotabela").removeClass("disabled");
+            //$(".valor").maskMoney({decimal:".",thousands:""});            
+            //$$("#salvar-tabela-precos").removeClass("disabled"); 
+            
+        }        
+    });
+}
+
+function pesquisar_cliente(f){
     var autocompleteDropdownAjax = myApp.autocomplete({
         input: '#ajax-clientes-list',
         openIn: 'dropdown',
@@ -6162,7 +7073,7 @@ function pesquisar_cliente(){
             autocomplete.showPreloader();
             // Do Ajax request to Autocomplete data
             $$.ajax({
-                url: baseurl+'loads/ajax-clientes-list.php?rep='+rep,
+                url: baseurl+'loads/ajax-clientes-list.php?rep='+rep+'&f='+f,
                 method: 'GET',
                 dataType: 'json',
                 //send "query" to server. Useful in case you generate response dynamically
@@ -6227,7 +7138,7 @@ function pesquisar_representante(){
             autocomplete.showPreloader();
             // Do Ajax request to Autocomplete data
             $$.ajax({
-                url: baseurl+'loads/ajax-representantes-list.php?rep='+rep,
+                url: baseurl+'loads/ajax-representantes-list.php',
                 method: 'GET',
                 dataType: 'json',
                 //send "query" to server. Useful in case you generate response dynamically
@@ -6255,7 +7166,7 @@ function pesquisar_representante(){
             $$('#ajax-representantes-list, input[name=nomerep]').val(value.nome);
             $$("input[name=codrep]").val(value.id);
             $$("input[name=email_relatorio]").val(value.email);
-            $$("#gera-rel-desempenho, .enviaRel").removeClass("disabled");
+            $$("#gera-rel-desempenho, .enviaRel, #gera-rel-cv, #gera-rel-sv").removeClass("disabled");
             
 
             //ao_empreendimento = $$('#ajax-clientes-list').val();
@@ -6367,6 +7278,7 @@ myApp.onPageInit('form-pedido', function (page){
                 $$("input[name=transportadora]").val(returnedData[0].transportadora);
                 $$("textarea[name=comentarios_finalizacao]").val(returnedData[0].comentarios_finalizacao);                
                 $$("input[name=email-producao]").val(returnedData[0].emailCliente);
+                $$("#finalidade-ped").val(returnedData[0].finalidade_ped);
 
                 if ($$("#nf").val() != '' && $$("#transportadora").val() != ''){
                     if (tipousuario != 1){
@@ -6407,6 +7319,7 @@ myApp.onPageInit('form-pedido', function (page){
                         $$("#producao").addClass("producao-active");
                         $$("#expedicao").addClass("expedicao-active");
                         $$("#entrega").addClass("entrega-active");
+                        $$("#finalizado").removeClass("disabled");
                         myApp.showTab('#tab-4');
                     }
 
@@ -6596,22 +7509,39 @@ myApp.onPageInit('form-pedido', function (page){
                                                 '</div>'+
                                             '</div>'+
                                             '<div class="prod-values"></div>'+
-                            
+
                                             '<div class="item-inner" style="width:20%">'+
+                                                '<div class="item-title label">EMBALAGEM</div>'+              
+                                                '<div class="item-input">'+
+                                                '<select name="embalagem[]" class="embalagem" required>'+
+                                                '<option value="">-- selecione --</option>'+
+                                                '<option value="GARRAFA 1LT">GARRAFA 1LT</option>'+
+                                                '<option value="GARRAFA 5LT">GARRAFA 5LT</option>'+
+                                                '<option value="BOMBONA 20LT">BOMBONA 20LT</option>'+
+                                                '<option value="BOMBONA 50LT">BOMBONA 50LT</option>'+
+                                                '<option value="TAMBOR 200LT">TAMBOR 200LT</option>'+
+                                                '<option value="CONTAINER 1000LT">CONTAINER 1000LT</option>'+
+                                                '</select>'+
+                                                '</div>'+
+                                            '</div>'+
+
+                                            '<div class="item-inner" style="width:10%">'+
                                                 '<div class="item-title label" style="text-alicn:right">QTDE</div>'+              
                                                 '<div class="item-input subtotaliza">'+
                                                 '<input type="text" class="calculo-pedido qtdprod" name="qtd-ped-v[]" value="" placeholder="0" style="color:green" required/>'+
                                                 '</div>'+
                                             '</div>'+
+                            
+                                            
 
-                                            '<div class="item-inner" style="width:20%">'+
+                                            '<div class="item-inner" style="width:15%">'+
                                                 '<div class="item-title label" style="text-alicn:right">PREÇO UNIT.</div>'+
                                                 '<div class="item-input subtotaliza">'+
                                                 '<input type="text" class="calculo-pedido preco_aplicado" name="preco-ped-v[]" value="" placeholder="0.00" style="color:green"/>'+
                                                 '</div>'+
                                             '</div>'+
 
-                                            '<div class="item-inner" style="width:20%">'+
+                                            '<div class="item-inner" style="width:15%">'+
                                                 '<div class="item-title label" style="text-alicn:right">PREÇO TOTAL</div>'+
                                                 '<div class="item-input">'+
                                                 '<input type="text" class="calculo-pedido" name="subtotal-ped-v[]" value="0.00" style="color:green"/>'+
@@ -6754,6 +7684,380 @@ myApp.onPageInit('form-pedido', function (page){
 
 })
 
+function addProdTabela(row){
+    rowProdTabela++;
+    htmlRow = '<tr class="nLinha-'+row+'">'+
+
+                    '<td><button type="button" class="button color-teal" onclick=$$(this).parents("tr").remove()><i class="icon material-icons">delete</i></button></td>'+                    
+                    
+                    '<td style="text-align:left!important">'+
+                        '<input type="text" name="'+row+'-nomeprod[]" class="ajax-produtos-list nome-produto-'+rowProdTabela+'" autocomplete="off" placeholder="pesquisar produto" required style="width:250px!important;text-align:left!important"/>'+ 
+                        '<input type="hidden" name="'+row+'-codprod[]" class="cod-produto-'+rowProdTabela+'"/>'+ 
+                        '<input type="hidden" name="nLinhaProd[]" class="nLinhaProd-'+row+'" value="'+row+'"/>'+
+                        '<input type="hidden" name="'+row+'-nProd[]" value="'+rowProdTabela+'"/>'+ 
+                    '</td>'+
+
+                    '<td style="text-align:left!important">'+
+                    '<input type="text" name="'+row+'-caracteristicas[]" class="caracteristicas-prod-'+rowProdTabela+'" style="text-align:left;width:250px!important" placeholder="Digite a característica" required>'+
+                    '</td>'+
+
+                    '<td> <a href="#" class="button color-teal colar-precos" onclick="colar_precos('+row+')"><i class="icon material-icons">monetization_on</i></a> </td>'+
+
+                    '<td> <input type="text" class="valor tb-v-base-'+row+'-'+rowProdTabela+'" name="'+row+'-tb-v-base[]" placeholder="R$ 0,00"> </td>'+
+
+                    '<td class="tb-color-10"> <input type="text" class="valor bb-v10-'+row+'-'+rowProdTabela+'" name="'+row+'-bb-v10[]" placeholder="R$ 0,00"> </td>'+
+                    '<td class="tb-color-10"> <input type="text" class="valor tb-v10-'+row+'-'+rowProdTabela+'" name="'+row+'-tb-v10[]" placeholder="R$ 0,00"> </td>'+
+
+                    '<td class="tb-color-9"> <input type="text" class="valor bb-v9-'+row+'-'+rowProdTabela+'" name="'+row+'-bb-v9[]" placeholder="R$ 0,00"> </td>'+
+                    '<td class="tb-color-9"> <input type="text" class="valor tb-v9-'+row+'-'+rowProdTabela+'" name="'+row+'-tb-v9[]" placeholder="R$ 0,00"> </td>'+
+
+                    '<td class="tb-color-8"> <input type="text" class="valor bb-v8-'+row+'-'+rowProdTabela+'" name="'+row+'-bb-v8[]" placeholder="R$ 0,00"> </td>'+
+                    '<td class="tb-color-8"> <input type="text" class="valor tb-v8-'+row+'-'+rowProdTabela+'" name="'+row+'-tb-v8[]" placeholder="R$ 0,00"> </td>'+
+
+                    '<td class="tb-color-7"> <input type="text" class="valor bb-v7-'+row+'-'+rowProdTabela+'" name="'+row+'-bb-v7[]" placeholder="R$ 0,00"> </td>'+
+                    '<td class="tb-color-7"> <input type="text" class="valor tb-v7-'+row+'-'+rowProdTabela+'" name="'+row+'-tb-v7[]" placeholder="R$ 0,00"> </td>'+
+
+                    '<td class="tb-color-6"> <input type="text" class="valor bb-v6-'+row+'-'+rowProdTabela+'" name="'+row+'-bb-v6[]" placeholder="R$ 0,00"> </td>'+
+                    '<td class="tb-color-6"> <input type="text" class="valor tb-v6-'+row+'-'+rowProdTabela+'" name="'+row+'-tb-v6[]" placeholder="R$ 0,00"> </td>'+
+
+                    '<td class="tb-color-5"> <input type="text" class="valor bb-v5-'+row+'-'+rowProdTabela+'" name="'+row+'-bb-v5[]" placeholder="R$ 0,00"> </td>'+
+                    '<td class="tb-color-5"> <input type="text" class="valor tb-v5-'+row+'-'+rowProdTabela+'" name="'+row+'-tb-v5[]" placeholder="R$ 0,00"> </td>'+
+
+                    '<td class="tb-color-4"> <input type="text" class="valor bb-v4-'+row+'-'+rowProdTabela+'" name="'+row+'-bb-v4[]" placeholder="R$ 0,00"> </td>'+
+                    '<td class="tb-color-4"> <input type="text" class="valor tb-v4-'+row+'-'+rowProdTabela+'" name="'+row+'-tb-v4[]" placeholder="R$ 0,00"> </td>'+
+
+                    '<td class="tb-color-3"> <input type="text" class="valor bb-v3-'+row+'-'+rowProdTabela+'" name="'+row+'-bb-v3[]" placeholder="R$ 0,00"> </td>'+
+                    '<td class="tb-color-3"> <input type="text" class="valor tb-v3-'+row+'-'+rowProdTabela+'" name="'+row+'-tb-v3[]" placeholder="R$ 0,00"> </td>'+
+
+                    '<td class="tb-color-2"> <input type="text" class="valor bb-v2-'+row+'-'+rowProdTabela+'" name="'+row+'-bb-v2[]" placeholder="R$ 0,00"> </td>'+
+                    '<td class="tb-color-2"> <input type="text" class="valor tb-v2-'+row+'-'+rowProdTabela+'" name="'+row+'-tb-v2[]" placeholder="R$ 0,00"> </td>'+
+
+                    '<td class="tb-color-1"> <input type="text" class="valor bb-v1-'+row+'-'+rowProdTabela+'" name="'+row+'-bb-v1[]" placeholder="R$ 0,00"> </td>'+
+                    '<td class="tb-color-1"> <input type="text" class="valor tb-v1-'+row+'-'+rowProdTabela+'" name="'+row+'-tb-v1[]" placeholder="R$ 0,00"> </td>'+
+
+                '</tr>';
+
+    //$$(".table-precos-"+row+" tbody").html(htmlRow);
+    //$$(".table-precos-"+row).append(htmlRow);
+    var rowTabela = document.getElementById("table-precos-"+row);
+    //rowTabela.innerHTML += htmlRow; 
+    rowTabela.insertAdjacentHTML('beforeend', htmlRow);    
+    //$(".valor").maskMoney({decimal:",",thousands:""});
+
+    pesquisar_produto(rowProdTabela);
+    //$$(".caracteristicas-prod-"+rowProdTabela).html(caracteristicasProd);  
+
+    var fixHelperModified = function(e, tr) {
+        var originals = tr.children();
+        var helper = tr.clone();
+        helper.children().each(function(index) {
+            $$(this).width(originals.eq(index).width());
+        });
+        return helper;
+    },
+    updateIndex = function(e, ui) {
+        $('td.index', ui.item.parent()).each(function (i) {
+            $$(this).html(i + 1);
+        });
+    };
+
+    $("tbody").sortable({
+        helper: fixHelperModified,
+        stop: updateIndex
+    }).disableSelection();
+
+           
+}
+
+
+//function colar_precos(rowP){
+function colar_precos(row){
+    myApp.modal({
+              title: 'Colar preços',
+              text: '',
+              afterText: '<textarea name="precos" class="m-precos" rows=6 class="modal-text-input" style="margin-top:20px;width:100%"></textarea>',
+              buttons: [{
+                text: 'COLAR',
+                onClick: function() {
+                  
+                    var str = $$(".m-precos").val();
+                    var str = str.split('R$ ');
+
+                    var lProdutos = $$(".nLinhaProd-"+row).length;
+                    nCol = 0;
+
+                    for (x = 0; x < lProdutos; x++){   
+
+                        var nProd = new Array();
+                        $$("input[name='"+row+"-nProd[]']").each(function(){
+                          nProd.push($$(this).val());
+                        });                                            
+
+                        var rowP = nProd[x];
+                        //myApp.alert(row);
+                        
+
+                        $$(".tb-v-base-"+row+'-'+rowP).val("R$ "+str[1+nCol]);
+
+                        $$(".bb-v10-"+row+'-'+rowP).val("R$ "+str[2+nCol]);
+                        $$(".tb-v10-"+row+'-'+rowP).val("R$ "+str[3+nCol]);
+
+                        $$(".bb-v9-"+row+'-'+rowP).val("R$ "+str[4+nCol]);
+                        $$(".tb-v9-"+row+'-'+rowP).val("R$ "+str[5+nCol]);
+
+                        $$(".bb-v8-"+row+'-'+rowP).val("R$ "+str[6+nCol]);
+                        $$(".tb-v8-"+row+'-'+rowP).val("R$ "+str[7+nCol]);
+
+                        $$(".bb-v7-"+row+'-'+rowP).val("R$ "+str[8+nCol]);
+                        $$(".tb-v7-"+row+'-'+rowP).val("R$ "+str[9+nCol]);
+
+                        $$(".bb-v6-"+row+'-'+rowP).val("R$ "+str[10+nCol]);
+                        $$(".tb-v6-"+row+'-'+rowP).val("R$ "+str[11+nCol]);
+
+                        $$(".bb-v5-"+row+'-'+rowP).val("R$ "+str[12+nCol]);
+                        $$(".tb-v5-"+row+'-'+rowP).val("R$ "+str[13+nCol]);
+
+                        $$(".bb-v4-"+row+'-'+rowP).val("R$ "+str[14+nCol]);
+                        $$(".tb-v4-"+row+'-'+rowP).val("R$ "+str[15+nCol]);
+
+                        $$(".bb-v3-"+row+'-'+rowP).val("R$ "+str[16+nCol]);
+                        $$(".tb-v3-"+row+'-'+rowP).val("R$ "+str[17+nCol]);
+
+                        $$(".bb-v2-"+row+'-'+rowP).val("R$ "+str[18+nCol]);
+                        $$(".tb-v2-"+row+'-'+rowP).val("R$ "+str[19+nCol]);
+
+                        $$(".bb-v1-"+row+'-'+rowP).val("R$ "+str[20+nCol]);
+                        $$(".tb-v1-"+row+'-'+rowP).val("R$ "+str[21+nCol]);
+
+                        nCol += 21;
+
+                    }
+                }
+              }, {
+                text: 'CANCELAR',
+                onClick: function() {
+                  //myApp.alert('You clicked Cancel!');
+                }
+              }, ]
+            });
+}
+
+
+myApp.onPageInit('form-tabelaprecos', function (page){
+
+    rowProdTabela = 0;
+    rowListaTabela = 0;
+    caracteristicasProd = "";
+
+    $$("#linhasprod").html("");
+
+    // seleciona o cliente
+    //pesquisar_produto();
+    var idtab = page.query.idtab; 
+
+    if (idtab != undefined){
+
+        $$(".salva-tabela-precos").removeClass("disabled");
+        
+        $$.ajax({
+            url: baseurl+'loads/loadNomeTabelasPreco.php?idtab='+idtab,
+            type: 'get',
+            dataType: 'json',       
+            success: function(returnedData) {
+                $$("input[name=nome]").val(returnedData[0].nomelinha);
+                rowProdTabela = returnedData[0].qtdprod;
+                rowListaTabela = returnedData[0].qtdlinha;
+            }
+        });
+
+        $$.ajax({
+            url: baseurl+'loads/loadDadosTabelasPreco.php?idtab='+idtab,
+            type: 'get',        
+            success: function(returnedData) {
+                $$("#linhasprod").html(returnedData);
+                var qtdLProd = $$('.lp').length;
+                //pesquisar_produto(1);   
+                for(var i = 0; i < qtdLProd; i++){
+                    pesquisar_produto(i+1);
+                } 
+
+                var fixHelperModified = function(e, tr) {
+                var originals = tr.children();
+                var helper = tr.clone();
+                helper.children().each(function(index) {
+                    $$(this).width(originals.eq(index).width());
+                });
+                    return helper;
+                },
+                updateIndex = function(e, ui) {
+                    $('td.index', ui.item.parent()).each(function (i) {
+                        $$(this).html(i + 1);
+                    });
+                };
+
+                $("tbody").sortable({
+                    helper: fixHelperModified,
+                    stop: updateIndex
+                }).disableSelection();
+
+            }
+        });
+    } else {
+        idtab = "";
+    }
+
+
+    $$(".addlinhatabela").click(function(){
+        rowListaTabela++;
+        //rowRemove = $$(".li-"+rowListaTabela);
+        
+        $$("#linhasprod").append(
+            '<li class="item-content li-'+rowListaTabela+'" style="margin-top:30px">'+
+            
+                '<div class="item-inner">'+
+                    '<div class="item-title label">Selecione uma linha de produtos</div>'+
+                    '<div class="item-input">'+
+                        '<select name="linha[]" class="linhaprod" required></select>'+
+                        '<input type="hidden" name="nLinha[]" value="'+rowListaTabela+'"/>'+     
+                    '</div>'+
+                '</div>'+
+                '<div class="item-inner">'+
+                    '<div class="item-input">'+ 
+                        '<p class="buttons-row theme-teal" style="float:right">'+
+                            '<button type="button" class="button color-teal minuslinhatabela" style="width:50px" onclick=$$(".li-'+rowListaTabela+'").remove()><i class="icon material-icons">delete</i></button>'+
+                        '</p>'+
+                    '</div>'+
+                '</div>'+
+            '</li>'+
+
+            '<li class="item-content li-'+rowListaTabela+'">'+
+                '<div style="width:100%;overflow-x:scroll;background:#BADAA5;margin-right:15px">'+
+                    '<table class="sorted_table table-precos table-precos-'+rowListaTabela+'" id="table-precos-'+rowListaTabela+'" style="border:none!important">'+ 
+
+                            '<thead>'+
+                            '<tr class="tr-input-comissao">'+
+                                '<th rowspan="3" colspan=2>PRODUTO '+rowListaTabela+'</th>'+
+                                '<th rowspan="3" style="width:250px!important">CARACTERÍSTICAS</th>'+
+                                '<th colspan=2 style="text-align:right">COMISSÕES (%)</th>'+
+                                '<th colspan=2 class="tb-10"> <input type="text" name="'+rowListaTabela+'-c-10" value="10"></th>'+
+                                '<th colspan=2 class="tb-9">   <input type="text" name="'+rowListaTabela+'-c-9"  value="9"></th>'+
+                                '<th colspan=2 class="tb-8">   <input type="text" name="'+rowListaTabela+'-c-8"  value="8"></th>'+
+                                '<th colspan=2 class="tb-7">   <input type="text" name="'+rowListaTabela+'-c-7"  value="7"></th>'+
+                                '<th colspan=2 class="tb-6">   <input type="text" name="'+rowListaTabela+'-c-6"  value="6"></th>'+
+                                '<th colspan=2 class="tb-5">   <input type="text" name="'+rowListaTabela+'-c-5"  value="5"></th>'+
+                                '<th colspan=2 class="tb-4">   <input type="text" name="'+rowListaTabela+'-c-4"  value="4"></th>'+
+                                '<th colspan=2 class="tb-3">   <input type="text" name="'+rowListaTabela+'-c-3"  value="3"></th>'+
+                                '<th colspan=2 class="tb-2">   <input type="text" name="'+rowListaTabela+'-c-2"  value="2"></th>'+
+                                '<th colspan=2 class="tb-1">   <input type="text" name="'+rowListaTabela+'-c-1"  value="1"></th>'+
+                            '</tr>'+
+                            
+                            '<tr class="tr-input-comissao">'+
+                                '<th colspan=2 style="text-align:right">MC (%)</th>'+
+                                '<th class="tb-10"> <input type="text" name="'+rowListaTabela+'-mc-bb-10" value="50"></th> <th class="tb-10">  <input type="text" name="'+rowListaTabela+'-mc-tb-10" value="50"></th>'+
+                                '<th class="tb-9">  <input type="text" name="'+rowListaTabela+'-mc-bb-9"  value="48"></th> <th class="tb-9">   <input type="text" name="'+rowListaTabela+'-mc-tb-9"  value="48"></th>'+
+                                '<th class="tb-8">  <input type="text" name="'+rowListaTabela+'-mc-bb-8"  value="46"></th> <th class="tb-8">   <input type="text" name="'+rowListaTabela+'-mc-tb-8"  value="46"></th>'+
+                                '<th class="tb-7">  <input type="text" name="'+rowListaTabela+'-mc-bb-7"  value="44"></th> <th class="tb-7">   <input type="text" name="'+rowListaTabela+'-mc-tb-7"  value="44"></th>'+
+                                '<th class="tb-6">  <input type="text" name="'+rowListaTabela+'-mc-bb-6"  value="42"></th> <th class="tb-6">   <input type="text" name="'+rowListaTabela+'-mc-tb-6"  value="42"></th>'+
+                                '<th class="tb-5">  <input type="text" name="'+rowListaTabela+'-mc-bb-5"  value="40"></th> <th class="tb-5">   <input type="text" name="'+rowListaTabela+'-mc-tb-5"  value="40"></th>'+
+                                '<th class="tb-4">  <input type="text" name="'+rowListaTabela+'-mc-bb-4"  value="38"></th> <th class="tb-4">   <input type="text" name="'+rowListaTabela+'-mc-tb-4"  value="38"></th>'+
+                                '<th class="tb-3">  <input type="text" name="'+rowListaTabela+'-mc-bb-3"  value="36"></th> <th class="tb-3">   <input type="text" name="'+rowListaTabela+'-mc-tb-3"  value="36"></th>'+
+                                '<th class="tb-2">  <input type="text" name="'+rowListaTabela+'-mc-bb-2"  value="34"></th> <th class="tb-2">   <input type="text" name="'+rowListaTabela+'-mc-tb-2"  value="34"></th>'+
+                                '<th class="tb-1">  <input type="text" name="'+rowListaTabela+'-mc-bb-1"  value="32"></th> <th class="tb-1">   <input type="text" name="'+rowListaTabela+'-mc-tb-1"  value="32"></th>'+
+                            '</tr>'+
+
+                            '<tr>'+
+                                '<th colspan=2 style="text-align:right">EMBALAGENS</th>'+
+                                '<th class="tb-10">BB</th> <th class="tb-10">TB</th>'+
+                                '<th class="tb-9">BB</th> <th class="tb-9">TB</th>'+
+                                '<th class="tb-8">BB</th> <th class="tb-8">TB</th>'+
+                                '<th class="tb-7">BB</th> <th class="tb-7">TB</th>'+
+                                '<th class="tb-6">BB</th> <th class="tb-6">TB</th>'+
+                                '<th class="tb-5">BB</th> <th class="tb-5">TB</th>'+
+                                '<th class="tb-4">BB</th> <th class="tb-4">TB</th>'+
+                                '<th class="tb-3">BB</th> <th class="tb-3">TB</th>'+
+                                '<th class="tb-2">BB</th> <th class="tb-2">TB</th>'+
+                                '<th class="tb-1">BB</th> <th class="tb-1">TB</th>'+
+                            '</tr>'+
+                            '</thead>'+
+                            '<tbody>'+
+                            '</tbody>'+
+                    '</table>'+
+                    '<button type="button" class="button button-fill button-raised color-teal addprodtabela" onclick="addProdTabela('+rowListaTabela+')">Adicionar produto</button>'+                
+                '</div>'+
+
+            '</li>'
+        );
+
+               
+            
+        $$.ajax({
+            url: baseurl+'loads/loadLinhasProd.php',
+            type: 'get',        
+            success: function(returnedData) {
+                $$(".linhaprod").append(returnedData);               
+            }
+        });
+
+    })          
+
+   
+    //$(".preco_aplicado").maskMoney({decimal:".",thousands:""});
+
+   
+    $$.ajax({
+        url: baseurl+'loads/loadLinhasProd.php',
+        type: 'get',        
+        success: function(returnedData) {
+            $$(".linhaprod").append(returnedData);
+        }
+    });
+
+
+    //$$.ajax({
+    //    url: baseurl+'loads/loadCaracteristicasProd.php',
+    //    type: 'get',        
+    //    success: function(returnedData) {
+    //        caracteristicasProd = returnedData;
+    //    }
+    //});   
+
+    //$$(".linhaprod").change(function(){
+    //    $$(".addlinhatabela").removeClass("disabled");
+    //})
+
+
+
+
+    // SALVANDO TABELA
+    $$("#salvar-tabela-precos").click(function(){
+        var form = $$('#form-tabela-precos'); 
+        $('#form-tabela-precos').parsley().validate();
+        
+        if ($('#form-tabela-precos').parsley().isValid()) {
+        $$.ajax({
+            url: baseurl+'saves/saveTabelaPrecos.php?idtab='+idtab,           
+            data: new FormData(form[0]),
+            type: 'post',
+            success: function( response ) {
+              myApp.addNotification({
+                  message: response,
+                  button: {
+                    text: 'Fechar',
+                    color: 'lightgreen'
+                  },
+              });
+              mainView.router.loadPage("tabela_precos.html");
+            }
+        }) 
+        }
+    });
+
+})
+
+function remove(linha){
+    $$(linha).closest(".item-content").remove();
+    rowProdTabela--;
+}
 
 // VISUALIZAÇÃO DE COTAÇÃO
 myApp.onPageInit('form-cotacao-adm', function (page){
@@ -6788,22 +8092,37 @@ myApp.onPageInit('form-cotacao-adm', function (page){
                                                         '<div class="productValues"></div>'+
                                                         '</div>'+
                                                     '</div>'+
-                        
+
                                                     '<div class="item-inner" style="width:20%">'+
+                                                        '<div class="item-title label">EMBALAGEM</div>'+              
+                                                        '<div class="item-input">'+
+                                                        '<select name="embalagem[]" class="embalagem" required>'+
+                                                        '<option value="">-- selecione --</option>'+
+                                                        '<option value="GARRAFA 1LT">GARRAFA 1LT</option>'+
+                                                        '<option value="GARRAFA 5LT">GARRAFA 5LT</option>'+
+                                                        '<option value="BOMBONA 20LT">BOMBONA 20LT</option>'+
+                                                        '<option value="BOMBONA 50LT">BOMBONA 50LT</option>'+
+                                                        '<option value="TAMBOR 200LT">TAMBOR 200LT</option>'+
+                                                        '<option value="CONTAINER 1000LT">CONTAINER 1000LT</option>'+
+                                                        '</select>'+
+                                                        '</div>'+
+                                                    '</div>'+
+                        
+                                                    '<div class="item-inner" style="width:10%">'+
                                                         '<div class="item-title label" style="text-alicn:right">QTDE</div>'+              
                                                         '<div class="item-input subtotaliza">'+
                                                         '<input type="text" class="calculo-cotacao qtdprod" name="qtd-cot-v[]" value="" placeholder="0" style="color:green" required/>'+
                                                         '</div>'+
                                                     '</div>'+
 
-                                                    '<div class="item-inner" style="width:20%">'+
+                                                    '<div class="item-inner" style="width:15%">'+
                                                         '<div class="item-title label" style="text-alicn:right">PREÇO UNIT.</div>'+
                                                         '<div class="item-input subtotaliza">'+
                                                         '<input type="text" class="calculo-cotacao preco_aplicado" name="preco-cot-v[]" value="" placeholder="0.00" style="color:green" required/>'+
                                                         '</div>'+
                                                     '</div>'+
 
-                                                    '<div class="item-inner" style="width:20%">'+
+                                                    '<div class="item-inner" style="width:15%">'+
                                                         '<div class="item-title label" style="text-alicn:right">PREÇO TOTAL</div>'+
                                                         '<div class="item-input">'+
                                                         '<input type="text" class="calculo-cotacao" name="subtotal-cot-v[]" value="0.00" style="color:green"/>'+
@@ -6974,6 +8293,7 @@ myApp.onPageInit('form-cotacao-visualizar', function (page){
             $$("select[name=situacao-cot]").val(returnedData[0].situacao);
             $$("select[name=frete-cot]").val(returnedData[0].frete);
             $$("textarea[name=info-cot]").val(returnedData[0].informacoes);
+            $$("#finalidade-cot").val(returnedData[0].finalidade_cot);
             //if (returnedData[0].situacao == "ENVIADA"){
             //    $$("input[name=situacao-cot]").prop("checked", true);
            // }
@@ -7220,6 +8540,8 @@ myApp.onPageInit('form-teste-visualizar', function (page){
             $$("input[name=data-teste]").val(returnedData[0].data);
             $$("select[name=situacao-teste]").val(returnedData[0].situacao);
             $$("textarea[name=info-teste]").val(returnedData[0].informacoes);
+
+
 
             $$("#produto-teste").change(function(){
                 if ($$("#produto-teste").val() != ""){
@@ -7525,6 +8847,7 @@ myApp.onPageInit('form-comercial', function (page){
             $$("input[name='prazo_pagamento']").val(returnedData[0].prazo_pagamento);
             $$("input[name='concorrente']").val(returnedData[0].concorrente);
             $$("input[name='data_ultima_compra']").val(returnedData[0].data_ultima_compra);
+            $$("input[name='qtd_ultima_compra']").val(returnedData[0].qtd_ultima_compra);
             $$("textarea[name='obs_prod']").val(returnedData[0].obs);        
 
             $$(".e-cliente").html(returnedData[0].ncli+"<br>"+nprod);
@@ -7838,17 +9161,17 @@ myApp.onPageInit('sortable-list', function (page) {
 
 
 /* ===== Login screen page events ===== */
-myApp.onPageInit('login-screen-embedded', function (page) {
-    $$(page.container).find('.button').on('click', function () {
-        //var username = $$(page.container).find('input[name="username"]').val();
-        //var password = $$(page.container).find('input[name="password"]').val();    
-        //myApp.alert('Username: ' + username + ', password: ' + password, function () {
-        //    mainView.router.back();
-        //});
-        //mainView.router.back();
-        //mainView.router.reloadPage('login-admin');
-    });
-});
+//myApp.onPageInit('login-screen-embedded', function (page) {
+//    $$(page.container).find('.button').on('click', function () {
+//        //var username = $$(page.container).find('input[name="username"]').val();
+//        //var password = $$(page.container).find('input[name="password"]').val();    
+//        //myApp.alert('Username: ' + username + ', password: ' + password, function () {
+//        //    mainView.router.back();
+//        //});
+//        //mainView.router.back();
+//        //mainView.router.reloadPage('login-admin');
+//    });
+//});
 $$('.login-screen').find('.button').on('click', function () {
     var username = $$('.login-screen').find('input[name="username"]').val();
     var password = $$('.login-screen').find('input[name="password"]').val();
@@ -7891,8 +9214,9 @@ myApp.onPageInit('clientes', function (page) {
     }
 
     $$.ajax({
+
         url: baseurl+'loads/loadClientes.php',
-        data: { "rep": rep, "tipoUsuario": tipousuario, "sCidade": sCidade, "sRep": sRep, "sProd": sProd, "sSituacao": sSituacao, "sInteracao": sInteracao, "id": id },
+        data: { "rep": rep, "tec": tec, "tipoUsuario": tipousuario, "sCidade": sCidade, "sRep": sRep, "sProd": sProd, "sSituacao": sSituacao, "sInteracao": sInteracao, "id": id },
         type: 'get',
         //dataType: 'json',
         
@@ -7978,6 +9302,27 @@ myApp.onPageInit('usuarios', function (page) {
             $$(".lista-usuarios").html(returnedData);
             var i = 0;
             $$(".lista-usuarios").find(".item-content").each(function(){
+            i++;
+            });
+            $$(".totalregistros").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");
+        }
+    });   
+});
+
+
+// LOAD LISTA DE TABELAS DE PREÇO
+myApp.onPageInit('tabelaprecos', function (page) {
+
+    $$.ajax({
+        url: baseurl+'loads/loadTabelasPreco.php',
+        //data: { "rep": rep, "tipoUsuario": tipousuario },
+        type: 'get',
+        //dataType: 'json',
+        
+        success: function(returnedData) {
+            $$(".lista-tabelas-preco").html(returnedData);
+            var i = 0;
+            $$(".lista-tabelas-preco").find(".item-content").each(function(){
             i++;
             });
             $$(".totalregistros").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");
@@ -8151,6 +9496,23 @@ myApp.onPageInit('representantes', function (page) {
             $$(".lista-representantes").html(returnedData);
             var i = 0;
             $$(".lista-representantes").find(".item-content").each(function(){
+            i++;
+            });
+            $$(".totalregistros").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");
+        }
+    });
+});
+
+// LOAD LISTA DE REPRESENTANTES
+/* ===== Swiper Two Way Control Gallery ===== */
+myApp.onPageInit('tecnicos', function (page) {   
+    $$.ajax({
+        url: baseurl+'loads/loadTecnicos.php',
+        type: 'get',        
+        success: function(returnedData) {
+            $$(".lista-tecnicos").html(returnedData);
+            var i = 0;
+            $$(".lista-tecnicos").find(".item-content").each(function(){
             i++;
             });
             $$(".totalregistros").html("Registros encontrados: <span style='font-size:18'>"+i+"</span>");
