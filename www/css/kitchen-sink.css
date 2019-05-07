@@ -614,3 +614,34 @@ input {font-size:16px!important;}
 .right {text-align:right;}
 .left {text-align:left;}
 
+.table-precos {border:1px solid #ddd;border-collapse:collapse;width:100%}
+.table-precos th, .table-precos td {border:1px solid #ddd;text-align:center;padding:6px 24px!important; white-space:nowrap;font-size:12px;}
+.tb-10 {background-color:#00B85C;width:180px!important;font-size:16px!important;}
+.tb-9 {background-color:#00EA75;width:180px!important;font-size:16px!important;}
+.tb-8 {background-color:#62FE7C;width:120px!important;font-size:16px!important;}
+.tb-7 {background-color:#93FBAC;width:120px!important;font-size:16px!important;}
+.tb-6 {background-color:#FFF2CC;width:120px!important;font-size:16px!important;}
+.tb-5 {background-color:#FFECEB;width:120px!important;font-size:16px!important;}
+.tb-4 {background-color:#FFC8C5;width:120px!important;font-size:16px!important;}
+.tb-3 {background-color:#FFA29B;width:120px!important;font-size:16px!important;}
+.tb-2 {background-color:#FF7F75;width:120px!important;font-size:16px!important;}
+.tb-1 {background-color:#FF4537;width:120px!important;font-size:16px!important;}
+
+.tb-color-10 {background-color:#00B85C!important;}
+.tb-color-9 {background-color:#00EA75!important;}
+.tb-color-8 {background-color:#62FE7C!important;}
+.tb-color-7 {background-color:#93FBAC!important;}
+.tb-color-6 {background-color:#FFF2CC!important;}
+.tb-color-5 {background-color:#FFECEB!important;}
+.tb-color-4 {background-color:#FFC8C5!important;}
+.tb-color-3 {background-color:#FFA29B!important;}
+.tb-color-2 {background-color:#FF7F75!important;}
+.tb-color-1 {background-color:#FF4537!important;}
+
+.tr-input-comissao th input{font-size:16px!important;font-weight:bold!important; text-align:center;}
+
+.table-precos .valor {text-align:right;width:120px;}
+.table-precos tbody input {width:60px!important;}
+.table-precos input {font-size:12px!important;text-align:right;}
+
+.erro {display:none;color:red;}
