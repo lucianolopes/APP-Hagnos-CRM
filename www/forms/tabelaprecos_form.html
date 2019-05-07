@@ -1,0 +1,61 @@
+<div data-page="form-tabelaprecos" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left">
+	<a href="#" class="back link icon-only p-voltar" data-ignore-cache="true"><i class="icon icon-back"></i></a>
+	<a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
+</div>
+<div class="center hg" class="nomeperfil">Nova tabela de preços</div>
+<div class="right">
+	<a href="#" id="salvar-tabela-precos" class="button link salva-tabela-precos disabled">salvar</a>
+	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+ 
+
+<div class="page-content">
+
+
+<div class="content-block" style="display:none">
+<h3 class="e-cliente"></h3>
+</div>
+
+
+
+<form id="form-tabela-precos" class="list-block inputs-list ajax-submit" data-parsley-validate="true" autocomplete="off">
+
+	<ul>
+		<li>
+			<div class="item-content">
+			<div class="item-inner">
+			<div class="item-title label">Nome da tabela</div>
+			<div class="item-input">
+			<input type="text" name="nome" required>
+			</div>
+			</div>
+			</div>
+		</li>
+	</ul>
+
+	
+
+	<ul id="linhasprod">
+	</ul>
+
+	
+
+	<div class="content-block">
+		<button type='button' class='button button-fill color-teal addlinhatabela'><i class='icon icon-plus'></i> Adicionar nova linha</button>
+	</div>
+	  
+	
+
+	
+
+</form>
+
+
+
+</div>

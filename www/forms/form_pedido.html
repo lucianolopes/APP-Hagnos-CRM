@@ -37,7 +37,7 @@
         </li>
     </ul>
 	
-	<h4 style="padding-left:15px" class="label-situacao">Situação</h4>
+	<h4 style="padding-left:15px" class="label-situacao">Status</h4>
 	
 	<div class="toolbar tabbar tabbar-scrollable timeline-pedido" style="background:#FFF;margin-top:-60px">
 		
@@ -194,6 +194,22 @@
 		<div class="item-title label">Condição</div>
 		<div class="item-input">
 		<input type="text" name="condicao-ped" required>
+		</div>
+		</div>
+		</div>
+		</li>
+
+		<li class="respondida">
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Finalidade de venda</div>
+		<div class="item-input">
+		<select name="finalidade-ped" id="finalidade-ped" required>
+			<option value="">-- selecione finalidade --</option>
+			<option value="USO E CONSUMO">USO E CONSUMO</option>
+			<option value="INDUSTRIALIZAÇÃO">INDUSTRIALIZAÇÃO</option>
+			<option value="REVENDA">REVENDA</option>
+		</select>
 		</div>
 		</div>
 		</div>

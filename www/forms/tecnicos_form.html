@@ -1,11 +1,11 @@
 
-<div data-page="form-representante" class="page">
+<div data-page="form-tecnicos" class="page">
 	<div class="navbar">
 	<div class="navbar-inner">
 	<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
 	<div class="center" class="nomeperfil">Cadastro</div>
 	<div class="right">
-		<a href="#" class="link salva-representante">salvar</a>	
+		<a href="#" class="link salva-tecnico">salvar</a>	
 		<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
 	</div>
 	</div>
@@ -16,33 +16,22 @@
 <div class="page-content">
 
 
-<div class="content-block-title">Cadastro de Representantes</div>
+<div class="content-block-title">Cadastro de Técnico</div>
 
 
 
-<form id="form-representante" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+<form id="form-tecnico" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
 	
 	<ul>
 
-	<li>
-	<div class="item-content">
-	<div class="item-inner">
-	<div class="item-title label">Vincular tabela de preços</div>
-	<div class="item-input">
-	<input type="text" name="tabela-precos" class="ajax-tabela-precos-list" autocomplete="off" placeholder="pesquisar tabela de preços" required/> 
-    <input type="hidden" name="idtabela" class="idtabela"/> 
-	</div>
-	</div>
-	</div>
-	</li>
-
+	
 	<li>
 	<div class="item-content">
 	<div class="item-inner">
 	<div class="item-title label">Nome</div>
 	<div class="item-input">
-	<input type="hidden" name="rep_id" id="rep_id"/>
-	<input type="text" name="rep_nome" id="rep_nome" required/>
+	<input type="hidden" name="tec_id" id="tec_id"/>
+	<input type="text" name="tec_nome" id="tec_nome" required/>
 	</div>
 	</div>
 	</div>
@@ -53,7 +42,7 @@
 	<div class="item-inner">
 	<div class="item-title label">Nome Fantasia</div>
 	<div class="item-input">
-	<input type="text" name="rep_fantasia" id="rep_fantasia" required/>
+	<input type="text" name="tec_fantasia" id="tec_fantasia" required/>
 	</div>
 	</div>
 	</div>
@@ -64,7 +53,7 @@
 	<div class="item-inner">
 	<div class="item-title label">CNPJ</div>
 	<div class="item-input">
-	<input type="text" name="rep_cnpj" id="rep_cnpj"/>
+	<input type="text" name="tec_cnpj" id="tec_cnpj"/>
 	</div>
 	</div>
 	</div>
@@ -76,7 +65,7 @@
 	<div class="item-inner">
 	<div class="item-title label">CPF</div>
 	<div class="item-input">
-	<input type="text" name="rep_cpf" id="rep_cpf"/>
+	<input type="text" name="tec_cpf" id="tec_cpf"/>
 	</div>
 	</div>
 	</div>
@@ -87,7 +76,7 @@
 	<div class="item-inner">
 	<div class="item-title label">Inscrição estadual</div>
 	<div class="item-input">
-	<input type="text" name="rep_inscricao" id="rep_inscricao" autocomplete="off"/>
+	<input type="text" name="tec_inscricao" id="tec_inscricao" autocomplete="off"/>
 	</div>
 	</div>
 	</div>
@@ -101,7 +90,7 @@
 	<div class="item-inner">
 	<div class="item-title label">Área de atuação</div>
 	<div class="item-input">
-	<input type="text" name="rep_segmento" id="rep_segmento" required/>
+	<input type="text" name="tec_segmento" id="tec_segmento" required/>
 	</div>
 	</div>
 	</div>
@@ -113,7 +102,7 @@
 	<div class="item-inner">
 	<div class="item-title label">CEP</div>
 	<div class="item-input">
-	<input type="text" name="rep_cep" id="rep_cep"/>
+	<input type="text" name="tec_cep" id="tec_cep"/>
 	</div>
 	</div>
 	</div>
@@ -124,7 +113,7 @@
 	<div class="item-inner">
 	<div class="item-title label">Estado</div>
 	<div class="item-input">
-	<select name="rep_estado" id="rep_estado">
+	<select name="tec_estado" id="tec_estado">
 	<option value=""></option>
 	</select>
 	</div>
@@ -137,7 +126,7 @@
 	<div class="item-inner">
 	<div class="item-title label">Cidade</div>
 	<div class="item-input">
-	<select name="rep_cidade" id="rep_cidade">		
+	<select name="tec_cidade" id="tec_cidade">		
 	</select>
 	</div>
 	</div>
@@ -149,7 +138,7 @@
 	<div class="item-inner">
 	<div class="item-title label" required>Bairro</div>
 	<div class="item-input">
-	<input type="text" name="rep_bairro"/>
+	<input type="text" name="tec_bairro"/>
 	</div>
 	</div>
 	</div>
@@ -160,7 +149,7 @@
 	<div class="item-inner">
 	<div class="item-title label">Endereço/Nro</div>
 	<div class="item-input">
-	<input type="text" name="rep_endereco" required/>
+	<input type="text" name="tec_endereco" required/>
 	</div>
 	</div>
 	</div>
@@ -171,7 +160,7 @@
 		<div class="item-inner">
 			<div class="item-title label" required>Telefone</div>
 			<div class="item-input">
-				<input type="text" name="rep_telefone" required autocomplete="off"/>
+				<input type="text" name="tec_telefone" required autocomplete="off"/>
 			</div>
 		</div>
 	</div>
@@ -183,7 +172,7 @@
 	<div class="item-inner">
 	<div class="item-title label" required>E-mail</div>
 	<div class="item-input">
-	<input type="email" name="rep_email" id="rep_email"/>
+	<input type="email" name="tec_email" id="tec_email"/>
 	</div>
 	</div>
 	</div>

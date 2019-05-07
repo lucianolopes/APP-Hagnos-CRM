@@ -22,7 +22,7 @@
 	<div class="toolbar tabbar tabbar-scrollable">
 		<div class="toolbar-inner">
 			<a href="#tab1l" class="active tb0 tab-link">INFORMAÇÕES CADASTRAIS</a>
-			<a href="#tab4l" class="tab-link tb2 disabled">INFORMAÇÕES DA VISITA</a>
+			<a href="#tab4l" class="tab-link tb2">INFORMAÇÕES DA VISITA</a>
 			<a href="#tab2l" class="tab-link tb3 disabled">INFORMAÇÕES COMERCIAIS</a>			
 			<a href="#tab3l" class="tab-link tb1 disabled">INFORMAÇÕES TÉCNICAS</a>
 		</div>
@@ -114,18 +114,13 @@
 							</div>
 							</li>
 
-							<li>
+							<li style="display:none">
 								<div class="item-content">
 								<div class="item-inner">
 								<div class="item-title label" style='font-size:20px;color:red;font-weight:bold'>SITUAÇÃO</div>
 								<div class="item-input">
 								<input type="text" name="status_padrao_view" value="" style="display:none;font-size:18px!important;font-weight:bold;color:red">
-								<select name="status_padrao" id="status_padrao" required>
-								<option value="">-- Selecione a situação --</option>
-								<option value="ativo">ATIVO</option>
-								<option value="inativo">INATIVO</option>
-								<option value="prospectado">PROSPECTADO</option>									
-								</select>
+								<input type="text" name="status_padrao" id="status_padrao">
 								</div>
 								</div>
 								</div>
@@ -134,7 +129,7 @@
 
 						</ul>
 
-						<a href="#" class="bt-tb1 button button-raised button-fill color-teal disabled">Avançar</a>
+						<a href="#" class="bt-tb1 button button-raised button-fill color-teal">Avançar</a>
 
 						</form>						
 				</div>
@@ -436,7 +431,7 @@
 						<form id="form-lancamento-3" class="list-block inputs-list ajax-submit" data-parsley-validate="true" enctype="multipart/form-data">		
 							<input type="hidden" name="tpcontato" value="PRESENCIAL">
 							<input type="hidden" name="statusi" value="">
-							<input type="hidden" name="dtvisita" id="dtvisita" value="">
+							<input type="text" name="dtvisita" id="dtvisita" value="">
 							<input type="hidden" name="dtproxcontato" id="dtproxcontato" value="">
 							<textarea name="lancamento-descricao2" id="lancamento-descricao2" style='display:none'></textarea>				
 
