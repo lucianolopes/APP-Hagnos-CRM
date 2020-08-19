@@ -1,0 +1,62 @@
+/* bootstrap-jasny file input */
+.btn-file {
+	position: relative;
+	overflow: hidden;
+	vertical-align: middle;
+}
+
+.btn-file > input {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	font-size: 23px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	transform: translate(-300px, 0) scale(4);
+	direction: ltr;
+}
+
+.fileinput {
+	display: inline-block;
+  	margin-bottom: 9px;
+}
+
+.fileinput .uneditable-input {
+	display: inline-block;
+	margin-bottom: 0;
+	vertical-align: middle;
+	cursor: text;
+}
+
+.fileinput .thumbnail {
+	display: inline-block;
+	margin-bottom: 5px;
+	overflow: hidden;
+	text-align: center;
+	vertical-align: middle;
+	border-color: #e5e5e5;
+}
+
+.fileinput .thumbnail > img {
+	max-height: 100%;
+	margin-bottom:4px;
+}
+
+.fileinput .btn {
+	vertical-align: middle;
+}
+
+.fileinput-exists .fileinput-new,
+.fileinput-new .fileinput-exists {
+	display: none;
+}
+
+.fileinput-inline .fileinput-controls {
+	display: inline;
+}
+
+.fileinput .uneditable-input {
+	white-space: normal;
+}
