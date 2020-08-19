@@ -1,9 +1,9 @@
-<div data-page="comissoes-representante" class="page">
+<div data-page="comissoes-tecnico" class="page">
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
 			</div>
-			<div class="center">Comissões Representante</div>
+			<div class="center">Comissões Técnico</div>
 		<div class="right">
 			<a href="#" id="gera-rel" class="button link gera-relatorio disabled">Gerar Relatório</a>
 			<a href="#" id="print" class="link icon-only gera-relatorio disabled"><i class="material-icons">local_printshop</i></a>
@@ -15,16 +15,16 @@
 
 <div class="page-content">	
 
-	<form action="pdf_desempenho_representante.html" method="GET" id="form-desempenho_representante" class="store-data list-block inputs-list ajax-submit">
+	<form action="pdf_desempenho_tecnico.html" method="GET" id="form-desempenho_tecnico" class="store-data list-block inputs-list ajax-submit">
 
-	<h4 class="rel-nome-representante" style='padding-left:20px'></h4>
+	<h4 class="rel-nome-tecnico" style='padding-left:20px'></h4>
 
-	<ul class="esconde-rep esconde-rep2">
+	<ul class="esconde-rep esconde-rep2 esconde-tec">
         <li class="item-content">
           <div class="item-inner">
-            <div class="item-title label-cliente">Selecione o representante</div>
+            <div class="item-title label-cliente">Selecione o técnico</div>
             <div class="item-input">
-              <input type="text" name="nomerep" id="ajax-representantes-list" autocomplete="off" required/>              
+              <input type="text" name="nometec" id="ajax-tecnicos-list" autocomplete="off" required/>              
             </div>
           </div>
         </li>
@@ -44,7 +44,7 @@
 		</li>
     </ul>
 
-    <input type="hidden" name="codrep" value="">
+    <input type="hidden" name="codtec" value="">
 
     <ul>
 
@@ -54,8 +54,7 @@
 				<div class="item-title label">Enviar relatório para o email abaixo</div>
 				<div class="item-input">
 				<input type="text" name="email_relatorio"/>
-				<input type="hidden" name="idrep" value="">
-				<input type="hidden" name="nomerep" value="">
+				<input type="hidden" name="idtec" value="">
 				</div>
 				</div>
 				</div>

@@ -11,80 +11,107 @@
 
  
 
-<div class="page-content" style="background:url(img/fundo_inicio.jpg) no-repeat center center; background-size:cover">
+<div class="page-content" style="background:url(img/fundo_inicio.jpg) no-repeat center center; background-size:cover;padding-top:20px">
 
 
-	<div style="text-align:center">
-    <img src="img/logo2.png" style="width:160px">
+	<div class="info-home"> 
+		<a href="pendencias.html" class="item-link">               
+                <div class="info-home-user">                  
+                  <div class="info-user-account">
+                    <i class="icon material-icons color-teal">account_circle</i>
+                  </div>                  
+                  <div class="info-user-name">
+                      <small class="nomeusuario"></small><br>
+                      <small class="tipousuario"></small><br>
+                      <small class="realtime"></small>
+                  </div>
+                  <div style="clear:both"></div>                  
+                  <div class="info-user-pend">
+                    <span class="iu1">PENDÊNCIAS: </span> 
+                    <span class="iu2 nt-pendencias"></span>
+                    <div style="clear:both"></div>  
+                  </div>
+                </div>
+                <div class="app-data-atual">
+                  <div class="dataatual"></div>
+                </div>
+                <div class="app-logo">
+                  <img src="img/logo2.png">
+                </div>
+        </a>
     </div>
 
 	<div class="content-block">
 
 		<div class="row">
-		    <div class="col-50 esconde-cliente menugeral">	                      
-		        <a href="oportunidades.html" class="menu-bloco item-link">
+
+			<div class="col-33 esconde-cliente esconde-producao menu-bloco">
+                <a href="apresentacao.html" class=" item-link ks-pb-standalone">
+                    <div><img src="img/icons/presentation.png"></div>
+                    <span>APRESENTAÇÃO</span>
+                </a>                      
+            </div>
+
+            <div class="col-33 esconde-cliente esconde-producao esconde-admin menu-bloco">
+                <a href="produtos.html" class="item-link">
+                    <div><img src="img/icons/detergent.png"></div>
+                    <span>PRODUTOS</span>
+                </a>
+            </div>
+		    
+		    <div class="col-33 esconde-cliente menugeral menu-bloco">	                      
+		        <a href="oportunidades.html" class="item-link">
 		        <div>
-		        <img src="img/icons/lanc.png">
+		        <img src="img/icons/oportunidades.png">
 		        </div>
 		        <span>OPORTUNIDADES</span>                                         
 		        </a> 	                                        
-	    	</div>
-	                             
+	    	</div>  
 
-
-	        <div class="col-50 esconde-cliente menugeral">
-	            <a href="negocios.html" class="menu-bloco item-link">
-	                <div>
-	                <img src="img/icons/cleaner.png">
-	                </div>
-	                <span>NEGÓCIOS</span>                                        
-	            </a> 
-	        </div>
-	                   
-
-	        <div class="col-50 esconde-cliente menugeral">
-	            <a href="cotacoes.html" class="menu-bloco item-link">
-	                <div><img src="img/icons/budget.png"> </div>
-	                <span>COTAÇOES</span>
+	    	<div class="col-33 esconde-cliente esconde-producao menu-bloco">
+	            <a href="amostras.html?detalhado=sim" class="item-link">
+	                <div><img src="img/icons/amostra.png"></div>
+	                <span>AMOSTRAS</span>
 	                <div class="notif">
-	                    <div>
-	                    <span class="notificacao-c"><span></span></span>
-	                    <span class="notificacao-c2"><span></span></span>
-	                    </div>
+		                <span class="notificacao-am"><span></span></span>
 	                </div>
 	            </a>
 	        </div>
 
-	        <div class="col-50 esconde-cliente menugeral">
-                <a href="pedidos.html" class="menu-bloco item-link">
-                    <div><img src="img/icons/pedidos.png"></div>
-                    <span>PEDIDOS</span>
-                    <div class="notif">
-                        <div>
-                            <span class="notificacao-expedicao"><span></span></span>
-                            <span class="notificacao-enviado"><span></span></span>
-                        </div>
-                        <div>
-                            <span class="notificacao-pendente"><span></span></span>
-                            <span class="notificacao-producao"><span></span></span>
-                        </div>
-                        
-                    </div> 
-                </a>                      
-            </div>
-
-            <div class="col-50 esconde-cliente menugeral">
-	                      
-	            <a href="previsaovendas.html" class="menu-bloco item-link">
-	                <div>
-	                <img src="img/icons/product.png">
+	        <div class="col-33 esconde-cliente menugeral menu-bloco ">
+	            <a href="cotacoes.html" class="item-link">
+	                <div><img src="img/icons/cotacao.png"> </div>
+	                <span>COTAÇOES</span>
+	                <div class="notif">
+	                    <span class="nt-span notificacao-c"><span></span></span>
+	                    <span class="nt-span notificacao-c2"><span></span></span>
 	                </div>
-	                <span>PREVISÃO DE VENDAS</span>                                
-	            </a> 
-	                                        
+	            </a>
 	        </div>
 
-	                  
+	        <div class="col-33 esconde-cliente menugeral menu-bloco ">
+                <a href="pedidos.html?detalhado=sim" class="item-link">
+                    <div><img src="img/icons/pedidos.png"></div>
+                    <span>PEDIDOS</span>
+                    <div class="notif">                
+                        <span class="nt-span notificacao-expedicao"> <span></span></span>
+                        <span class="nt-span notificacao-enviado">   <span></span></span>
+                        <span class="nt-span notificacao-pendente">  <span></span></span>
+                        <span class="nt-span notificacao-producao">  <span></span></span>
+                    </div> 
+                </a>                      
+            </div>                           
+
+
+	        <div class="col-33 esconde-cliente menugeral menu-bloco">
+	            <a href="negocios.html" class="item-link">
+	                <div>
+	                <img src="img/icons/negocios.png">
+	                </div>
+	                <span>NEGÓCIOS</span>                                        
+	            </a> 
+	        </div>
+	               	                  
 	    </div>   
 
 	</div>

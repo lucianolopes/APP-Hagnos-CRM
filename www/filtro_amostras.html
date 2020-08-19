@@ -1,0 +1,152 @@
+<div data-page="filtro-amostras" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
+<div class="center">Filtro amostras</div>
+<div class="right">
+<a href="amostras.html" class="button link">Filtrar</a>
+<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+
+<div class="page-content">	
+
+	<form action="amostras.html" method="GET" id="form-filtro-amostras" class="store-data list-block inputs-list ajax-submit">
+
+	<ul>
+    	<li>
+			<div class="item-content">
+			<div class="item-inner">
+			<div class="item-title label">#ID</div>
+			<div class="item-input">
+			<input type="text" name="id_search" id="id_search"/>
+			</div>
+			</div>
+			</div>
+		</li>
+    </ul>
+
+	<div class="content-block-title">Situação</div>
+    
+    <ul class="ul-filtro">    	
+
+		
+		<li>
+		    <label class="label-checkbox item-content">
+		    <input type="checkbox" name="situacao_search" class="situacao_search" value="S"/>
+		    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+		    <div class="item-inner">
+		        <div class="item-title">APROVADO</div>
+		    </div>
+		    </label>
+		</li>	
+		<li>
+		    <label class="label-checkbox item-content">
+		    <input type="checkbox" name="situacao_search" class="situacao_search" value="N"/>
+		    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+		    <div class="item-inner">
+		        <div class="item-title">REPROVADO</div>
+		    </div>
+		    </label>
+		</li>        
+	</ul>
+
+	<div class="content-block-title">Andamento</div>
+    
+    <ul class="ul-filtro"> 
+		
+		<li>
+		    <label class="label-checkbox item-content">
+		    <input type="checkbox" name="andamento_search" class="andamento_search" value="REQUISIÇÃO"/>
+		    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+		    <div class="item-inner">
+		        <div class="item-title">REQUISIÇÃO</div>
+		    </div>
+		    </label>
+		</li>	
+		<li>
+		    <label class="label-checkbox item-content">
+		    <input type="checkbox" name="andamento_search" class="andamento_search" value="PREPARAÇÃO"/>
+		    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+		    <div class="item-inner">
+		        <div class="item-title">PREPARAÇÃO</div>
+		    </div>
+		    </label>
+		</li>  
+		<li>
+		    <label class="label-checkbox item-content">
+		    <input type="checkbox" name="andamento_search" class="andamentoo_search" value="EXPEDIÇÃO"/>
+		    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+		    <div class="item-inner">
+		        <div class="item-title">EXPEDIÇÃO</div>
+		    </div>
+		    </label>
+		</li> 
+		<li>
+		    <label class="label-checkbox item-content">
+		    <input type="checkbox" name="andamento_search" class="andamento_search" value="ACOMPANHAMENTO"/>
+		    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+		    <div class="item-inner">
+		        <div class="item-title">ACOMPANHAMENTO</div>
+		    </div>
+		    </label>
+		</li>
+		<li>
+		    <label class="label-checkbox item-content">
+		    <input type="checkbox" name="andamento_search" class="andamento_search" value="FINALIZADO"/>
+		    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+		    <div class="item-inner">
+		        <div class="item-title">FINALIZADO</div>
+		    </div>
+		    </label>
+		</li>  
+
+	</ul>
+
+	<ul>
+
+			<li>
+				<div class="item-content">
+				<div class="item-inner">
+				<div class="item-title label">Cliente</div>
+				<div class="item-input">
+				<input type="text" name="cliente_search" id="cliente_search"/>
+				</div>
+				</div>
+				</div>
+			</li>
+
+			<li class="lirep">
+				<div class="item-content">
+				<div class="item-inner">
+				<div class="item-title label">Representante</div>
+				<div class="item-input">
+				<input type="text" name="representante_search" id="representante_search"/>
+				</div>
+				</div>
+				</div>
+			</li>
+
+			<li>
+				<div class="item-content">
+				<div class="item-inner">
+				<div class="item-title label">Período lançamento</div>
+				<div class="item-input">
+				<input type="text" name="data_search" id="data_search" readonly="readonly" placeholder="Selecione período"/>
+				</div>
+				<a href="#" class="limparPT button button-raised">limpar</a>
+				</div>
+				</div>
+			</li>
+
+			   
+    </ul>
+	</form>
+</div>
+
+
+
+</div>
+</div>

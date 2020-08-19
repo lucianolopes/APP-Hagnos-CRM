@@ -1,13 +1,11 @@
-<div data-page="comparativo_faturamento" class="page">
+<div data-page="estoque_ideal" class="page">
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
 			</div>
-			<div class="center">Comparativo de faturamento x clientes</div>
+			<div class="center">Estoque ideal - Representante</div>
 		<div class="right">
 			<a href="#" id="gera-rel" class="button link gera-relatorio disabled">Gerar relatório</a>
-			<a href="#" id="gera-rel-sv" class="button link disabled"><img src="img/dolar-down.png"></a>
-			<a href="#" id="gera-rel-cv" class="button link disabled"><img src="img/dolar-up.png"></a>
 			<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
 		</div>
 	</div>
@@ -16,7 +14,7 @@
 
 <div class="page-content">	
 
-	<form action="pdf_desempenho_representante.html" method="GET" id="form-desempenho_representante" class="store-data list-block inputs-list ajax-submit">
+	<form action="pdf_estoque_ideal.html" method="GET" id="form-estoque_ideal" class="store-data list-block inputs-list ajax-submit">
 
 	<h4 class="rel-nome-representante" style='padding-left:20px'></h4>
 	
@@ -91,28 +89,7 @@
 
     <input type="hidden" name="codrep" value="">
 
-    <ul style="display:none">
-
-			<li>
-				<div class="item-content">
-				<div class="item-inner">
-				<div class="item-title label">Enviar relatório para o email abaixo</div>
-				<div class="item-input">
-				<input type="text" name="email_relatorio"/>
-				<input type="hidden" name="idrep" value="">
-				<input type="hidden" name="nomerep" value="">
-				</div>
-				</div>
-				</div>
-			</li>
-				
-    </ul>
-
-    <div class="item-content" style="display:none">
-		<div class="item-inner">
-			<a href="#" class="enviaRel button button-raised color-teal disabled">Enviar por email</a>			
-		</div>
-	</div>    
+    
 
     </form>
 

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#ff0000">
+    <title>Hagnos</title>
+    <link rel="stylesheet" href="css/framework7.material.min.css">
+    <link rel="stylesheet" href="css/framework7.material.colors.css">
+    <link href="//fonts.googleapis.com/css?family=Roboto:400,300,500,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/material-icons.css">
+    <link rel="stylesheet" href="css/kitchen-sink.css">
+    <link rel="stylesheet" href="js/plugins/parsley/src/parsley.css">
+    <link rel="stylesheet" href="js/plugins/fileinput/fileinput.css">
+    <link rel="stylesheet" type="text/css" href="css/print.css" media="print" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+
+
+    <link rel="icon" href="img/icon.png">
+    
+  </head>
+  <body>
+
+
+   
+  <div class="views">
+    <div class="view view-main">
+      <div class="pages navbar-fixed">
+
+        <div data-page="index" class="page">
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="center">LOGIN</div>
+            </div>
+          </div>
+
+          <div class="page-content login-screen-content">
+            <div class="login-screen-title" style="padding-top:80px">HAGNOS</div>
+            <form id="form-log" class="list-block ajax-submit" method="post">
+              <div class="list-block inputs-list">
+                
+                <ul>
+                  <li class="item-content">
+                    <div class="item-inner"> 
+                      <div class="item-title label">Email do Usuário ou Apelido</div>
+                      <div class="item-input">
+                        <input type="text" name="usuario" id="usuario" placeholder="email usuário" required/>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="item-content">
+                    <div class="item-inner"> 
+                      <div class="item-title label">Senha</div>
+                      <div class="item-input">
+                        <input type="password" name="senha" id="senha" placeholder="senha" required/>
+                      </div>
+                    </div>
+                    <div class="item-media">
+                      <a href="#" class="button button-raised color-teal" id="togglePassword" style="margin-right:15px">
+                        <i class="icon material-icons">remove_red_eye</i>
+                      </a>
+                    </div>
+                  </li>
+
+                  <li class="item-content">
+                    <div class="item-inner"> 
+                     <button type="button" id="submit-login" class="button button-fill color-green item-link" style="display:block;margin-top:20px">Entrar no Sistema</button> 
+                    </div>
+                  </li>
+
+                </ul>
+                
+                
+                
+              </div>
+              
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  
+
+    <script type="text/javascript" src="js/framework7.min.js"></script>
+    <script type="text/javascript" src="js/kitchen-sink.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/plugins/parsley/dist/parsley.js"></script>
+    <script type="text/javascript" src="js/plugins/maskmoney/jquery.maskMoney.min.js"></script>
+    <script type="text/javascript" src="js/plugins/maskedinput/jquery.maskedinput-1.3.min.js"></script>
+    <script type="text/javascript" src="js/plugins/fileinput/fileinput.js"></script>
+    <script type="text/javascript" src="js/plugins/print/jQuery.print.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+
+   
+    
+
+  </body>
+</html>

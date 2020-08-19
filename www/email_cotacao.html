@@ -1,89 +1,107 @@
 <div data-page="email-cotacao" class="page">
-<div class="navbar">
-<div class="navbar-inner">
-<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
-<div class="center">Enviar cotação</div>
-<div class="right">
-<a href="#" class="button link enviar-cotacao disabled" id="enviar-cotacao">Enviar</a>
-<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
-</div>
-</div>
-</div>
-
-
-<div class="page-content">	
-
-	<div class="content-block">
-	<h3 class="e-cliente"></h3>
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="left">
+				<a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i>
+				</a>
+			</div>
+			<div class="center">Enviar cotação</div>
+			<div class="right">
+				<a href="#" class="button link enviar-cotacao disabled" id="enviar-cotacao">Enviar</a>
+				<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+			</div>
+		</div>
 	</div>
 
-	<form action="" method="GET" id="form-envio-cotacao" class="list-block inputs-list ajax-submit" enctype="multipart/form-data">
-	<div class="content-block-title ul-filtro">Marque os emails de destino</div>
-	<ul class="ul-filtro list-contatos-cliente-cot">
-			
-	</ul>
 
-	<ul>          
-          	
+	<div class="page-content">	
 
-			<li style="display:none">
-				<div class="item-content">
-				<div class="item-inner">
-				<div class="item-title label">Email de contato</div>
-				<div class="item-input">
-				<input type="text" name="email_cliente"/>
-				<input type="hidden" name="email_resposta"/>
-				</div>
-				</div>
-				</div>
-			</li>
+		<div class="content-block">
+		<h3 class="e-cliente"></h3>
+		</div>
 
-			<li>
-				<div class="item-content">
-				<div class="item-inner">
-				<div class="item-input">
-				<textarea class="resizable" name="emails_adicionais" id="emails_adicionais" placeholder="adicione mais emails aqui (separar os endereços com ;)" rows=8 style="min-height:150px"></textarea>
-				</div>
-				</div>
-				</div>
-			</li>
+		<form action="" method="GET" id="form-envio-cotacao" class="list-block ajax-submit" enctype="multipart/form-data">
+			<div class="content-block-title ul-filtro">Marque os emails de destino</div>
 
-			<li>
-				<div class="item-content">
-				<div class="item-inner">
-				<div class="item-input">
-				<textarea class="resizable" name="corpo_email_cotacao" id="corpo_email_cotacao" placeholder="digite aqui o texto desejado para o corpo do email" rows=8 style="min-height:150px"></textarea>
+			<ul class="ul-filtro list-contatos-cliente-cot">
+			</ul>
+
+			<ul>          
+		          	
+
+				<li style="display:none">
+					<div class="item-content">
+					<div class="item-inner">
+					<div class="item-title label">Email de contato</div>
+					<div class="item-input">
+					<input type="text" name="email_cliente"/>
+					<input type="hidden" name="email_resposta"/>
+					</div>
+					</div>
+					</div>
+				</li>
+
+				<li>
+					<div class="item-content">
+					<div class="item-inner">
+					<div class="item-input">
+					<textarea class="resizable" name="emails_adicionais" id="emails_adicionais" placeholder="adicione mais emails aqui (separar os endereços com ;)" rows=8 style="min-height:150px"></textarea>
+					</div>
+					</div>
+					</div>
+				</li>
+
+				<li>
+					<div class="item-content">
+					<div class="item-inner">
+					<div class="item-input">
+					<textarea class="resizable" name="corpo_email_cotacao" id="corpo_email_cotacao" placeholder="digite aqui o texto desejado para o corpo do email" rows=8 style="min-height:150px"></textarea>
+					</div>
+					</div>
+					</div>
+				</li>				
+				
+			</ul>
+
+			<div class="content-block-title ul-filtro">ANEXOS</div>
+
+			<div class="fileinput fileinput-new" data-provides="fileinput" style="float:left;padding-top:5px">							    
+				<span class="input-group-addon btn btn-default btn-file"> 
+				    <span class="fileinput-new"><img src="img/icon-assinatura.png"></span>
+				    <input type="file" name="assinatura_cotacao" accept="image/*">			    
+				</span>
+				<a href="#" class="button button-fill color-red fileinput-exists" data-dismiss="fileinput" style="margin-left:15px">Trocar assinatura</a>
+				<div data-trigger="fileinput" style="margin-left:15px">
+				  	<i class="fileinput-exists"></i> 
+				   	<span class="fileinput-filename"></span>
 				</div>
-				</div>
-				</div>
-			</li>
+			</div>	   
 
-			<li>	
+			<a href="#" class="smart-select" style="float:left;width:100px">
+			            <select name="fispq[]" class="fispq" multiple="multiple" style="text-transform:uppercase">
+			            </select>
+			            <div class="item-content">
+			              <div class="item-inner">
+			                <div class="item-title"><img src="img/icon-fispq.png"></div>
+			              </div>
+			            </div>
+		        	</a>
 
-		    <div class="item-content">    	
-				<div class="item-inner">
-				  	<div class="item-title label">Imagem da assinatura</div>		
-						   
-				    <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="padding-top:15px">
-					    <div data-trigger="fileinput">
-					    	<i class="fileinput-exists"></i> 
-					    	<span class="fileinput-filename"></span>
-					   	</div>
-					    <span class="input-group-addon btn btn-default btn-file">
-						    <span class="fileinput-new button button-fill color-teal" style="padding-top:6px"><i class="material-icons">attach_file</i></span>
-						    <input type="file" name="assinatura_cotacao" accept="image/*">			    
-						</span>
-					    <a href="#" class="button button-fill color-red fileinput-exists" data-dismiss="fileinput">Remover</a>
-				    </div>		    
-				</div>			
-			</div>
-			</li>
-			
-    </ul>
-	</form>
-</div>
+		    <a href="#" class="smart-select" style="float:left;width:100px">
+					    <select name="boletim[]" class="boletim" multiple="multiple" style="text-transform:uppercase">			    	
+					    </select>
+					    <div class="item-content">
+					        <div class="item-inner">
+					            <div class="item-title"><img src="img/icon-boletim.png"></div>
+					        </div>
+					    </div>
+					</a>
+			<div style="clear:both"></div>
+
+		</form>
+	</div>
 
 
 
-</div>
+
 </div>

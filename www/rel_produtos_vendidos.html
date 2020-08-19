@@ -1,12 +1,11 @@
-<div data-page="comissoes-representante" class="page">
+<div data-page="rel_produtos_vendidos" class="page">
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
 			</div>
-			<div class="center">Comissões Representante</div>
+			<div class="center">Produtos vendidos X Representantes</div>
 		<div class="right">
-			<a href="#" id="gera-rel" class="button link gera-relatorio disabled">Gerar Relatório</a>
-			<a href="#" id="print" class="link icon-only gera-relatorio disabled"><i class="material-icons">local_printshop</i></a>
+			<a href="#" id="gera-rel" class="button link gera-relatorio disabled">Gerar relatório</a>
 			<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
 		</div>
 	</div>
@@ -15,9 +14,7 @@
 
 <div class="page-content">	
 
-	<form action="pdf_desempenho_representante.html" method="GET" id="form-desempenho_representante" class="store-data list-block inputs-list ajax-submit">
-
-	<h4 class="rel-nome-representante" style='padding-left:20px'></h4>
+	<form action="pdf_desempenho_representante.html" method="GET" id="form-produtos_vendidos" class="store-data list-block inputs-list ajax-submit">
 
 	<ul class="esconde-rep esconde-rep2">
         <li class="item-content">
@@ -29,6 +26,8 @@
           </div>
         </li>
     </ul>
+
+    <h4 class="rel-nome-representante" style='padding-left:20px'></h4>
 
 	<ul>
 		<li>
@@ -46,7 +45,7 @@
 
     <input type="hidden" name="codrep" value="">
 
-    <ul>
+    <ul style="display:none">
 
 			<li>
 				<div class="item-content">
@@ -63,7 +62,7 @@
 				
     </ul>
 
-    <div class="item-content">
+    <div class="item-content" style="display:none">
 		<div class="item-inner">
 			<a href="#" class="enviaRel button button-raised color-teal disabled">Enviar por email</a>			
 		</div>

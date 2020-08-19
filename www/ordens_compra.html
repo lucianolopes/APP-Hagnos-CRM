@@ -1,0 +1,71 @@
+<div data-page="ordens-compra" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left">
+	<a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
+</div>
+<div class="center">Ordens de compra</div>
+<div class="right">
+<a href="forms/form_oc.html" class="link"><i class="icon icon-plus"></i></a>
+<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+<form data-search-list=".search-here" data-search-in=".item-nome" class="searchbar searchbar-init">
+	<div class="searchbar-input">
+	<input type="search" class="bOCompra" placeholder="Pesquisar OC"/><a href="#" class="searchbar-clear"></a>
+	</div>
+</form>
+
+<div class="page-content pull-to-refresh-content">
+	<div class="pull-to-refresh-layer">
+	    <div class="preloader"></div>
+	    <div class="pull-to-refresh-arrow"></div>
+	</div>	
+	<div class="card data-table">
+		
+		<div class="card-header">
+		<div class="data-table-title">
+			<h4 class="totalregistros-oc totalOc" style="font-size:18px!important"></h4>
+		</div>
+		
+
+		<div class="data-table-actions">
+			<a href="#" class="link icon-only print"> <i class="icon material-icons">print</i></a>					
+			<a href="#" class="link icon-only remove-filtro-oc"><i class="icon material-icons">youtube_searched_for</i></a>
+			<a href="filtro_oc.html" class="link icon-only"><i class="icon material-icons">search</i></a>
+		</div>
+		</div>
+
+		<div class="card-content">
+			
+			<table style="white-space:nowrap;">
+			<thead>
+				<tr>							
+				<th class="label-cell" style="text-align:center" style="width:90px!important">VER/EDITAR</th>	
+				<th class="label-cell" style="width:90px!important">ID OC</th>
+				<th class="label-cell center">DATA EMISSÃO</th>
+				<th class="label-cell center">PREVISÃO ENTREGA</th>
+				<th class="label-cell">FORNECEDOR</th>
+				<th class="label-cell">CONDIÇÃO</th>
+				<th class="label-cell">FRETE</th>
+				<th class="label-cell">TRANSPORTADORA</th>
+				<th class="label-cell">SOLICITANTE</th>
+				<th class="label-cell center">STATUS</th>
+				<th class="label-cell center">EMAIL</th>
+				<th class="label-cell center">IMPRIMIR</th>
+				</tr>
+			</thead>
+			<tbody id="results-oc">
+					
+			</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+</div>
+</div>

@@ -1,9 +1,10 @@
-<div data-page="menu-relatorios" class="page">
+<div data-page="menu-producao" class="page">
 <div class="navbar">
 <div class="navbar-inner">
 <div class="left"><a href="#" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
-<div class="center">Cadastrar relatórios</div>
+<div class="center">Produção</div>
 <div class="right">
+	<a href="#" class="button link salva-banner">salvar</a>	
 	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
 </div>
 </div>
@@ -11,7 +12,7 @@
 
  
 
-<div class="page-content" style="background:url(img/fundo_inicio.jpg) no-repeat center center; background-size:cover;padding-top:20px">
+<div class="page-content" style="background:url(img/fundo_inicio.jpg) no-repeat center center; background-size:cover">
 
 
 	<div class="info-home">
@@ -45,18 +46,34 @@
 
 		<div class="row">
 
-			
-		    <div class="col-100 esconde-cliente esconde-rep esconde-producao menu-bloco">	                      
-		        <a href="grid_relatorios.html" class="item-link">
-		        <div>
-		        <img src="img/icons/desempenho.png">
-		        </div>
-		        <span>DESEMPENHO DE REPRESENTANTE</span>                                         
-		        </a> 	                                        
-	    	</div> 	    	        
+        <div class="col-33 esconde-cliente esconde-rep esconde-rep2 menu-bloco">
+          <a href="ordens_producao.html" class="item-link">
+            <div><img src="img/icons/producao.png"></div>
+            <span>ORDENS DE PRODUÇÃO</span>
+            <div class="notif">
+              <div>
+                <span class="notificacao-ordens-producao"><span></span></span>
+              </div>
+            </div> 
+          </a>                      
+        </div>
 
-	                  
-	    </div>   
+        <div class="col-33 esconde-cliente esconde-rep esconde-rep2 esconde-admin menu-bloco">
+          <a href="instrucoes_trabalho.html" class="item-link">
+            <div><img src="img/icons/instrucoes.png"></div>
+            <span>INSTRUÇÕES DE TRABALHO</span>
+            <div class="notif">
+              <div>
+                <span class="notificacao-instrucoes-trabalho"><span></span></span>
+              </div>
+            </div> 
+          </a>                      
+        </div>
+
+        <div class="col-33">
+        </div>
+        	                  
+	  </div>   
 
 	</div>
 
