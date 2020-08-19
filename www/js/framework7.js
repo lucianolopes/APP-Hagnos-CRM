@@ -97,8 +97,8 @@
             swipePanelThreshold: 0,
             panelsCloseByOutside: true,
             // Modals
-            modalButtonOk: 'SIM',
-            modalButtonCancel: 'NÃO',
+            modalButtonOk: 'OK',
+            modalButtonCancel: 'Cancelar',
             modalUsernamePlaceholder: 'Username',
             modalPasswordPlaceholder: 'Password',
             modalTitle: 'Framework7',
