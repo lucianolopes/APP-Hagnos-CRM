@@ -1,0 +1,430 @@
+<div data-page="form-amostra" class="page">
+<div class="navbar">
+<div class="navbar-inner">
+<div class="left">
+	<a href="#" class="back link icon-only p-voltar" data-ignore-cache="true"><i class="icon icon-back"></i></a>
+	<a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
+</div>
+<div class="center hg" class="nomeperfil">Nova amostra</div>
+<div class="right">
+	<a href="#" id="salvar" class="button link salva">salvar</a>
+	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+</div>
+</div>
+</div>
+
+ 
+
+<div class="page-content">
+
+
+<div class="content-block" style="display:none">
+<h3 class="e-cliente"></h3>
+</div>
+
+
+
+<form id="form" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+    	
+	
+	<h4 style="padding-left:15px;" class="label-situacao">Status</h4>
+	<div class="toolbar tabbar tabbar-scrollable timeline" style="background:#FFF;margin-top:-60px">
+		
+    	<div class="toolbar-inner">
+    		<a href="#tab-1" id="requisicao" class="tab-link requisicao requisicao-active" style="width:160px">REQUISIÇÃO</a>
+    		<a href="#tab-2" id="preparacao" class="tab-link preparacao disabled" style="width:160px">PREPARAÇÃO</a>
+    		<a href="#tab-3" id="expedicao" class="tab-link expedicao disabled" style="width:160px">EXPEDIÇÃO</a>
+    		<a href="#tab-4" id="acompanhamento" class="tab-link acompanhamento disabled" style="width:160px">ACOMPANHAMENTO</a>
+    		<a href="#tab-5" id="finalizado" class="tab-link finalizado disabled" style="width:160px">FINALIZADO</a>
+    	</div>
+    </div>
+
+    <div class="page-content" style="padding-top:30px!important">
+
+    	<div class="tabs" style="padding-top:20px!important;padding-bottom:5px">
+
+      		<div id="tab-1" class="tab active">
+                <h4 style="padding-left:15px" class="label-situacao">INFORMAÇÕES DA OPORTUNIDADE</h4> 
+                <div class="list-block">
+    		        <ul>
+                        <li>
+                            <div class="item-content" style="display:none">
+                                <div class="item-inner">
+                                    <div class="item-title label">Produto (oportunidade)</div>
+                                    <a href="#" id="ajax-produtos-list-op" class="item-link item-content autocomplete-opener" style="padding-left:0px">
+                                        
+                                        <div class="item-inner">
+                                          <div class="item-title" style="text-transform:uppercase">Selecionar produto</div>
+                                          <div class="item-after"></div>
+                                        </div>
+                                    </a>
+                                    <input type="text" name="nomep-op" readonly style="height:1px;color:#fff"/>
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title label">ID Produto (oportunidade)</div>
+                                    <div class="item-input">
+                                    <input type="text" name="codp-op" readonly class="tb1"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-content">                            
+                                <div class="item-inner">
+                                    <div class="item-title label">Produto utilizado</div>
+                                    <div class="item-input">
+                                        <input type="text" name="produto-utilizado" required class="tb1"/>         
+                                    </div>
+                                </div>
+                            </div>                         
+                                    
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Concorrente</div>
+                                    <div class="item-input">
+                                        <input type="text" name="concorrente" required class="tb1"/>         
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Consumo médio (LT)</div>
+                                    <div class="item-input">
+                                        <input type="number" name="consumo-medio" required class="tb1"/>         
+                                    </div>
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title label">Preço atual (R$)</div>
+                                    <div class="item-input">
+                                        <input type="text" name="preco-atual" class="money tb1" style="text-align:right" required/>         
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-content">                                
+                                <div class="item-inner">
+                                    <div class="item-title label">Tipo de Operação</div>
+                                    <div class="item-input">
+                                        <input type="text" name="tipo-operacao" required class="tb1"/>         
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-content"> 
+                                <div class="item-inner">
+                                    <div class="item-title label">Observação</div>
+                                    <div class="item-input">
+                                        <textarea name="obs-op" id="obs-op" rows=4></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                                                
+
+                        </li>
+                    </ul>
+                </div>
+
+                <h4 style="padding-left:15px" class="label-situacao">REQUISIÇÃO DE AMOSTRA</h4> 
+                <div class="list-block">
+                    <ul>
+                        <li>
+                            <div class="item-content">                                
+                                <div class="item-inner">
+                                    <div class="item-title label">Solicitante</div>
+                                    <div class="item-input">
+                                        <input type="text" name="solicitante" readonly/> 
+                                        <input type="hidden" name="idusuario">
+                                        <input type="hidden" name="nomeusuario">       
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Data</div>
+                                    <div class="item-input">
+                                        <input type="date" name="data" id="data" required class="tb1">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Produto</div>
+                                    <a href="#" id="ajax-produtos-list" class="item-link item-content autocomplete-opener" style="padding-left:0px">
+                                        <input type="hidden" name="nomep"/>
+                                        <div class="item-inner">
+                                          <div class="item-title" style="text-transform:uppercase">Selecionar produto</div>
+                                          <div class="item-after"></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title label">ID Produto</div>
+                                    <div class="item-input">
+                                    <input type="text" name="codp" required readonly class="tb1"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Embalagem</div>              
+                                    <div class="item-input">
+                                        <select name="embalagem" class="embalagem tb1" required>
+                                        <option value="">-- selecione --</option>
+                                        <option value="GARRAFA 500ML">GARRAFA 500ML</option>
+                                        <option value="GARRAFA 1LT">GARRAFA 1LT</option>
+                                        <option value="GARRAFA 5LT">GARRAFA 5LT</option>
+                                        <option value="BOMBONA 20LT">BOMBONA 20LT</option>
+                                        <option value="BOMBONA 50LT">BOMBONA 50LT</option>
+                                        <option value="TAMBOR 200LT">TAMBOR 200LT</option>
+                                        <option value="CONTAINER 1000LT">CONTAINER 1000LT</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title label">Quantidade (LT)</div>
+                                    <div class="item-input">
+                                        <input type="text" name="quantidade" required class="double tb1"/>         
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Cliente</div>                                    
+                                    <a href="#" id="ajax-clientes-list" class="item-link item-content autocomplete-opener" style="padding-left:0px;text-transform:uppercase"> 
+                                        <div class="item-inner">
+                                          <div class="item-title">Selecionar cliente</div>
+                                          <div class="item-after"></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title label">ID Cliente</div>
+                                    <div class="item-input">
+                                    <input type="text" name="codcliente" required readonly class="tb1"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-content">                                
+                                <div class="item-inner">
+                                    <div class="item-title label">Responsável</div>
+                                    <div class="item-input">
+                                        <input type="text" name="responsavel" required class="tb1"/>         
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-content">                                
+                                <div class="item-inner">
+                                    <div class="item-title label">Setor</div>
+                                    <div class="item-input">
+                                        <input type="text" name="setor" required class="tb1"/>         
+                                    </div>
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title label">Telefone</div>
+                                    <div class="item-input">
+                                        <input type="text" name="telefone" required class="tb1"/>         
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Negociação de teste</div>              
+                                    <div class="item-input">
+                                        <select name="ntb" class="tb1" required>
+                                        <option value="">-- selecione --</option>
+                                        <option value="BONIFICAÇÃO">BONIFICAÇÃO</option>
+                                        <option value="CONSIGNAÇÃO">CONSIGNAÇÃO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="item-content"> 
+                                <div class="item-inner">
+                                    <div class="item-title label">Observação</div>
+                                    <div class="item-input">
+                                        <textarea name="obs-req" id="obs-req" rows=4></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Endereço de entrega</div>
+                                    <div class="item-input">
+                                        <input type="text" name="endereco-entrega" required class="tb1"/>         
+                                    </div>
+                                </div>
+                            </div>        
+
+                            
+                        </li>
+                    </ul>
+                </div>
+      		</div>
+
+
+      		<div id="tab-2" class="tab">        		
+          		<ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Data da liberação</div>
+                                    <div class="item-input">
+                                        <input type="date" name="data-liberacao" id="data-liberacao" required class="tb2">
+                                    </div>
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title label">Lote</div>
+                                    <div class="item-input">
+                                        <input type="text" name="lote" required class="tb2"/>         
+                                    </div>
+                                </div>   
+                            </div>
+                            <div class="item-content">                                
+                                <div class="item-inner">
+                                    <div class="item-title label">Responsável</div>
+                                    <div class="item-input">
+                                        <input type="text" name="responsavel-prep" required class="tb2"/>         
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item-content"> 
+                                <div class="item-inner">
+                                    <div class="item-title label">Observação</div>
+                                    <div class="item-input">
+                                        <textarea name="obs-prep" id="obs-prep" rows=4 required class="tb2"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item-content">
+                                <a href="" class="link imprimir-amostra"><i class="icon material-icons">print</i> Imprimir cópia da amostra</a>
+                            </div>
+
+                        </li>
+                </ul>
+        	</div>
+
+
+        	<div id="tab-3" class="tab">
+        		<ul>
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Data da expedição</div>
+                                    <div class="item-input">
+                                        <input type="date" name="data-expedicao" id="data-expedicao" required class="tb3">
+                                    </div>
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title label">Nota fiscal</div>
+                                    <div class="item-input">
+                                        <input type="text" name="nf" required class="tb3"/>         
+                                    </div>
+                                </div>   
+                            </div>
+                            <div class="item-content">                                
+                                <div class="item-inner">
+                                    <div class="item-title label">Responsável</div>
+                                    <div class="item-input">
+                                        <input type="text" name="responsavel-exp" required class="tb3"/>         
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item-content">                                
+                                <div class="item-inner">
+                                    <div class="item-title label">Transportadora</div>
+                                    <div class="item-input">
+                                        <input type="text" name="transportadora" required class="tb3"/>         
+                                    </div>
+                                </div>
+                            </div>
+
+                        </li>
+                </ul>
+        	</div>
+
+        	<div id="tab-4" class="tab">
+        		<ul>
+                    <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">Histórico de desempenho (será adicionado ao histórico abaixo)</div>
+                            <div class="item-input">
+                                <textarea class="resizable" name="desempenho-input" id="desempenho-input" rows=2 style="min-height:80px"></textarea>
+                            </div>              
+                        </div>
+                    </div>
+                    </li>
+                    <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">Histórico de desempenho da amostra</div>
+                            <div class="item-input">
+                                <textarea class="resizable" name="info-amostra" id="info-amostra" rows=8 style="min-height:180px;color:#bbb" readonly></textarea>
+                            </div>              
+                        </div>
+                    </div>
+                    </li>
+                </ul>
+        	</div>
+
+        	<div id="tab-5" class="tab">
+        		<ul>
+                    <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title label">Parecer técnico</div>
+                            <div class="item-input">
+                                <textarea class="resizable tb5" name="parecer" id="parecer" rows=6 style="min-height:80px" required></textarea>
+                            </div>              
+                        </div>
+                    </div>
+                    </li>                    
+                </ul>
+
+                <div class="item-content">
+                    <div class="item-inner">
+                        <div class="item-title label">Resultado</div>              
+                        <div class="item-input">
+                            <select name="aprovado" required class="tb5">
+                            <option value="">-- selecione --</option>
+                            <option value="S">APROVADO</option>
+                            <option value="N">REPROVADO</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+               
+        	</div>
+    	</div>
+    </div>
+
+    
+   
+    
+    <input type="hidden" name="nomecliente">
+	<input type="hidden" name="codrep">
+	<input type="hidden" name="nomerep">			
+	<input type="hidden" name="idam" value="">	
+    <input type="hidden" name="situacao-am-old" value="REQUISICAO"> 
+	<input type="hidden" name="situacao-am" value="REQUISICAO">	
+
+
+</form>
+
+
+
+</div>

@@ -1,0 +1,275 @@
+<div data-page="form-oc" class="page">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
+		</div>
+		<div class="center nomeperfil registro">Ordem de Compra</div>
+		<div class="right">
+			<a href="#" class="link salva-oc disabled">salvar</a>
+			<a href="#" class="link print-oc external" target="_new" download="espelhoOc.pdf">
+				<i class="material-icons">print</i></a>	
+			<a href="#" class="link email-oc">
+				<i class="material-icons">mail</i></a>	
+			<a href="#" class="link deleta-oc"><i class="material-icons">delete</i></a>
+			<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+		</div>
+	</div>
+</div>
+
+
+<div class="page-content" style="background:#fff!important">
+	
+	<form id="form-oc" class="list-block inputs-list ajax-submit" data-parsley-validate="true">	
+
+		<div class="toolbar tabbar tabbar-scrollable timeline toolbar-oc" style="background:#FFF;margin-top:-60px">	
+			<h4 class="label-situacao-oc" style="margin-top:60px">Status</h4>	
+		   	<div class="toolbar-inner">
+		   		<a href="#tab-oc1" id="oc-pendente" 	class="tab-link oc-pendente" 			style="width:160px">PENDENTE</a>
+		   		<a href="#tab-oc3" id="oc-finalizada" 	class="tab-link oc-finalizada disabled" style="width:160px">FINALIZADA</a>
+		   	</div>
+		</div>
+
+		<div class="content-block">
+
+			<div class="tabs tabs-oc" style="padding-top:30px!important;padding-bottom:5px;">
+				
+				<input type="hidden" name="idoc">
+				<input type="hidden" name="situacao-oc" value="PENDENTE">
+				
+				<h3 style="color:red;display:none">EM DESENVOLVIMENTO E TESTES</h3>
+				
+				<div id="tab-oc1" class="tab active">
+
+					<ul>
+
+						<li>
+							<div class="row">
+					          <div class="col-100 tablet-50">
+					          	<div class="item-content">
+					          		<div class="item-inner" style="width:150px;display:none">
+										<div class="item-title label">ID fornecedor</div>
+										<div class="item-input">
+											<input type="text" name="codf" required readonly/>	
+										</div>
+									</div>
+									<div class="item-inner">
+										<div class="item-input">
+											<a href="#" id="ajax-fornecedores-list" class="item-link item-content autocomplete-opener" style="padding-left:0px">
+				                            <div class="item-inner">
+				                            <div class="item-title item-title-valign"><span>Selecionar fornecedor</span></div>
+				                            <div class="item-after" style="text-align:left!important"></div>
+				                            </div>
+					                        </a> 
+											<input type="hidden" name="nomef" required/>							
+										</div>
+									</div>									
+								</div>
+					          </div>
+
+					        </div>
+						</li>
+
+						<li>
+							<div class="row">
+								<div class="col-100 tablet-33">
+							        <div class="item-content">
+										<div class="item-inner">
+											<div class="item-title label">Emissão</div>
+											<div class="item-input">
+												<input type="date" name="data-emissao-oc" style="background:#fff" required>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-100 tablet-33">
+						          	<div class="item-content">
+										<div class="item-inner">
+											<div class="item-title label">Previsão de entrega</div>
+											<div class="item-input">
+												<input type="date" name="data-previsao-oc" style="background:#fff" required>
+											</div>
+										</div>
+									</div>	          	
+					            </div>
+
+					            <div class="col-100 tablet-33">					          	
+						          	<div class="item-content">
+										<div class="item-inner">
+											<div class="item-title label">Condição</div>
+											<div class="item-input">
+												<input type="text" name="condicao-oc" required>
+											</div>
+										</div>
+									</div>
+						          </div>
+
+							</div>
+						</li>
+
+						<li>
+							<div class="row">				          
+
+					          <div class="col-100 tablet-33">
+					          	<div class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">Frete</div>
+										<div class="item-input">
+											<select name="frete-oc">
+												<option value="CIF" selected=selected>CIF</option>
+												<option value="FOB">FOB</option>
+											</select>
+										</div>
+									</div>
+								</div>	          	
+					          </div>
+
+					          <div class="col-100 tablet-33">
+					          	<div class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">Transportadora</div>
+										<div class="item-input">
+											<input type="text" name="transportadora-oc" required>
+										</div>
+									</div>
+								</div>	          	
+					          </div>
+
+					          <div class="col-100 tablet-33">
+					          	<div class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">Solicitante</div>
+										<div class="item-input">
+											<input type="text" name="solicitante-oc" readonly>
+											<input type="hidden" name="id-solicitante-oc">
+										</div>
+									</div>
+								</div>	          	
+					          </div>
+
+					        </div>
+						</li>
+
+
+						<li>
+							<div class="row">				          
+
+					          <div class="col-100 tablet-33">
+					          	<div class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">Cotação dolar</div>
+										<div class="item-input">
+											<input type="text" id="cotDolar" name="cotDolar" class="money" readonly>
+										</div>
+									</div>
+								</div>	          	
+					          </div>
+					          <div class="col-100 tablet-33">
+					          	<div class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">Valor em US$</div>
+										<div class="item-input">
+											<input type="text" id="vDolar" name="vDolar" class="money" placeholder="0.0000">
+										</div>
+									</div>
+								</div>	          	
+					          </div>
+
+					          <div class="col-100 tablet-33">
+					          	<div class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">Valor em R$</div>
+										<div class="item-input">
+											<input type="text" id="vReais" name="vReais" class="money" readonly placeholder="0.0000">
+										</div>
+									</div>
+								</div>	          	
+					          </div>
+
+					        </div>
+					    </li>
+
+						<li>
+							<div class="item-content">
+								<div class="item-inner">
+									<div class="item-title label">Descrição</div>
+									<div class="item-input">
+										<textarea name="descricao-oc" id="descricao-oc" rows=12 />*FAVOR INFORMAR O NÚMERO DA ORDEM DE COMPRA NA NOTA FISCAL.
+ENCAMINHAR DANFE E XML PARA O EMAIL NFE@HAGNOSSQ.COM.BR
+FAVOR INFORMAR O NÚMERO DA ORDEM DE COMPRA NA NOTA FISCAL.
+INFORMAÇÕES DIFERENTES DA ORDEM DE COMPRA DEVERÃO SER APROVADAS PELO COMPRADOR.
+INDICAR A CLASSIFICAÇÃO FISCAL DOS PRODUTOS INCLUSOS NA NOTA FISCAL DE FATURAMENTO.*</textarea>
+									</div>
+								</div>
+							</div>
+						</li>
+
+					</ul>
+							
+					<ul>						
+						<li class="lista-materiais">
+							<div class="content-block">
+								
+								<div style="width:100%;overflow-x:auto;margin-top:30px">
+									<table class="table-list small-input" id="table-list-oc">
+										<thead>
+											<th>CÓDIGO/COMPONENTE</th>
+											<th>DESCRIÇÃO</th>
+											<th>UNIDADE</th>
+											<th class="center">QTDE</th>
+											<th class="center">PREÇO</th>
+											<th class="center">SUBTOTAL</th>
+											<th class="center">IPI %</th>
+											<th class="center">TOTAL IPI</th>
+											<th class="center">EXCLUIR</th>
+											<th class="center">ÚLT.QTDE</th>
+											<th class="center">ÚLT.PREÇO</th>
+											
+										</thead>
+										<tbody>						
+										</tbody>
+										<tfoot>
+											<tr>
+											<td colspan=9 style="background:#fff">
+												<div class="item-inner right">
+										            <div class="item-title label">TOTAL DA ORDEM DE COMPRA</div>
+										            <div class="item-input">
+										                <input type="text" name="total-oc" value="0.00" style="text-align:right;font-size:22px!important" readonly=readonly/>
+										            </div>
+										        </div>
+											</td>
+											<td style="background:#fff"></td>
+											<td style="background:#fff"></td>
+											</tr>											
+											<tr>
+												<td colspan=7 style="text-align:center;background:#fff">
+													<a href="#" class='button color-teal addmat' style="margin-top:16px">
+														<i class="material-icons">add_circle_outline</i>
+													</a>
+												</td>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+
+							</div>
+						</li>
+					</ul>				
+				</div>
+
+				<div id="tab-oc3" class="tab">
+					<div class="content-block">						
+						<div class="alert">
+						  FINALIZAÇÃO DA ORDEM DE COMPRA
+						  <p>Ao salvar, essa operação não poderá ser desfeita.</p>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</form>
+
+</div>

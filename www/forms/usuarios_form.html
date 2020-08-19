@@ -2,7 +2,7 @@
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
-			<div class="center" class="nomeperfil">Cadastro</div>
+			<div class="center" class="nomeperfil">Cadastro de usuário</div>
 			<div class="right">
 				<a href="#" class="link salva-usuario">salvar</a>
 				<a href="#" class="link deleta-usuario"><i class="material-icons">delete</i></a>	
@@ -14,16 +14,16 @@
 	
 	<div class="page-content">
 		
-		<div class="content-block-title">Criar um usuário</div>
+		
 
-			<form id="form-usuario" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+			<form id="form-usuario" class="list-block inputs-list ajax-submit" data-parsley-validate="true" autocomplete="off">
 	
 					<ul>
 
 						<li>
 						<div class="item-content">
 						<div class="item-inner">
-						<div class="item-title label">Apelido</div>
+						<div class="item-title label">Login</div>
 						<div class="item-input">
 						<input type="text" name="usuario_apelido" id="usuario_apelido" required>						
 						</div>
@@ -31,12 +31,12 @@
 						</div>
 						</li>
 
-						<li style="display:none">
+						<li>
 						<div class="item-content">
 						<div class="item-inner">
-						<div class="item-title label">Nome Completo</div>
+						<div class="item-title label">Nome do usuário</div>
 						<div class="item-input">
-						<input type="text" name="usuario_nome" id="usuario_nome">						
+						<input type="text" name="usuario_nome" id="usuario_nome" required>						
 						</div>
 						</div>
 						</div>
@@ -47,7 +47,9 @@
 						<div class="item-inner">
 						<div class="item-title label">Tipo de usuário</div>
 						<div class="item-input">
-						<select name="usuario_tipo" id="usuario_tipo">
+						<select name="usuario_tipo" id="usuario_tipo" required>
+						<option value="">-- SELECIONE O TIPO DE USUARIO --</option>
+						<option value="9;master">MASTER</option>
 						<option value="1;admin">Admin</option>
 						<option value="3;cliente">Cliente</option>
 						<option value="2;representante">Representante</option>
@@ -89,7 +91,7 @@
 						<div class="item-inner">
 						<div class="item-title label" required>Senha do email</div>
 						<div class="item-input">
-						<input type="password" name="senha_email" id="senha_email" placeholder="senha do email" required style="text-transform:none!important;"/>
+						<input type="password" autocomplete="off" name="senha_email" id="senha_email" placeholder="senha do email" required style="text-transform:none!important;"/>
 						</div>						
 						</div>
 						<div class="item-media">

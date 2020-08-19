@@ -35,22 +35,27 @@
 				<div id="tab1l" class="page-content tab active ">
 						
 						<form id="form-lancamento-1" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
-		
-						<ul>
 
-							<li>
 							<div class="item-content">
-							<div class="item-inner">
-							<div class="item-title label">#ID / CLIENTE</div>
-							<span class="id-cliente"></span> / <span class="nome-cliente" style="text-transform: uppercase;"></span>
-							<div class="item-input">
-							<input type="hidden" name="cliente-lanc-id" id="cliente-lanc-id" readonly>
-							<input type="hidden" name="cliente-lanc-nome" id="cliente-lanc-nome" readonly>
-							</div>
-							</div>
-							</div>
-							</li>
-						</ul>
+                                <div class="item-inner">
+                                    <div class="item-title label">Cliente</div>                                    
+                                    <a href="#" id="ajax-clientes-list" class="item-link item-content autocomplete-opener" style="padding-left:0px;text-transform:uppercase"> 
+                                        <div class="item-inner">
+                                          <div class="item-title">Selecionar cliente</div>
+                                          <div class="item-after"></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="item-inner">
+                                    <div class="item-title label">ID Cliente</div>
+                                    <div class="item-input">
+                                    <input type="text" name="cliente-lanc-id" required readonly/>
+                                    <input type="hidden" name="cliente-lanc-nome" id="cliente-lanc-nome" readonly>
+                                    </div>
+                                </div>
+                            </div>
+		
+						
 
 						<div class="content-block">
 							<h5>CONTATOS</h5>
@@ -153,6 +158,9 @@
 									</div>
 									</li>	
 								</ul>
+
+
+
 							</div>
 
 							<div class="content-block-title">DATA PRÓXIMO CONTATO:</div>
@@ -212,6 +220,8 @@
 
 						        <div class="content-block-title">INTERAÇÕES:</div>
 
+						        <input type="hidden" name="statusi" value="">
+
 						        <ul>
 						        	
 
@@ -220,7 +230,7 @@
 							            <input type="checkbox" name="interacao_visita" id="int1" value="1&ordm; CONTATO"/>
 							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
 							            <div class="item-inner">
-							              <div class="item-title">1&ordm; CONTATO</div>
+							              <div class="item-title">1&ordm; CONTATO COM O CLIENTE</div>
 							            </div>
 							          </label>
 							        </li>
@@ -229,7 +239,7 @@
 							            <input type="checkbox" name="interacao_visita" id="int2" value="APRESENTAÇÃO"/>
 							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
 							            <div class="item-inner">
-							              <div class="item-title">APRESENTAÇÃO</div>
+							              <div class="item-title">ENVIEI APRESENTAÇÃO DA EMPRESA AO CLIENTE</div>
 							            </div>
 							          </label>
 							        </li>
@@ -238,7 +248,7 @@
 							            <input type="checkbox" name="interacao_visita" id="int3" value="COTAÇÃO"/>
 							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
 							            <div class="item-inner">
-							              <div class="item-title">COTAÇÃO</div>
+							              <div class="item-title">CLIENTE SOLICITOU COTAÇÃO</div>
 							            </div>
 							          </label>
 							        </li>
@@ -247,7 +257,7 @@
 							            <input type="checkbox" name="interacao_visita" id="int4" value="HIGIENIZAÇÃO"/>
 							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
 							            <div class="item-inner">
-							              <div class="item-title">HIGIENIZAÇÃO</div>
+							              <div class="item-title">PRÉ-AGENDEI UMA HIGIENIZAÇÃO NO CLIENTE</div>
 							            </div>
 							          </label>
 							        </li>
@@ -256,7 +266,7 @@
 							            <input type="checkbox" name="interacao_visita" id="int5" value="TESTE"/>
 							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
 							            <div class="item-inner">
-							              <div class="item-title">TESTE</div>
+							              <div class="item-title">CLIENTE SOLICITOU AMOSTRA DE PRODUTO</div>
 							            </div>
 							          </label>
 							        </li>
@@ -265,7 +275,7 @@
 							            <input type="checkbox" name="interacao_visita" id="int6" value="AÇÃO CORRETIVA"/>
 							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
 							            <div class="item-inner">
-							              <div class="item-title">AÇÃO CORRETIVA</div>
+							              <div class="item-title">REALIZEI UMA AÇÃO CORRETIVA</div>
 							            </div>
 							          </label>
 							        </li>
@@ -274,7 +284,7 @@
 							            <input type="checkbox" name="interacao_visita" id="int7" value="PEDIDO"/>
 							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
 							            <div class="item-inner">
-							              <div class="item-title">PEDIDO</div>
+							              <div class="item-title">CLIENTE REALIZOU UM NOVO PEDIDO</div>
 							            </div>
 							          </label>
 							        </li>
@@ -283,7 +293,7 @@
 							            <input type="checkbox" name="interacao_visita" id="int8" value="ENTREGA"/>
 							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
 							            <div class="item-inner">
-							              <div class="item-title">ENTREGA</div>
+							              <div class="item-title">REALIZEI ENTREGA DE PEDIDO</div>
 							            </div>
 							          </label>
 							        </li>
@@ -292,7 +302,7 @@
 							            <input type="checkbox" name="interacao_visita" id="int9" value="SEM INTERAÇÃO"/>
 							            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
 							            <div class="item-inner">
-							              <div class="item-title">SEM INTERAÇÃO</div>
+							              <div class="item-title">NÃO HOUVE NOVAS INTERAÇÕES</div>
 							            </div>
 							          </label>
 							        </li>								        
@@ -309,13 +319,19 @@
 										<div class="item-content">
 										<div class="item-inner">
 										<div class="item-input">
-											<textarea class="resizable" name="lancamento-descricao" id="lancamento-descricao" placeholder="Descreva aqui informações relativas à esta visita" rows=20 style="height:250px;overflow-y: scroll;" required></textarea>					
+											<textarea class="resizable" name="lancamento-descricao" id="lancamento-descricao" placeholder="Descreva aqui informações relativas à esta visita" rows=20 style="height:250px;overflow-y: scroll;" required></textarea>																
 										</div>
+										<a id="gravar" href="#" style="display:block;text-align:center;border:1px solid #ddd">
+												<i class="material-icons" style="color:#000!important;font-size:48px">mic</i></span>
+											</a>
 										</div>
 										</div>
 									</li>		
-						        </ul>
+						        </ul>	
+								
 						    </div>
+
+
 
 							<a href="#" class="bt-tb4 button button-raised button-fill color-teal disabled">Avançar</a>
 
@@ -388,7 +404,7 @@
 							<table id="prod-lanc-rows" style="white-space:nowrap;padding:0px!important;width:100%">
 							</table>
 								
-							<table style="white-space:nowrap;padding:0px!important;background-color:#84C44C;width:100%">
+							<table style="white-space:nowrap;padding:0px!important;background-color:#84C44C;width:100%;display:none">
 								<thead>
 								</thead>
 								<tbody id="previsaovenda">										
@@ -396,7 +412,7 @@
 							</table>
 						</div>
 
-						<a href="#" id="bt-tb2" class="bt-tb2 button button-raised button-fill color-teal disabled">Avançar</a>					
+						<a href="#" id="bt-tb2" class="bt-tb2 button button-raised button-fill color-teal">Avançar</a>					
 
 					</form>
 
@@ -404,7 +420,7 @@
 				</div>
 
 				<div id="tab3l" class="page-content tab tab-equips">
-					<div class="content-block"">	
+					<div class="content-block">	
 
 						<H3 class="nCliente" style="text-transform:uppercase"></H3>
 						<h3 style="padding-left:15px">CONCENTRAÇÕES ATUAIS</h3>
@@ -430,8 +446,8 @@
 						
 						<form id="form-lancamento-3" class="list-block inputs-list ajax-submit" data-parsley-validate="true" enctype="multipart/form-data">		
 							<input type="hidden" name="tpcontato" value="PRESENCIAL">
-							<input type="hidden" name="statusi" value="">
-							<input type="text" name="dtvisita" id="dtvisita" value="">
+							
+							<input type="hidden" name="dtvisita" id="dtvisita" value="">
 							<input type="hidden" name="dtproxcontato" id="dtproxcontato" value="">
 							<textarea name="lancamento-descricao2" id="lancamento-descricao2" style='display:none'></textarea>				
 

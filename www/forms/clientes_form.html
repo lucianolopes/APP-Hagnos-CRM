@@ -21,7 +21,7 @@
 			<a href="#tab1" class="active tab-link">DADOS CADASTRAIS</a>
 			<a href="#tab2" class="tab-link tabEquip">EQUIPAMENTOS</a>
 			<a href="#tab3" class="tab-link">COMERCIAL</a>
-			<a href="#tab4" class="tab-link esconde-rep2">ACOMPANHAMENTO TÉCNICO</a>
+			<a href="#tab4" class="tab-link">ACOMPANHAMENTO TÉCNICO</a>
 		</div>
 	</div>
 
@@ -29,11 +29,8 @@
 		<div class="tabs">
 			
 			<div id="tab1" class="page-content tab active">
-				<div class="content-block">				    
-
-					<h4 class="resumoCliente" style="padding:0px 15px"></h4>
-
-					<form id="form-cliente" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+				<div class="content-block">	
+					<form id="form-cliente" class="list-block inputs-list ajax-submit" data-parsley-validate="true" style="background-color:#e1e1e1!important">
 	
 						<ul>
 
@@ -235,35 +232,91 @@
 								</div>
 							</div>
 						</li>
+
+						<li class="li-tec">
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label">Perfil de acompanhamento (dias)</div>
+						<div class="item-input">
+						<select name="perfil-acompanhamento" id="perfil-acompanhamento">
+						<option value="7">SEMANAL</option>
+						<option value="15" selected=selected>QUINZENAL</option>
+						<option value="30">MENSAL</option>
+						</select>
+						</div>
+						</div>
+						</div>
+						</li>
+
+						<li class="esconde-rep esconde-tep2 esconde-tecnico">
+							<div class="item-content">
+					            <div class="item-inner"> 
+					              <div class="item-title label">FIGURAR NOS RELATÓRIOS?</div>
+					              <div class="item-input">
+					                <label class="label-switch">
+					                  <input type="checkbox" name="figurar-relatorio"/>
+					                  <div class="checkbox"></div>
+					                </label>
+					              </div>
+					            </div>
+					        </div>
+						</li>
+
+						<li class="analise">
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label">Análise de crédito</div>
+						<div class="item-input">
+						<select name="analise_credito" id="analise_credito">
+						<option value="">-- Selecione opção --</option>
+						<option value="RESTRITO">RESTRITO</option>
+						<option value="LIBERADO">LIBERADO</option>
+						</select>
+						</div>
+						</div>
+						</div>
+						</li>
+
+						<li class="analise">
+							<div class="item-content">
+								<div class="item-inner">
+									<div class="item-title label">Observação análise de crédito</div>
+									<div class="item-input">
+										<textarea name="obs_analise" rows=6/></textarea>
+									</div>
+								</div>
+							</div>
+						</li>
+
 						</ul>
 
 						
-						<div class="content-block">
-							<h5>CONTATOS</h5>
-							<div class="list-contatos-cliente">
-								<div class="row">
-									<div class="col-50 tablet-25">
-										<input type="text" name="responsavel-nome[]" placeholder="RESPONSÁVEL">
-									</div>
-									<div class="col-50 tablet-25">
-										<input type="text" name="responsavel-setor[]" placeholder="SETOR">
-									</div>
-									<div class="col-50 tablet-25">
-										<input type="text" name="responsavel-telefone[]" placeholder="TELEFONE">
-									</div>
-									<div class="col-50 tablet-25">
-										<input type="text" name="responsavel-email[]" placeholder="EMAIL">
-									</div>
-								</div>								
-							</div>
+						
+							<div class="radius-white-10">
+								<h5>CONTATOS</h5>
+								<div class="list-contatos-cliente">
+									<div class="row">
+										<div class="col-50 tablet-25">
+											<input type="text" name="responsavel-nome[]" placeholder="RESPONSÁVEL">
+										</div>
+										<div class="col-50 tablet-25">
+											<input type="text" name="responsavel-setor[]" placeholder="SETOR">
+										</div>
+										<div class="col-50 tablet-25">
+											<input type="text" name="responsavel-telefone[]" placeholder="TELEFONE">
+										</div>
+										<div class="col-50 tablet-25">
+											<input type="text" name="responsavel-email[]" placeholder="EMAIL">
+										</div>
+									</div>								
+								</div>
 
-							<div class="row" style="margin-top:15px">
-								<div class="col-100">
-									<a href="#" class="button button-raised button-fill color-teal addContato">ADICIONAR CONTATO</a>
+								<div class="row" style="margin-top:15px">
+									<div class="col-100">
+										<a href="#" class="button button-raised button-fill color-teal addContato">ADICIONAR CONTATO</a>
+									</div>
 								</div>
 							</div>
-
-						</div>
 
 
 					</form>
@@ -272,35 +325,29 @@
 
 			<div id="tab2" class="page-content tab tab-equips">
 				<div class="content-block" style="padding:0px">
-					<h4 class="resumoCliente" style="padding:0px 15px"></h4>
-					
+
 					<div class="content-block">
-					<h3 class="totalregistros-equips"></h3>
+					<h3 class="totalregistros-equips" style="display:none"></h3>
 					<p class="buttons-row">
-					<a href="#" class="button button-raised button-fill coloe-teal button-raised addTab addEquipamento">ADICIONAR EQUIPAMENTO</a>					
+					<a href="#" class="btn-radius addEquipamento"><i class="material-icons">add_circle_outline</i> ADICIONAR EQUIPAMENTO</a>
 					</p>
 					</div>
 					
-					<div class="list-block accordion-list" style="margin-top:0px!important">
-						<ul id="lista-equip"></ul>
+					<div class="content-block">
+						<div class="list-block accordion-list" style="margin-top:0px!important">
+							<ul id="lista-equip"></ul>
+						</div>
 					</div>
 				</div>
 			</div>
 
-			<div id="tab3" class="page-content tab tab-produtos pull-to-refresh-content">
-				<div class="pull-to-refresh-layer">
-				    <div class="preloader"></div>
-				    <div class="pull-to-refresh-arrow"></div>
-				 </div>				
-				<div class="content-block" style="padding:0px">
-					<h4 class="resumoCliente" style="padding:0px 15px"></h4>
-
-
-					<div class="toolbar tabbar tabbar-scrollable tabNegociacoes" style="padding-top:0px!important;margin-top:0px!important">
+			<div id="tab3" class="page-content tab tab-produtos">							
+				<div class="content-block" style="padding:0px!important">
+					<div class="toolbar tabbar tabbar-scrollable tabNegociacoes">
 						<div class="toolbar-inner">
 							<a href="#tab3-c" class="active tab-link"><span class="totalregistros-prod-o"></span></a>
 							<a href="#tab4-b" class="tab-link">COTAÇÕES</a>
-							<a href="#tab3-b" class="tab-link"><span class="totalregistros-prod-n"></span></a>
+							<a href="#tab3-b" class="tab-link"><span class="totalregistros-prod-n"><i>carregando negócios...</i></span></a>
 							<a href="#tab5p"  class="tab-link">PREVISÃO DE VENDA</a>
 							<a href="#tab3-d" class="tab-link"><span class="totalregistros-pedido"></span></a>
 						</div>
@@ -308,43 +355,25 @@
 
 					<div class="tabs-animated-wrap">
 						<div class="tabs">
-							<div id="tab3-c" class="active page-content tab" style="padding-top:70px!important">
-								<div class="list-block accordion-list" style="margin-top:0px!important">									
-									<div class="lista-prods-oportunidades"></div>
+
+							<div id="tab3-c" class="page-content tab active">
+								<div class="content-block pt-10">
+									<h4 class="resumoCliente"></h4>
+									<div class="list-block accordion-list" style="margin-top:0px!important">									
+										<div class="lista-prods-oportunidades"></div>
+									</div>
 								</div>
 							</div>
-							<div id="tab4-b" class="page-content tab" style="padding-top:50px!important">
-								<div class="content-block" style="padding:0px">				
-
-									<div class="content-block">
-									<h3 class="totalregistros-cotacao"></h3>
+							<div id="tab4-b" class="page-content tab">
+								<div class="content-block pt-10">				
+									<h4 class="resumoCliente"></h4>
+									<h3 class="totalregistros-cotacao" style="display:none"></h3>
 									<p class="buttons-row">
-									<a href="" class="button button-raised button-fill color-teal addTabCot">NOVA COTAÇÃO</a>
+									<a href="" class="btn-radius addTabCot"><i class="material-icons">add_circle_outline</i>NOVA COTAÇÃO</a>
 									</p>
-									</div>
 
-									<div class="card data-table">
-						
-										<div class="card-header">
-											<div class="list-block inputs-list" style="width:100%">
-										      <ul>
-										        <li>
-										          <div class="item-content">
-										            <div class="item-inner"> 
-										              <div class="item-input">
-										                <input type="text" name="produto-search-cotacao"  placeholder="pesquisar produto contido"/>
-										              </div>
-										            </div>
-										          </div>
-										        </li>
-										       </ul>
-										      </div>
-
-											<div class="data-table-actions">
-												<a class="link icon-only p-search-cot"><i class="icon material-icons">search</i></a>
-											</div>
-										</div>
-
+									<div class="card data-table" style="background-color:#e1e1e1!important">					
+										
 
 										<div class="card-content">
 											
@@ -359,8 +388,10 @@
 												<th class="label-cell">ENTREGA</th>
 												<th class="label-cell">FRETE</th>				
 												<th class="label-cell">STATUS</th>
+												<th class="numeric-cell" style="text-align:center">GERAR PEDIDO</th>
 												<th class="numeric-cell" style="text-align:center">NOTIFICAÇÕES</th>
 												<th class="numeric-cell" style="text-align:center">EMAIL</th>
+												<th class="numeric-cell" style="text-align:center">DUPLICAR</th>
 												<th class="numeric-cell" style="text-align:center">EXCLUIR</th>
 												</tr>
 
@@ -370,68 +401,15 @@
 											</tbody>
 											</table>
 										</div>
-									</div>
-								</div>
-							</div>
-							<div id="tab3-b" class="page-content tab" style="padding-top:50px!important">
-								<div class="list-block accordion-list" style="margin-top:0px!important">									
-									<div class="lista-prods-negocios"></div>
-								</div>
-							</div>
-							<div id="tab5p" class="page-content tab tab-previsao">
-								<div class="content-block" style="padding:0px">								
-								
-									<div class="list-block accordion-list" style="margin-top:0px!important">
-										<div class="card data-table">
-									
-											<div class="card-header" style="display:none">
-												<div class="data-table-actions"><a class="link icon-only"><i class="icon material-icons">sort</i></a><a class="link icon-only"><i class="icon material-icons">more_vert</i></a></div>
-											</div>
 
-											<div class="card-content">
-														
-												<table style="white-space:nowrap;">
-												<thead>
-													<tr>
-													<th class="label-cell">PRODUTO</th>
-													<th class="label-cell" style="text-align:center">DATA ÚLTIMA COMPRA</th>
-													<th class="label-cell" style="text-align:center">PREVISÃO DE VENDA (DIAS)</th>
-													<th class="label-cell" style="text-align:center">PREVISÃO DE VENDA (DATA)</th>	
-													<th class="label-cell" style="text-align:center">QUANTIDADE</th>
-													
-																		
-													<th class="label-cell" style="display:none">PRÓXIMA VENDA</th>																							
-													<th class="label-cell" style="text-align:center;display:none">CONFIRMAÇÃO DE VENDA</th>
-													</tr>
-												</thead>
-												<tbody id="previsao-venda">
-														
-												</tbody>
-												</table>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div id="tab3-d" class="page-content tab" style="padding-top:70px!important">
-								<div class="content-block" style="padding:0px">				
-
-									<div class="content-block">
-									<p class="buttons-row">
-									<a href="" class="button button-raised button-fill color-teal addTab addPedido">NOVO PEDIDO</a>
-									</p>
-									</div>
-
-									<div class="card data-table">
-						
-										<div class="card-header">
+										<div class="card-footer" style="padding-left:0px;border-radius:15px!important;background-color:#1B613F!important">
 											<div class="list-block inputs-list" style="width:100%">
 										      <ul>
 										        <li>
 										          <div class="item-content">
 										            <div class="item-inner"> 
 										              <div class="item-input">
-										                <input type="text" name="produto-search"  placeholder="pesquisar produto contido"/>
+										                <input type="text" name="produto-search-cotacao" class="i-search"  placeholder="pesquisar produto contido"/>
 										              </div>
 										            </div>
 										          </div>
@@ -440,13 +418,40 @@
 										      </div>
 
 											<div class="data-table-actions">
-												<a class="link icon-only p-search"><i class="icon material-icons">search</i></a>
+												<a class="link icon-only p-search-cot" style="color:#fff!important"><i class="icon material-icons">search</i></a>
 											</div>
 										</div>
+									</div>
+								</div>
+							</div>
+							<div id="tab3-b" class="page-content tab">
+								<div class="content-block pt-10">
+									<h4 class="resumoCliente"></h4>
+									<div class="list-block accordion-list" style="margin-top:0px!important">									
+										<div class="lista-prods-negocios"></div>
+									</div>
+								</div>
+							</div>
+							<div id="tab5p" class="page-content tab tab-previsao">
+								<div class="content-block pt-10">								
+									<h4 class="resumoCliente"></h4>
+									<div class="list-block accordion-list" style="margin-top:0px!important">
+										<div id="previsao-venda"></div>
+									</div>
+								</div>
+							</div>
+							<div id="tab3-d" class="page-content tab">
+								<div class="content-block pt-10">
+									<h4 class="resumoCliente"></h4>
+									<p class="buttons-row">
+									<a href="" class="btn-radius addPedido"><i class="material-icons">add_circle_outline</i>NOVO PEDIDO</a>
+									</p>
+
+									<div class="card data-table" style="background-color:#e1e1e1!important">
 
 										<div class="card-content">
 											
-											<table style="white-space:nowrap;">
+											<table style="white-space:nowrap;padding:0px!important">
 											<thead>
 
 												<tr>
@@ -459,7 +464,9 @@
 												<th class="label-cell">TRANSPORTADORA</th>				
 												<th class="label-cell">STATUS</th>
 												<th class="numeric-cell" style="text-align:center">NOTIFICAÇÕES</th>
-												<th class="numeric-cell" style="text-align:center">EXCLUIR</th>
+												<th class="numeric-cell" style="text-align:center">DUPLICAR</th>
+												<th class="numeric-cell" style="text-align:center">IMPRIMIR</th>
+												<th class="numeric-cell" style="text-align:center"><span class="esconde">EXCLUIR</span></th>
 												</tr>
 
 											</thead>
@@ -468,43 +475,58 @@
 											</tbody>
 											</table>
 										</div>
+
+										<div class="card-footer" style="padding-left:0px;border-radius:15px!important;background-color:#1B613F!important">
+											<div class="list-block inputs-list" style="width:100%">
+										      <ul>
+										        <li>
+										          <div class="item-content">
+										            <div class="item-inner"> 
+										              <div class="item-input">
+										                <input type="text" name="produto-search" class="i-search"  placeholder="pesquisar produto contido"/>
+										              </div>
+										            </div>
+										          </div>
+										        </li>
+										       </ul>
+										      </div>
+
+											<div class="data-table-actions">
+												<a class="link icon-only p-search" style="color:#fff!important"><i class="icon material-icons">search</i></a>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-							
+							</div>							
 							
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div id="tab4" class="page-content tab tab-historico" style="padding-top:100px!important">
-
-				<h4 class="resumoCliente" style="padding:0px 15px; margin-bottom:0px!important;padding-bottom:0px!important"></h4>
-
-				<div class="toolbar tabbar tabbar-scrollable" style="padding-top:0px!important;margin-top:0px!important">
-					<div class="toolbar-inner">
-						<a href="#tab4-a" class="active tab-link">HISTÓRICO AT</a>
-						<a href="#tab4-c" class="tab-link">HIGIENIZAÇÕES</a>
-						<a href="#tab4-d" class="tab-link">TESTES</a>
-						<a href="#tab4-e" class="tab-link">AÇÕES CORRETIVAS</a>						
+			<div id="tab4" class="page-content tab tab-historico">
+				<div class="content-block" style="padding:0px!important">
+					<div class="toolbar tabbar tabbar-scrollable">
+						<div class="toolbar-inner">
+							<a href="#tab4-a" class="active tab-link">HISTÓRICO AT</a>
+							<a href="#tab4-c" class="tab-link">HIGIENIZAÇÕES</a>
+							<a href="#tab4-e" class="tab-link">AÇÕES CORRETIVAS</a>
+							<a href="#tab4-f" class="tab-link">AMOSTRAS</a>						
+						</div>
 					</div>
 				</div>
 
 				<div class="tabs-animated-wrap">
 					<div class="tabs">
-
-						<div id="tab4-a" class="page-content tab active" style="padding-top:50px!important">
-							<div class="content-block" style="padding:0px">					
-
-								<div class="content-block">
-								<h3 class="totalregistros-historico"></h3>
+						
+						<div id="tab4-a" class="page-content tab active">
+							<div class="content-block">									
+								<h4 class="resumoCliente"></h4>
+								<h3 class="totalregistros-historico" style="display:none"></h3>
 								<p class="buttons-row">
-								<a href="#" class="button button-raised  button-fill color-teal addTab addAt">NOVO AT</a>
-								<a href="#" class="button button-raised button-fill color-teal resumo-ats">RESUMO</a>
+								<a href="" class="btn-radius addAt"><i class="material-icons">add_circle_outline</i>NOVO AT</a>
+								<a href="" class="btn-radius resumo-ats"><i class="material-icons">add_circle_outline</i>RESUMO</a>
 								</p>
-								</div>
-
 								<div class="card data-table">
 					
 									<div class="card-header" style="display:none">
@@ -516,7 +538,6 @@
 										<table style="white-space:nowrap;">
 										<thead>
 											<tr>		
-											<th class="numeric-cell" style="display:none">LANC</th>		
 											<th class="numeric-cell">VER</th>
 											<TH class="numeric-cell">ID</TH>						
 											<th class="label-cell">DATA</th>
@@ -536,16 +557,13 @@
 							</div>
 						</div>
 
-						<div id="tab4-c" class="page-content tab" style="padding-top:50px!important">
-							<div class="content-block" style="padding:0px">					
-								
-								<div class="content-block">
-								<h3 class="totalregistros-higienizacao"></h3>
+						<div id="tab4-c" class="page-content tab">
+							<div class="content-block">
+								<h4 class="resumoCliente"></h4>
+								<h3 class="totalregistros-higienizacao" style="display:none"></h3>
 								<p class="buttons-row">
-								<a href="#" class="button button-raised button-fill color-teal addTab addHig">NOVA HIGIENIZAÇÃO</a>
+								<a href="" class="btn-radius addHig"><i class="material-icons">add_circle_outline</i>NOVA HIGIENIZAÇÃO</a>
 								</p>
-								</div>
-
 								<div class="card data-table">
 					
 									<div class="card-header" style="display:none">
@@ -577,57 +595,13 @@
 							</div>
 						</div>
 
-						<div id="tab4-d" class="page-content tab" style="padding-top:50px!important">
-							<div class="content-block" style="padding:0px">					
-								
-								<div class="content-block">
-								<h3 class="totalregistros-teste"></h3>
+						<div id="tab4-e" class="page-content tab">
+							<div class="content-block">
+								<h4 class="resumoCliente"></h4>
+								<h3 class="totalregistros-acao" style="display:none"></h3>
 								<p class="buttons-row">
-								<a href="#" class="button button-raised button-fill color-teal addTab addTeste">NOVO TESTE</a>
+								<a href="" class="btn-radius addAcao"><i class="material-icons">add_circle_outline</i>NOVA AÇÃO CORRETIVA</a>
 								</p>
-								</div>
-
-								<div class="card data-table">
-					
-									<div class="card-header" style="display:none">
-									<div class="data-table-actions"><a class="link icon-only"><i class="icon material-icons">sort</i></a><a class="link icon-only"><i class="icon material-icons">more_vert</i></a></div>
-									</div>
-
-									<div class="card-content">
-										
-										<table style="white-space:nowrap;">
-										<thead>
-
-											<tr>
-											<th class="numeric-cell" style="text-align:center">VER/EDITAR</th>	
-											<TH class="numeric-cell">ID</TH>
-											<th class="label-cell">DATA/HORA</th>
-											<th class="label-cell">STATUS</th>
-											<th class="label-cell" style="display:none">INFORMAÇÕES</th>
-											<th class="numeric-cell" style="text-align:center">NOTIFICAÇÕES</th>
-											<th class="numeric-cell" style="text-align:center">EXCLUIR</th>
-											</tr>
-
-										</thead>
-										<tbody id="testes-cliente">
-												
-										</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div id="tab4-e" class="page-content tab" style="padding-top:50px!important">
-							<div class="content-block" style="padding:0px">
-
-								<div class="content-block">
-								<h3 class="totalregistros-acao"></h3>
-								<p class="buttons-row">
-								<a href="#" class="button button-raised button-fill color-teal addTab addAcao">NOVA AÇÃO CORRETIVA</a>
-								</p>
-								</div>
-
 								<div class="card data-table">
 					
 									<div class="card-header" style="display:none">
@@ -657,7 +631,45 @@
 									</div>
 								</div>
 							</div>
-						</div>						
+						</div>	
+
+						<div id="tab4-f" class="page-content tab">
+							<div class="content-block">
+								<h4 class="resumoCliente"></h4>
+								<h3 class="totalregistros-amostra" style="display:none"></h3>
+								<p class="buttons-row">
+								<a href="" class="btn-radius addAmostra"><i class="material-icons">add_circle_outline</i>NOVA AMOSTRA</a>
+								</p>
+								<div class="card data-table">
+					
+									<div class="card-header" style="display:none">
+									<div class="data-table-actions"><a class="link icon-only"><i class="icon material-icons">sort</i></a><a class="link icon-only"><i class="icon material-icons">more_vert</i></a></div>
+									</div>
+
+									<div class="card-content">
+										
+										<table style="white-space:nowrap;">
+										<thead>
+
+											<tr>
+											<th class="numeric-cell" style="text-align:center">VER/EDITAR</th>	
+											<TH class="numeric-cell">ID</TH>
+											<th class="label-cell">DATA</th>
+											<th class="label-cell">STATUS</th>
+											<th class="label-cell" style="display:none">INFORMAÇÕES</th>
+											<th class="numeric-cell" style="text-align:center">NOTIFICAÇÕES</th>
+											<th class="numeric-cell" style="text-align:center">EXCLUIR</th>
+											</tr>
+
+										</thead>
+										<tbody id="amostras-cliente">
+												
+										</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>					
 
 					</div>
 				</div>

@@ -1,0 +1,80 @@
+<div data-page="form-ajuste-estoque-mat" class="page">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="left">
+				<a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a>
+			</div>
+			<div class="center pagetitle">Entrada / saída manual estoque</div>
+			<div class="right">
+				<a href="#" class="link salva-ajuste-material"><i class="material-icons">done</i></a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="page-content">
+
+	<form id="form-ajuste-material" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+		
+		<ul>
+
+		<li>
+			<div class="row">
+	          <div class="col-100">
+	          	
+	          	<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title label">Material</div>
+						<div class="item-input">							
+							<select name="material-ajp" id="material-ajp" class="disabled"></select>
+						</div>
+					</div>
+				</div>
+	          </div>
+	        </div>
+		</li>			
+		
+		<li>
+			<div class="row">
+	          <div class="col-100 tablet-50">	          	
+	          	<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title label">Operação</div>
+						<div class="item-input">							
+							<select name="operacao-mat-ajp" id="operacao-mat-ajp" required>
+								<option value="entrada" selected=selected>ENTRADA</option>
+								<option value="saida">SAÍDA</option>
+							</select>
+						</div>
+					</div>
+				</div>
+	          </div>
+	        </div>
+		</li>		
+	
+		<li>
+			<div class="row">
+	          <div class="col-100 tablet-50">
+	          	
+	          	<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title label">Quantidade (por unidade)</div>
+						<div class="item-input">
+							<input type="number" name="qtd-mat-ajp" value="0" min="1" required>
+						</div>
+					</div>
+				</div>
+	          </div>	          
+	        </div>
+		</li>
+
+		
+
+		</ul>
+		
+		<input type="hidden" name="codm">
+		<input type="hidden" name="nomemat">
+		<input type="hidden" name="unidade">
+
+	</form>
+
+</div>

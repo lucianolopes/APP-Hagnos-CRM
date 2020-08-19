@@ -1,0 +1,110 @@
+<div data-page="form-ajuste-estoque" class="page">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="left">
+				<a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a>
+			</div>
+			<div class="center pagetitle">Ajustar estoque</div>
+			<div class="right">
+				<a href="#" class="link salva-ajuste"><i class="material-icons">done</i></a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="page-content">
+
+	<form id="form-ajuste" class="list-block inputs-list ajax-submit" data-parsley-validate="true">		
+			
+		<ul>
+
+		<li>
+			<div class="row">
+	          <div class="col-100 tablet-50">	          	
+	          	<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title label">Operação</div>
+						<div class="item-input">							
+							<select name="operacao-aj" id="operacao-aj" required>
+								<option value="entrada" selected=selected>ENTRADA</option>
+								<option value="saida">SAÍDA</option>
+							</select>
+						</div>
+					</div>
+				</div>
+	          </div>
+	        </div>
+		</li>
+
+		<li>
+			<div class="row">
+	          <div class="col-100 tablet-50">
+	          	<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title label">Envase</div>
+						<div class="item-input">
+							<select name="envase-aj" id="envase-aj" readonly class="disabled"></select>
+						</div>
+					</div>
+				</div>	          	
+	          </div>
+	        </div>			
+		</li>
+	
+		<li>
+			<div class="row">
+	          <div class="col-100 tablet-50">
+	          	<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title label">Lote</div>
+						<div class="item-input">
+							<input type="text" name="lote-aj" id="lote-aj" required class="disabled">
+						</div>
+					</div>
+				</div>	          	
+	          </div>
+	        </div>			
+		</li>
+
+		<li>
+			<div class="row">
+	          <div class="col-100 tablet-50">
+	          	
+	          	<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title label">Quantidade (Litros)</div>
+						<div class="item-input">
+							<input type="number" name="qtd-aj" value="0" min="1" required>
+						</div>
+					</div>
+				</div>
+	          </div>	          
+	        </div>
+		</li>
+
+		
+		<li style="display:none">
+			<div class="row">
+	          <div class="col-100">
+	          	
+	          	<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title label">Setor</div>
+						<div class="item-input">							
+							<select name="setor-aj" id="setor-aj"></select>
+						</div>
+					</div>
+				</div>
+	          </div>
+	        </div>
+		</li>		
+
+		</ul>
+		
+		<input type="hidden" name="codp">
+		<input type="hidden" name="nomeproduto">
+		<input type="hidden" name="idsetor">
+		<input type="hidden" name="nomesetor">
+
+	</form>
+
+</div>

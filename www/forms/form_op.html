@@ -1,0 +1,290 @@
+<div data-page="form-op" class="page">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a>
+		</div>
+		<div class="center nomeperfil registro">Ordem de Produção</div>
+		<div class="right">
+			<a href="#" class="link salva-op">salvar</a>
+			<a href="#" class="link print-op external" target="_new" download="espelhoPedido.pdf"><i class="material-icons">print</i></a>	
+			<a href="#" class="link deleta-op"><i class="material-icons">delete</i></a>
+			<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+		</div>
+	</div>
+</div>
+
+
+<div class="page-content" style="background:#fff!important">
+	
+	<form id="form-op" class="list-block inputs-list ajax-submit" data-parsley-validate="true">	
+
+		<div class="toolbar tabbar tabbar-scrollable timeline toolbar-op" style="background:#FFF;margin-top:-60px">	
+			<h4 class="label-situacao-op" style="margin-top:60px">Status</h4>	
+		   	<div class="toolbar-inner">
+		   		<a href="#tab-op1" id="op-pendente" 	class="tab-link op-pendente" 			style="width:160px">PENDENTE</a>
+		   		<a href="#tab-op2" id="op-envase" 		class="tab-link op-envase disabled" 	style="width:160px">ENVASE</a>
+		   		<a href="#tab-op3" id="op-finalizada" 	class="tab-link op-finalizada disabled" style="width:160px">FINALIZADA</a>
+		   	</div>
+		</div>
+
+		<div class="content-block">
+
+			<div class="tabs tabs-op" style="padding-top:20px!important;padding-bottom:5px;">
+				
+				<input type="hidden" name="idop">
+				<input type="hidden" name="idsetor">
+				<input type="hidden" name="situacao-op" value="PENDENTE">
+				<input type="hidden" name="estoque_processado">
+				<input type="hidden" name="idusuario">
+				<input type="hidden" name="nomeusuario">
+				
+				<h3 style="color:red;display:none">EM DESENVOLVIMENTO E TESTES</h3>
+				
+				<div id="tab-op1" class="tab active">
+
+					<ul>
+						<li>
+							<div class="row">
+					          <div class="col-100 tablet-50">
+					          	<div class="item-content">
+					          		<div class="item-inner" style="width:150px;display:none">
+										<div class="item-title label">Código do produto</div>
+										<div class="item-input">
+											<input type="text" name="codp" required readonly/>	
+										</div>
+									</div>
+									<div class="item-inner">
+										<div class="item-input">
+
+											<a href="#" id="ajax-produtos-list" class="item-link item-content autocomplete-opener" style="padding-left:0px">
+				                            <div class="item-inner">
+				                            <div class="item-title item-title-valign"><span>Selecionar produto</span></div>
+				                            <div class="item-after" style="text-align:left!important"></div>
+				                            </div>
+					                        </a> 
+											<input type="hidden" name="nomep" required/>							
+										</div>
+
+									</div>
+									
+								</div>
+					          </div>
+					          <div class="col-100 tablet-50">
+					          	<div class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">Emissão</div>
+										<div class="item-input">
+											<input type="date" name="data-emissao-op" style="background:#fff" required>
+										</div>
+									</div>
+								</div>	          	
+					          </div>
+					        </div>
+						</li>
+
+					
+						<li>
+							<div class="row">
+					          
+					          <div class="col-100 tablet-50">
+					          	<div class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">Lote</div>
+										<div class="item-input">
+											<input type="text" name="lote-op" required readonly>
+										</div>
+									</div>
+								</div>	          	
+					          </div>
+
+					          <div class="col-100 tablet-50">
+					          	<div class="item-content">
+					          		<div class="item-inner">
+										<div class="item-title label">Entrega</div>
+										<div class="item-input">
+											<input type="date" name="data-entrega-op" style="background:#fff" required>
+										</div>
+									</div>					
+								</div>
+					          </div>
+					        </div>			
+						</li>
+
+						<li>
+							<div class="row">
+					          <div class="col-100 tablet-50">					          	
+					          	<div class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">Quantidade</div>
+										<div class="item-input">
+											<input type="number" name="qtd-op" value="0" min="0" required>
+											<input type="hidden" name="total-envasado">
+										</div>
+									</div>
+								</div>
+					          </div>
+
+					          <div class="col-100 tablet-50">
+					          	<div class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">Execução da OP</div>
+										<div class="item-input">
+											<input type="text" name="execucao-op" required>
+										</div>
+									</div>
+								</div>	          	
+					          </div>
+
+					        </div>
+						</li>
+
+						<li>
+							<div class="row">
+					          <div class="col-100">
+					          	
+					          	<div class="item-content">
+									<div class="item-inner">
+										<div class="item-title label">Setor</div>
+										<div class="item-input">							
+											<select name="setor-op" id="setor-op" required></select>
+										</div>
+									</div>
+								</div>
+					          </div>
+					        </div>
+						</li>		
+					
+						<li>
+							<div class="item-content">
+								<div class="item-inner">
+									<div class="item-title label">INSTRUÇÕES DE TRABALHO</div>
+									<div class="item-input">
+										<textarea name="instrucoes-trabalho" id="instrucoes-trabalho" rows=8 /></textarea>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+							
+					<ul>						
+						<li class="formulacao">
+							<div class="content-block">
+								<div style="width:100%;overflow-x:auto">
+								<table class="table-list small-input" id="table-list-op">
+									<thead>
+										<th style="width:40px">FASE</th>
+										<th>COMPONENTE</th>
+										<th>UNIDADE</th>
+										<th>FORMULAÇÃO (%)</th>
+										<th>QUANTIDADE</th>
+										<th>EXECUÇÃO</th>
+									</thead>
+									<tbody>						
+									</tbody>
+
+									<tfoot>
+										<tr>
+											<td colspan=3 style="text-align:left">PRODUÇÃO</td>
+											<td>
+												<input type="text" name="total-formulacao" readonly value="0.0000" class="total-formulacao center" style="border:none!important; color:white"/>
+											</td>
+											<td><input type="text" name="qtde-total" class="fQtde center" readonly value="0.0000" style="border:none!important; color:white"/></td>
+											<td>
+												<label class="label-checkbox item-content">
+										            <input type="checkbox" name="finalizado" id="checkTodos" value="N"/> 
+										            <div class="item-media" style="margin:0px auto!important;">
+										            	<i class="icon icon-form-checkbox" style="color:#fff!important"></i>&nbsp;Marcar Todos
+										            </div>
+										        </label>
+											</td>
+										</tr>
+									</tfoot>
+
+								</table>
+								</div>								
+							</div>
+						</li>
+					</ul>
+					
+
+					<ul>
+						<li style="display:none">
+							<div class="item-content">
+								<div class="item-inner">
+									<div class="item-title label">CONTROLE DE QUALIDADE</div>
+									<div class="item-input">
+										<textarea name="controle-qualidade" id="controle-qualidade" rows=8 /></textarea>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="item-content">
+							<div class="item-inner">
+								<div class="item-title label">CONTROLE DE QUALIDADE</div>								
+								<textarea id="editor"></textarea>
+							</div>
+							</div>
+						</li>		
+					</ul>
+
+				</div>
+
+				<div id="tab-op2" class="tab">
+					<div class="embalagens">
+						<div style="width:100%;overflow-x:auto;margin-top:30px">
+						<table class="table-list-emb small-input" id="table-list-emb">
+							<thead>
+								<th>EMBALAGEM</th>
+								<th class="center">QTDE (LITROS)</th>
+								<th class="center">CONFIRMAR ENVASE</th>
+								<th class="center">USUÁRIO DATA/HORA</th>
+								<th class="center">EXCLUIR</th>
+							</thead>
+							<tbody>						
+							</tbody>
+							<tfoot>
+								<tr>
+									<td style="text-align:left">TOTAL DE LITROS / LITROS RESTANTES</td>
+									<td><span class="lt_ate">0</span> / <span class="lt_de">0</span>
+										<input type="text" name="total-litros" readonly value="0.0000" class="total-litros center" style="border:none!important; color:white;display:none"/>
+									</td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td colspan=4 style="text-align:center;background:#fff">
+										<a href="#" class='button color-teal addemb' style="margin-top:16px">
+											<i class="material-icons">add_circle_outline</i>
+										</a>
+										<div class="qtd-error"></div>
+									</td>
+								</tr>
+							</tfoot>
+						</table>
+						</div>
+
+						
+
+					</div>
+				</div>
+
+				<div id="tab-op3" class="tab">
+					<div class="content-block">
+						<ul class="ul-filtro" style="margin-top:20px">
+							
+							<li class="op-fin-ok" style="display:none">
+								ORDEM DE PRODUÇÃO FINALIZADA
+							</li>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</form>
+
+</div>

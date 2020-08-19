@@ -15,7 +15,7 @@
 <div class="page-content">
 
 
-<div class="content-block">
+<div class="content-block" style="display:none">
 <h3 class="e-cliente"></h3>
 </div>
 
@@ -23,39 +23,74 @@
 
 
 <form id="form-higienizacao" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
-	
-	<ul>
 
-		<li class="select-hig">
-		<div class="item-content">
-		<div class="item-inner">
-		<div class="item-title label">Status</div>
-		<div class="item-input">
-		<select name="situacao-hig">
-			<option value="PENDENTE">PENDENTE</option>
-			<option value="PRE-AGENDADA">PRE-AGENDADA</option>
-			<option value="AGENDADA">AGENDADA</option>
-			<option value="FINALIZADA">FINALIZADA</option>
-		</select>
-		<input type="hidden" name="id-hig" value="">
-		<input type="hidden" name="codcliente" value="">
-		</div>
-		</div>
-		</div>
-		</li>
+	<input type="hidden" name="situacao-hg" value="PRE-AGENDADA">
 
-		<li>
+	<h4 style="padding-left:15px;" class="label-situacao label-situacao-h">Status</h4>
+	<div class="toolbar tabbar tabbar-scrollable timeline toolbar-h" style="background:#FFF;margin-top:-60px">		
+    	<div class="toolbar-inner">
+    		<a href="#" id="h-pre-agendada" class="tab-link h-pre-agendada" style="width:160px">PRE-AGENDADA</a>
+    		<a href="#" id="h-agendada" class="tab-link h-agendada" style="width:160px">AGENDADA</a>
+    		<a href="#" id="h-pendente" class="tab-link h-pendente" style="width:160px">PENDENTE</a>    		
+    		<a href="#" id="h-finalizada" class="tab-link h-finalizada" style="width:160px">FINALIZADA</a>
+    	</div>
+    </div>
+
+    <div class="item-content">
+        <div class="item-inner">
+            <div class="item-title label">Cliente</div>                                    
+            <a href="#" id="ajax-clientes-list" class="item-link item-content autocomplete-opener" style="padding-left:0px;text-transform:uppercase"> 
+                <div class="item-inner">
+                    <div class="item-title">Selecionar cliente</div>
+                    <div class="item-after"></div>
+                </div>
+            </a>
+        </div>
+        <div class="item-inner">
+            <div class="item-title label">ID Cliente</div>
+            <div class="item-input">
+                <input type="text" name="codcliente" required readonly/>
+                <input type="hidden" name="nomecliente" id="nomecliente" readonly>
+            </div>
+        </div>
+    </div>
+
+    <ul>		
+
+		<li style="margin-top:60px">
 		<div class="item-content">
 		<div class="item-inner">
 		<div class="item-title label">Data/hora agendamento</div>
 		<div class="item-input">
 		<input type="datetime-local" name="data_agendamento" id="data_agendamento" value="" required/>
+		<input type="hidden" name="id-hig" value="">
 		</div>
 		</div>
 		</div>
 		</li>		
 
 	</ul>
+
+    <ul class="h-aprovado" style="display:none">		
+
+		<li>
+		<div class="item-content">
+		<div class="item-inner">
+		<div class="item-title label">Resultado</div>
+		<div class="item-input">
+		<select name="aprovada">
+            <option value="">-- selecione --</option>
+            <option value="S">APROVADO</option>
+            <option value="N">REPROVADO</option>
+        </select>
+		</div>
+		</div>
+		</div>
+		</li>		
+
+	</ul>
+	
+	
 
 	<ul>
 		<li>
@@ -65,7 +100,6 @@
 				<div class="item-title label">Equipamento</div>
 				<div class="item-input">
 					<select name='equipamento-higienizacao' id='equipamento-higienizacao' class='prod'>
-						<option value="">Selecione um equipamento</option>
 					</select>
 				</div>
 			</div>

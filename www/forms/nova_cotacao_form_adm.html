@@ -18,17 +18,36 @@
 <div class="page-content">
 
 
-<div class="content-block">
+<div class="content-block" style="display:none">
 <h3 class="e-cliente"></h3>
 </div>
 
 
 
 <form id="form-cotacao-adm" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+
+	<div class="item-content">
+        <div class="item-inner">
+            <div class="item-title label">Cliente</div>                                    
+            <a href="#" id="ajax-clientes-list" class="item-link item-content autocomplete-opener" style="padding-left:0px;text-transform:uppercase"> 
+                <div class="item-inner">
+                    <div class="item-title">Selecionar cliente</div>
+                    <div class="item-after"></div>
+                </div>
+            </a>
+        </div>
+        <div class="item-inner">
+            <div class="item-title label">ID Cliente</div>
+            <div class="item-input">
+                <input type="text" name="codcliente" required readonly/>
+                <input type="hidden" name="nomecliente" id="nomecliente" readonly>
+            </div>
+        </div>
+    </div>
 	
 	<ul>
 
-		<li class="respondida">
+		<li class="respondida cot-status">
 		<div class="item-content">
 		<div class="item-inner">
 		<div class="item-title label">Status</div>
@@ -116,15 +135,16 @@
 
 	<ul class="cotacoes-rows-visualizar"></ul>	
 
+	<div id="wrapper">
 	<ul class="list-products">
     	
 	</ul>
+	</div>
 
 	<ul>
 		<li>
     		<div class="item-inner">
-				<div class="item-input">
-				<button type='button' class='button button-fill color-teal minusprodutocotacao' style="margin-top:16px;float:right;margin-left:8px"><i class='material-icons' style='margin-top:5px'>delete</i></button>
+				<div class="item-input">				
 				<button type='button' class='button button-fill color-teal addprodutocotacao' style="margin-top:16px;float:right"><i class='icon icon-plus'></i></button>
 				</div>
 			</div>
@@ -134,18 +154,34 @@
 	<ul>
 	   <li style="text-align:right"> 
        <div class="content-block">
-        <div class="item-inner right">
-            <div class="item-title label">VALOR TOTAL DA COTAÇÃO</div>
+
+       	<div class="item-inner right st">
+            <div class="item-title label">TOTAL DOS PRODUTOS</div>
             <div class="item-input">
-                <input type="text" name="total-cot-v" value="0.00" style="text-align:right" readonly=readonly/>
+                <input type="text" name="total-prod-v" value="0.00" style="text-align:right;font-size:22px!important" readonly=readonly/>
             </div>
         </div>
+
+        <div class="item-inner right st">
+            <div class="item-title label">TOTAL ST</div>
+            <div class="item-input">
+                <input type="text" name="total-st-v" value="0.00" style="text-align:right;font-size:22px!important" readonly=readonly/>
+            </div>
+        </div>
+
+        <div class="item-inner right">
+            <div class="item-title label">TOTAL DA COTACAO</div>
+            <div class="item-input">
+                <input type="text" name="total-cot-v" value="0.00" style="text-align:right;font-size:22px!important" readonly=readonly/>
+            </div>
+        </div>
+
 	    </div>
 	    </li>
 	</ul>
 
 	<div class="content-block">
-	<h3>Informações complementares</h3>
+	<h3>Informações complementares à cotação</h3>
 	</div>
 
 	<ul>

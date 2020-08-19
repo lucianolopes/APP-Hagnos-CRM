@@ -1,0 +1,155 @@
+<div data-page="form-fornecedor" class="page">
+	<div class="navbar">
+	<div class="navbar-inner">
+	<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
+	<div class="center" class="nomeperfil">Fornecedor - Cadastro</div>
+	<div class="right">
+		<a href="#" class="link salva-fornecedor">salvar</a>	
+		<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+	</div>
+	</div>
+</div>
+
+ 
+
+<div class="page-content">
+
+
+<form id="form-fornecedor" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+	
+	<ul>
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">Nome</div>
+	<div class="item-input">
+	<input type="hidden" name="forn_id" id="forn_id"/>
+	<input type="text" name="forn_nome" id="forn_nome" required/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">CNPJ</div>
+	<div class="item-input">
+	<input type="text" name="forn_cnpj" id="forn_cnpj"/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">CEP</div>
+	<div class="item-input">
+	<input type="text" name="forn_cep" id="forn_cep"/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">Estado</div>
+	<div class="item-input">
+	<select name="forn_estado" id="forn_estado">
+	<option value=""></option>
+	</select>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">Cidade</div>
+	<div class="item-input">
+	<select name="forn_cidade" id="forn_cidade">		
+	</select>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label" required>Bairro</div>
+	<div class="item-input">
+	<input type="text" name="forn_bairro"/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">Endereço/Nro</div>
+	<div class="item-input">
+	<input type="text" name="forn_endereco" required/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+		<div class="item-inner">
+			<div class="item-title label">Telefone</div>
+			<div class="item-input">
+				<input type="text" name="forn_telefone" required autocomplete="off"/>
+			</div>
+		</div>
+	</div>
+	</li>	
+
+	
+	<li>
+	<div class="item-content">
+	<div class="item-inner">
+	<div class="item-title label">E-mail</div>
+	<div class="item-input">
+	<input type="email" name="forn_email" id="forn_email" required/>
+	</div>
+	</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+		<div class="item-inner">
+			<div class="item-title label">Contato</div>
+			<div class="item-input">
+				<input type="text" name="forn_contato" required/>
+			</div>
+		</div>
+	</div>
+	</li>
+
+	<li>
+	<div class="item-content">
+		<div class="item-inner">
+			<div class="item-title label">Observação</div>
+			<div class="item-input">
+				<textarea name="forn_obs" id="forn_obs" rows=3  style="background:#fff"></textarea>
+			</div>
+		</div>
+	</div>
+	</li>
+
+
+	</ul>
+
+</form>
+
+</div>

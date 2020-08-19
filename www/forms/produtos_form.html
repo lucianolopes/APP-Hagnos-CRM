@@ -2,151 +2,185 @@
 <div class="navbar">
 <div class="navbar-inner">
 <div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
-<div class="center" class="nomeperfil">Produtos Cadastro</div>
+<div class="center nomecab" >Produtos Cadastro</div>
 <div class="right">
-	<a href="#" class="link salva-produto">salvar</a>	
+	<a href="#" class="link salva-produto">salvar</a>
 	<a href="#" class="link deleta-prod"><i class="material-icons">delete</i></a>
 	<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
 </div>
 </div>
 </div>
 
- 
+<div class="toolbar tabbar tabbar-scrollable">
+	<div class="toolbar-inner">
+		<a href="#tab1" class="active tb1 tab-link">DADOS PRINCIPAIS</a>
+		<a href="#tab2" class="tab-link tb2 tb-formulacao">FORMULAÇÃO</a>
+	</div>
+</div>
 
-<div class="page-content">
+<div class="page-content bk-white">
 
 <form id="form-produto" class="list-block inputs-list ajax-submit" data-parsley-validate="true" enctype="multipart/form-data">
-	
-	<ul>	
-	
-	<li>
-	<div class="item-content">
-	<div class="item-inner">
-	<div class="item-title label">Nome do produto</div>
-	<div class="item-input">
-	<input type="hidden" name="prod_id" id="prod_id"/>
-	<input type="text" name="prod_descricao" id="prod_descricao" required/>
-	</div>
-	</div>
-	</div>
-	</li>
+<div class="tabs-animated-wrap ">
+<div class="tabs">
 
-	<li>
-	<div class="item-content">
-	<div class="item-inner">
-		<div class="item-title label">Descrição</div>
-		<div class="item-input">
-			<textarea name="prod_obs" id="prod_obs" rows=10/></textarea>
-		</div>
-	</div>
-	</div>
-	</li>
-
-	<li class="formulacao">
-	<div class="item-content">
-	<div class="item-inner">
-		<div class="item-title label">Formulação</div>
-		<div class="item-input">
-			<textarea name="prod_formulacao" id="prod_formulacao" rows=10/></textarea>
-		</div>
-	</div>
-	</div>
-	</li>			
+	<div id="tab1" class="page-content tab active bk-white" style="padding-top:0px">
 
 
-    <li>
-    <div class="item-content esconder">    	
-		<div class="item-inner">
-		  	<div class="item-title label">Boletim Técnico</div>		
-				   
-		    <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="padding-top:15px">
-			    <div data-trigger="fileinput">
-			    	<i class="fileinput-exists"></i> 
-			    	<span class="fileinput-filename"></span>
-			   	</div>
-			    <span class="input-group-addon btn btn-default btn-file">
-				    <span class="fileinput-new button button-fill color-teal" style="padding-top:6px"><i class="material-icons">attach_file</i></span>
-				    <input type="file" name="boletim">				    
-				</span>
-			    <a href="#" class="button button-fill color-red fileinput-exists" data-dismiss="fileinput">Remover</a>
-		    </div>		    
-		</div>			
-	</div>
+			<ul>
 
-
-	<div class="item-content">
-		<div class="item-inner">
-			<div class="row">
-				
-					<div class="row">
-
-						<div class="col-20" style="">
-						<span class="input-group-addon ler-boletim" style="display:none; width:auto!important;margin-right:6px!important">
-						<a href="#" class="link-boletim button button-fill color-teal external" download ><i class="icon material-icons" style="color:#fff!important">remove_red_eye</i></a>
-						</span>
-						</div>
-
-						<div class="col-20 esconder">
-						<span class="input-group-addon email-boletim" style="display:none; width:auto!important">
-						<a href="" class="link email-boletim button button-fill color-teal"><i class="icon material-icons" style="color:#fff!important">email</i></a>
-						</span>
-						</div>
-					</div>
+			<li>
+			<div class="item-content">
+			<div class="item-inner">
+			<div class="item-title label">Nome do produto</div>
+			<div class="item-input">
+			<input type="hidden" name="prod_id" id="prod_id"/>
+			<input type="text" name="prod_descricao" id="prod_descricao" required/>
 			</div>
-		</div>
-	</div>
-    </li>
-
-    <li>
-    <div class="item-content esconder">    	
-		<div class="item-inner">
-		  	<div class="item-title label">FISPQ</div>		
-				   
-		    <div class="fileinput fileinput-new input-group" data-provides="fileinput" style="padding-top:15px">
-			    <div data-trigger="fileinput">
-			    	<i class="fileinput-exists"></i> 
-			    	<span class="fileinput-filename"></span>
-			   	</div>
-			    <span class="input-group-addon btn btn-default btn-file">
-				    <span class="fileinput-new button button-fill color-teal" style="padding-top:6px"><i class="material-icons">attach_file</i></span>
-				    <input type="file" name="fispq">				    
-				</span>
-			    <a href="#" class="button button-fill color-red fileinput-exists" data-dismiss="fileinput">Remover</a>
-		    </div>		    
-		</div>			
-	</div>
-
-	<div class="item-content">
-		<div class="item-inner">
-			<div class="row">
-					<div class="row">
-
-						<div class="col-20" style="">
-						<span class="input-group-addon ler-fispq" style="display:none; width:auto!important;margin-right:6px!important">
-						<a href="#" class="link-fispq button button-fill color-teal external" download ><i class="icon material-icons" style="color:#fff!important">remove_red_eye</i></a>
-						</span>
-						</div>
-
-						<div class="col-20">
-						<span class="input-group-addon email-fispq" style="display:none; width:auto!important">
-						<a href="" class="email-fispq button button-fill color-teal"><i class="icon material-icons" style="color:#fff!important">email</i></a>
-						</span>
-						</div>
-					</div>
 			</div>
-		</div>
+			</div>
+			</li>
+
+			<li>
+			<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Descrição</div>
+				<div class="item-input">
+					<textarea name="prod_obs" id="prod_obs" rows=10/></textarea>
+				</div>
+			</div>
+			</div>
+			</li>
+
+			<li style="display:none">
+			<div class="item-content">
+			<div class="item-inner">
+			<div class="item-title label">Estoque (litros)</div>
+			<div class="item-input">
+			<input type="number" name="prod_estoque" id="prod_estoque"/>
+			</div>
+			</div>
+			</div>
+			</li>
+
+			</ul>
+
+
+			<div class="content-block-title ul-filtro">ANEXOS</div>
+
+
+
+						<div style="float:left;width:auto;min-width:100px">
+
+							<div class="input-file-container" style="margin-left:15px">
+							    <input class="input-file" id="fispq" type="file" name="fispq" accept="image/*,application/pdf,application/msword">
+							    <label tabindex="0" for="fispq" class="input-file-trigger">
+							    <img src="img/icon-fispq.png">
+							    </label>
+							</div>
+							<p class="file-return" style="margin-left:15px"></p>
+							<div class="fispqExist" style="display:none;padding:0px 15px">
+								<div class="chip">
+	        						<div class="chip-label chip-label-fispq"></div>
+	        						<a href="#" class="chip-delete delete-fispq"></a>
+	      						</div>
+							</div>
+						</div>
+
+						<div style="float:left;width:auto;min-width:100px">
+
+							<div class="input-file-container" style="margin-left:15px">
+							    <input class="input-file input-file2" id="boletim" type="file" name="boletim" accept="image/*,application/pdf,application/msword">
+							    <label tabindex="1" for="boletim" class="input-file-trigger input-file-trigger2">
+							    <img src="img/icon-boletim.png">
+							    </label>
+							</div>
+							<p class="file-return file-return2" style="margin-left:15px"></p>
+							<div class="boletimExist" style="display:none;padding:0px 15px">
+								<div class="chip">
+	        						<div class="chip-label chip-label-boletim"></div>
+	        						<a href="#" class="chip-delete delete-boletim"></a>
+	      						</div>
+							</div>
+						</div>
+
+
+
+
+					<div style="clear:both"></div>
 	</div>
-    </li>
 
+	<div id="tab2" class="page-content tab bk-white" style="padding-top:0px">
+		<ul>
+		<li>
+			<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">INSTRUÇÕES DE TRABALHO</div>
+				<div class="item-input">
+					<textarea name="instrucoes_trabalho" id="instrucoes_trabalho" rows=8></textarea>
+				</div>
+			</div>
+			</div>
+		</li>		
 
+		<li class="formulacao">
+			<div class="content-block">
+				<div style="width:100%;overflow-x:auto">
+				<table class="table-list small-input" id="table-list">
+					<thead>
+						<th style="width:40px">FASE</th>
+						<th>CÓDIGO - COMPONENTE</th>
+						<th>UNIDADE</th>
+						<th>FORMULAÇÃO (%)</th>
+						<th style="width:40px" class="center">EXCLUIR</th>
+					</thead>
+					<tbody>
+					</tbody>
 
+					<tfoot>
+						<tr>
+							<td colspan=3 style="text-align:left">PRODUÇÃO</td>
+							<td><input type="text" name="total-formulacao" readonly value="0.0000" class="total-formulacao center" style="border:none!important; color:white"/></td>
+							<td></td>
+						</tr>
+					</tfoot>
 
+				</table>
+				</div>
 
+				<a href="#" class='button color-teal addcomp' style="margin-top:16px">
+					<i class="material-icons">add_circle_outline</i>
+				</a>
 
-	
+			</div>
+		</li>
 
+		<li style="display:none">
+			<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">CONTROLE DE QUALIDADE</div>
+				<div class="item-input">
+					<textarea name="controle_qualidade" id="controle_qualidade" rows=8></textarea>
+				</div>
+			</div>
+			</div>
+		</li>
 
-	</ul>
+		<li>
+			<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">CONTROLE DE QUALIDADE</div>
+				<textarea name="tb-controle" id="editor"></textarea>
+			</div>
+			</div>
+		</li>
+		
+
+		</ul>
+	</div>
+
+</div>
+</div>
 
 </form>
 

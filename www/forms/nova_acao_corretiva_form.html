@@ -15,7 +15,7 @@
 <div class="page-content">
 
 
-<div class="content-block">
+<div class="content-block" style="display:none">
 <h3 class="e-cliente"></h3>
 </div>
 
@@ -23,6 +23,25 @@
 
 
 <form id="form-acaocorretiva" class="list-block inputs-list ajax-submit" data-parsley-validate="true" enctype="multipart/form-data">
+
+	<div class="item-content">
+        <div class="item-inner">
+            <div class="item-title label">Cliente</div>                                    
+            <a href="#" id="ajax-clientes-list" class="item-link item-content autocomplete-opener" style="padding-left:0px;text-transform:uppercase"> 
+                <div class="item-inner">
+                    <div class="item-title">Selecionar cliente</div>
+                    <div class="item-after"></div>
+                </div>
+            </a>
+        </div>
+        <div class="item-inner">
+            <div class="item-title label">ID Cliente</div>
+            <div class="item-input">
+                <input type="text" name="codcliente" required readonly/>
+                <input type="hidden" name="nomecliente" id="nomecliente" readonly>
+            </div>
+        </div>
+    </div>
 	
 	<ul>
 
@@ -36,7 +55,6 @@
 			<option value="FINALIZADA">FINALIZADA</option>
 		</select>
 		<input type="hidden" name="id-acao" value="">
-		<input type="hidden" name="codcliente" value="">
 		</div>
 		</div>
 		</div>
@@ -86,6 +104,17 @@
 				</div>
 			</div>
 			</div>
+		</li>
+
+		<li>
+		<div class="item-content">
+			<div class="item-inner">
+				<div class="item-title label">Aspecto visual</div>
+				<div class="item-input">
+					<textarea class="resizable" name="aspecto-acao" id="aspecto-acao" rows=8 style="min-height:140px"></textarea>
+				</div>
+			</div>
+		</div>
 		</li>
 
 		

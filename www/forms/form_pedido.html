@@ -15,7 +15,7 @@
 
  
 
-<div class="page-content">
+<div class="page-content" style="background:#fff!important">
 
 
 <div class="content-block" style="display:none">
@@ -31,7 +31,7 @@
           <div class="item-inner">
             <div class="item-title label-cliente">Selecione o cliente</div>
             <div class="item-input">
-              <input type="text" name="nomecliente" id="ajax-clientes-list" autocomplete="off" required/>              
+              <input type="text" name="nomecliente" id="ajax-clientes-list" autocomplete="off" required style="padding:10px 12px;height:40px"/>              
             </div>
           </div>
         </li>
@@ -39,24 +39,32 @@
 	
 	<h4 style="padding-left:15px" class="label-situacao">Status</h4>
 	
-	<div class="toolbar tabbar tabbar-scrollable timeline-pedido" style="background:#FFF;margin-top:-60px">
+	<div class="toolbar tabbar tabbar-scrollable timeline-pedido" style="background:#FFF!important;margin-top:-60px">
 		
-    	<div class="toolbar-inner">
-    		<a href="#tab-1" id="pendente" class="tab-link pendente pendente-active">PENDENTE</a>
-    		<a href="#tab-2" id="producao" class="tab-link producao">PRODUÇÃO</a>
-    		<a href="#tab-3" id="expedicao" class="tab-link expedicao">EXPEDIÇÃO</a>
-    		<a href="#tab-4" id="entrega" class="tab-link entrega disabled">ENTREGA</a>
-    		<a href="#tab-5" id="finalizado" class="tab-link finalizado disabled">FINALIZADO</a>
+    	<div class="toolbar-inner" style="background:#FFF!important">
+    		<a href="#tab-1"  id="pendente"    class="tab-link pendente pendente-active">PENDENTE</a>
+    		<a href="#tab-1a" id="programacao" class="tab-link programacao">PROGRAMAÇÃO</a>
+    		<a href="#tab-2"  id="producao"    class="tab-link producao">PRODUÇÃO</a>
+    		<a href="#tab-3"  id="expedicao"   class="tab-link expedicao">EXPEDIÇÃO</a>
+    		<a href="#tab-4"  id="entrega"     class="tab-link entrega disabled">ENTREGA</a>
+    		<a href="#tab-5"  id="finalizado"  class="tab-link finalizado disabled">FINALIZADO</a>
+    		<a href="#" class="restrito" style="display:none">
+    			<div class="chip">
+			        <div class="chip-media bg-red"><i class="icon material-icons">block</i></div>
+			        <div class="chip-label">CLIENTE RESTRITO!</div>
+			    </div>
+    		</a>
     	</div>
     </div>
-    <div class="page-content" style="padding-top:30px!important">
-    	<div class="tabs" style="background:#eee;padding-top:20px!important;padding-bottom:5px">
+
+    
+    	<div class="tabs tabs-ped" style="background:#fff;padding-top:20px!important;padding-bottom:5px;margin-top:20px">
 
       		<div id="tab-1" class="tab">
         		<div class="content-block">
 		            <div class="item-content">
 						<div class="item-inner">
-							<div class="item-title label">Data entrega</div>
+							<div class="item-title label">Previsão entrega</div>
 							<div class="item-input">
 								<input type="date" name="data-entrega-ped" style="background:#fff">
 							</div>
@@ -71,6 +79,11 @@
 						</div>
 					</div>
 		        </div>
+      		</div>
+
+      		<div id="tab-1a" class="tab">
+      			<div class="content-block">
+      			</div>
       		</div>
 
 
@@ -105,19 +118,26 @@
 			              </div>
 			            </div>
 			        </div>
+
+			        <div class="item-content">			        	
+			        	<a href="" class="link icon-only imprimir-pedido external" download=""><i class="icon material-icons">print</i> Imprimir cópia do pedido</a>
+					</div>
+
         		</div>
         	</div>
 
 
         	<div id="tab-3" class="tab">
         		<div class="content-block">
-          			<p style="margin-left:10px">LOTES:</p>
+        			<p>Data expedição: <span class="dt-exp">---</span></p>
           			<table class="lotes-produtos"></table>
         		</div>
         	</div>
 
         	<div id="tab-4" class="tab">
         		<div class="content-block">
+        			
+
           			<div class="item-content">
 						<div class="item-inner">
 							<div class="item-title label">Nota fiscal</div>
@@ -139,6 +159,24 @@
         	<div id="tab-5" class="tab">
         		<div class="content-block">
 
+        			<div class="item-content">
+						<div class="item-inner">
+							<div class="item-title label">Data faturamento</div>
+							<div class="item-input">
+								<input type="date" name="data-entrega-ped2" id="data-entrega-ped2" style="background:#fff">
+							</div>
+						</div>
+					</div>
+
+					<div class="item-content">
+						<div class="item-inner">
+							<div class="item-title label">Data confirmação de entrega</div>
+							<div class="item-input">
+								<input type="date" name="data-conf-entrega-final" id="data-conf-entrega-final" style="background:#fff">
+							</div>
+						</div>
+					</div>
+
           			<div class="item-content">
 						<div class="item-inner">
 							<p>PEDIDO FINALIZADO</p>
@@ -151,7 +189,7 @@
         		</div>
         	</div>
     	</div>
-    </div>
+    
 
     
    
@@ -163,7 +201,6 @@
 	<input type="hidden" name="situacao-ped" value="PENDENTE">
 	
 	<ul style="margin-top:20px">
-
 
 		<li class="dtlanc" style="display:none">
 		<div class="item-content">
@@ -246,8 +283,7 @@
 	<ul>
 		<li>
     		<div class="item-inner">
-				<div class="item-input">
-				<button type='button' class='button button-fill color-teal minusprodutopedido' style="margin-top:16px;float:right;margin-left:8px"><i class='material-icons' style='margin-top:5px'>delete</i></button>
+				<div class="item-input">				
 				<button type='button' class='button button-fill color-teal addprodutopedido' style="margin-top:16px;float:right"><i class='icon icon-plus'></i></button>
 				</div>
 			</div>
@@ -257,10 +293,80 @@
 	<ul>
 	   <li style="text-align:right"> 
        <div class="content-block">
+       	
+       	<div class="item-inner right" style="display:none">
+            <div class="item-title label">TOTAL DOS PRODUTOS</div>
+            <div class="item-input">
+                <input type="text" name="total-prod-v" value="0.00" style="text-align:right;font-size:22px!important" readonly=readonly/>
+            </div>
+        </div>
+
+        
+        <div class="item-content">
+        	<div class="item-inner right">
+	        	<div class="item-input">
+	        		<div style="float:right;margin-left:10px">
+			    		<div class="item-title label">ACRÉSCIMO</div>			            
+			            <input type="text" name="acrescimo" class="preco_aplicado" value="0.00" style="text-align:right;font-size:22px!important;width:140px"/>
+			    	</div>
+	        		<div style="float:right">
+	        			<div class="item-title label">CÁLCULAR EM:</div>
+				       	<select name="formaAcr" style="width:100px">
+				           	<option value="PERCENTUAL" selected>PERCENTUAL</option>
+				           	<option value="VALOR">valor</option>
+				        </select>
+			    	</div>			    	
+			    	<div style="clear:both"></div>
+		        </div>
+	        </div>	        
+    	</div>
+
+        <div class="item-content">
+			<div class="item-inner right">
+	        	<div class="item-input">
+	        		<div style="float:right;margin-left:10px">
+			    		<div class="item-title label">DESCONTO</div>			            
+			            <input type="text" name="desconto" class="preco_aplicado" value="0.00" style="text-align:right;font-size:22px!important;width:140px"/>
+			    	</div>
+	        		<div style="float:right">
+	        			<div class="item-title label">CÁLCULAR EM:</div>
+				       	<select name="formaDesc" style="width:100px;">
+				           	<option value="PERCENTUAL" selected>PERCENTUAL</option>
+				           	<option value="VALOR">valor</option>
+				        </select>
+			    	</div>			    	
+			    	<div style="clear:both"></div>
+		        </div>
+	        </div>   
+    	</div>
+
+    	<div class="item-inner right">
+            <div class="item-title label">TOTAL DOS PRODUTOS</div>
+            <div class="item-input">
+                <input type="text" name="total-ped-prod" value="0.00" style="text-align:right;font-size:22px!important" readonly=readonly/>
+            </div>
+        </div>
+
+        
+
         <div class="item-inner right">
-            <div class="item-title label">VALOR TOTAL DO PEDIDO</div>
+            <div class="item-title label">TOTAL DO PEDIDO</div>
             <div class="item-input">
                 <input type="text" name="total-ped-v" value="0.00" style="text-align:right;font-size:22px!important" readonly=readonly/>
+            </div>
+        </div>
+
+        <div class="item-inner right st">
+            <div class="item-title label">TOTAL ST</div>
+            <div class="item-input">
+                <input type="text" name="total-st-v" value="0.00" style="text-align:right;font-size:22px!important" readonly=readonly/>
+            </div>
+        </div>
+        
+        <div class="item-inner right st">
+            <div class="item-title label">TOTAL DA NF</div>
+            <div class="item-input">
+                <input type="text" name="total-ped-nf" value="0.00" style="text-align:right;font-size:22px!important" readonly=readonly/>
             </div>
         </div>
 	    </div>
@@ -268,7 +374,7 @@
 	</ul>
 
 	<div class="content-block">
-	<h3>Informações complementares</h3>
+	<h3>Informações complementares ao pedido</h3>
 	</div>
 
 	<ul>
@@ -284,7 +390,7 @@
 	</ul>
 
 	<div class="content-block">
-	<h3>Informações internas</h3>
+	<h3>Informações internas (HAGNOS)</h3>
 	</div>
 
 	<ul>

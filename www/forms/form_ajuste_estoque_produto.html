@@ -1,0 +1,133 @@
+<div data-page="form-ajuste-estoque-produto" class="page">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="left">
+				<a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a>
+			</div>
+			<div class="center pagetitle">Entrada / saída manual estoque</div>
+			<div class="right">
+				<a href="#" class="link salva-ajuste-produto"><i class="material-icons">done</i></a>
+			</div>
+		</div>
+	</div>
+	
+	<div class="page-content">
+
+	<form id="form-ajuste-produto" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+		
+		<ul>
+
+		<li>
+			<div class="row">
+	          <div class="col-100">
+	          	
+	          	<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title label">Produto</div>
+						<div class="item-input">							
+							<select name="produto-ajp" id="produto-ajp" class="disabled"></select>
+						</div>
+					</div>
+				</div>
+	          </div>
+	        </div>
+		</li>	
+		
+		<li>
+			<div class="row">
+	          <div class="col-100">
+	          	
+	          	<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title label">Setor</div>
+						<div class="item-input">							
+							<select name="setor-ajp" id="setor-ajp" class="disabled"></select>
+						</div>
+					</div>
+				</div>
+	          </div>
+	        </div>
+		</li>		
+
+		<li>
+			<div class="row">
+	          <div class="col-100 tablet-50">	          	
+	          	<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title label">Operação</div>
+						<div class="item-input">							
+							<select name="operacao-ajp" id="operacao-aj" required>
+								<option value="entrada" selected=selected>ENTRADA</option>
+								<option value="saida">SAÍDA</option>
+							</select>
+						</div>
+					</div>
+				</div>
+	          </div>
+	        </div>
+		</li>
+
+		<li>
+			<div class="row">
+	          <div class="col-100 tablet-50">
+	          	<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title label">Envase</div>
+						<div class="item-input">
+							<select name="envase-ajp" id="envase-ajp" required></select>
+						</div>
+					</div>
+				</div>	          	
+	          </div>
+	        </div>			
+		</li>
+	
+		<li>
+			<div class="row">
+	          <div class="col-100 tablet-50">
+	          	<div class="item-content">
+					<div class="item-inner input-baixa" style="display:none">
+						<div class="item-title label">Lote</div>
+						<div class="item-input">
+							<select name="lote-ajp" id="lote-ajp"></select>
+						</div>
+					</div>
+					<div class="item-inner input-entrada">
+						<div class="item-title label">Lote</div>
+						<div class="item-input">
+							<input type="text" name="lote-ajp2" id="lote-ajp2" required>
+						</div>
+					</div>
+				</div>	          	
+	          </div>
+	        </div>			
+		</li>
+
+		<li>
+			<div class="row">
+	          <div class="col-100 tablet-50">
+	          	
+	          	<div class="item-content">
+					<div class="item-inner">
+						<div class="item-title label">Quantidade (Litros)</div>
+						<div class="item-input">
+							<input type="number" name="qtd-ajp" value="0" min="1" required>
+						</div>
+					</div>
+				</div>
+	          </div>	          
+	        </div>
+		</li>
+
+		
+
+		</ul>
+		
+		<input type="hidden" name="codp">
+		<input type="hidden" name="idsetor">
+		<input type="hidden" name="nomeproduto">		
+		<input type="hidden" name="nomesetor">
+
+	</form>
+
+</div>

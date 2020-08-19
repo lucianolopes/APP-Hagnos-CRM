@@ -1,0 +1,138 @@
+<div data-page="materia-prima-form" class="page">
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a><a href="index.html" class="link icon-only"><i class="material-icons">home</i></a></div>
+			<div class="center" class="nomeperfil">Cadastro de matéria prima</div>
+			<div class="right">
+				<a href="#" class="link salva-mp">salvar</a>
+				<a href="#" class="link deleta-mp"><i class="material-icons">delete</i></a>	
+				<a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+			</div>
+		</div>
+	</div>
+
+	
+	<div class="page-content">
+
+			<form id="form-mp" class="list-block inputs-list ajax-submit" data-parsley-validate="true">
+	
+					<ul>
+						
+						<li>
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label">Nome funcional</div>
+						<div class="item-input">
+						<input type="text" name="nome_funcional" id="nome_funcional" required>	
+						<input type="hidden" name="mp_id" id="mp_id">						
+						</div>
+						</div>
+						</div>
+						</li>
+
+						<li>
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label">Unidade de medida</div>
+						<div class="item-input">
+						<select name="unidade" id="unidade" required>
+						<option value="">-- selecione --</option>
+						<option value="LT">LT</option>
+						<option value="KG">KG</option>
+						<option value="UN">UN</option>					
+						</select>
+						</div>
+						</div>
+						</div>
+						</li>
+
+						<li>
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label">Custo unitário</div>
+						<div class="item-input">
+						<input type="text" name="custo" id="custo" required>	
+						</div>
+						</div>
+						</div>
+						</li>
+
+						<li>
+						<div class="item-content">
+						<div class="item-inner">
+						<div class="item-title label">Código</div>
+						<div class="item-input">
+						<input type="text" name="codigo" id="codigo" required>
+						<div class="jcad"></div>						
+						</div>
+						</div>
+						</div>
+						</li>
+
+						<li>
+							<div class="row" style="margin-top:15px">
+					        	<div class="col-33">
+					        		<div class="item-content">
+										<div class="item-inner">
+											<div class="item-title label">Estoque ideal</div>
+											<div class="item-input">
+												<input type="number" name="estoque_ideal" id="estoque_ideal" required>
+											</div>
+										</div>
+									</div>
+								</div>
+				        		<div class="col-33">
+				        			<div class="item-content">
+										<div class="item-inner">
+											<div class="item-title label">Estoque segurança</div>
+											<div class="item-input">
+												<input type="number" name="estoque_seguranca" id="estoque_seguranca" required>
+											</div>
+										</div>
+									</div>
+				        		</div>
+				        		<div class="col-33">
+				        			<div class="item-content">
+										<div class="item-inner">
+											<div class="item-title label">Estoque minimo</div>
+											<div class="item-input">
+												<input type="number" name="estoque_minimo" id="estoque_minimo" required>
+											</div>
+										</div>
+									</div>
+				        		</div>
+				        	</li>
+						</li>
+
+					</ul>
+
+					<div class="content-block">
+						<h5>FORNECEDORES:</h5>
+
+						<div class="row">
+				          <div class="col-40"><strong>FORNECEDOR</strong></div>
+				          <div class="col-40"><strong>NOME COMERCIAL</strong></div>
+				          <div class="col-20"></div>
+				        </div>
+
+				        <div class="forn-list">
+					        <div class="row input-border li-mp0">				          
+						          <div class="col-40"><input type="text" name="fornecedor[]" required></div>
+						          <div class="col-40"><input type="text" name="nomecomercial[]" required></div>
+						          <div class="col-20"></div>
+					        </div>
+					    </div>					
+
+				        <div class="row" style="margin-top:15px">
+				        	<div class="col-20">
+								<a href="#" class="button button-raised button-fill color-teal addForn" style="width:40px!important"><i class="icon icon-plus"></i></a>
+							</div>
+						</div>
+					</div>
+
+					
+			</form>
+		</div>
+	</div>
+
+</div>
